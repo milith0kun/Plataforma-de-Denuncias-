@@ -1,0 +1,27 @@
+:root {
+  /* Colores de la paleta */
+  --color-primary: #7592EB;
+  --color-secondary: #A5C1EB;
+  --color-tertiary: #03193B;
+  --color-accent-red: #F51F1B;
+  --color-accent-yellow: #F5E578;
+  --color-neutral-light: #FFFFFF;
+
+  /* Tipografías */
+  --font-headings: "DM Serif Text", serif;
+  --font-body: "Montserrat", sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-headings);
+}
