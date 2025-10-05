@@ -8,7 +8,7 @@ import styles from './RegisterPage.module.css';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const { registrar, error } = useAuth();
+  const { registrarCiudadano, error } = useAuth();
   const [formData, setFormData] = useState({
     nombres: '',
     apellidos: '',
@@ -84,8 +84,8 @@ const RegisterPage = () => {
     try {
       // Enviar solo los campos necesarios (sin confirmarPassword)
       const { confirmarPassword, ...datosRegistro } = formData;
-      await registrar(datosRegistro);
-      navigate('/'); // Redirigir después del registro exitoso
+      await registrarCiudadano(datosRegistro);
+      navigate('/inicio'); // Redirigir a la página de inicio del usuario autenticado
     } catch (error) {
       console.error('Error en registro:', error);
     } finally {

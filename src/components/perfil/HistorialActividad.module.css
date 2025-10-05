@@ -1,0 +1,510 @@
+/* Historial de actividad */
+.container {
+  width: 100%;
+}
+
+/* Header */
+.header {
+  margin-bottom: 24px;
+}
+
+.title {
+  margin: 0 0 8px 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* Estados de carga y error */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.loading p {
+  margin: 16px 0 0 0;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e5e7eb;
+  border-top: 3px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+}
+
+.errorIcon {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+.error p {
+  margin: 0 0 16px 0;
+  color: #dc2626;
+  font-size: 0.875rem;
+}
+
+.btnReintentar {
+  padding: 8px 16px;
+  background-color: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btnReintentar:hover {
+  background-color: #b91c1c;
+}
+
+/* Controles */
+.controles {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 16px;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.info {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.limitePorPagina {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.selectLimite {
+  padding: 4px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  background-color: white;
+}
+
+.selectLimite:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Sin actividades */
+.sinActividades {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #f9fafb;
+  border: 2px dashed #d1d5db;
+  border-radius: 12px;
+}
+
+.iconoVacio {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.sinActividades h4 {
+  margin: 0 0 8px 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.sinActividades p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* Lista de actividades */
+.listaActividades {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.itemActividad {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.itemActividad:hover {
+  border-color: #d1d5db;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Iconos de actividad */
+.iconoActividad {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  border-radius: 8px;
+  background-color: #f3f4f6;
+}
+
+/* Tipos de actividad */
+.actividadLogin .iconoActividad {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.actividadLogout .iconoActividad {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.actividadPerfil .iconoActividad {
+  background-color: #ecfdf5;
+  color: #059669;
+}
+
+.actividadSeguridad .iconoActividad {
+  background-color: #fdf2f8;
+  color: #be185d;
+}
+
+.actividadDenuncia .iconoActividad {
+  background-color: #ede9fe;
+  color: #7c3aed;
+}
+
+.actividadDocumento .iconoActividad {
+  background-color: #fef7ff;
+  color: #a21caf;
+}
+
+.actividadConfiguracion .iconoActividad {
+  background-color: #f0f9ff;
+  color: #0284c7;
+}
+
+.actividadDefault .iconoActividad {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+
+/* Contenido de actividad */
+.contenidoActividad {
+  flex: 1;
+  min-width: 0;
+}
+
+.descripcionActividad {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1f2937;
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.detallesActividad {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.metadatosActividad {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.fechaActividad {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.ipActividad {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-family: 'Courier New', monospace;
+}
+
+.dispositivoActividad {
+  font-size: 14px;
+  cursor: help;
+}
+
+/* Paginación */
+.paginacion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.btnPaginacion {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  background-color: white;
+  color: #374151;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btnPaginacion:hover:not(:disabled) {
+  background-color: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.btnPaginacion:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btnPaginacion:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.paginaActiva {
+  background-color: #3b82f6 !important;
+  color: white !important;
+  border-color: #3b82f6 !important;
+}
+
+.paginaActiva:hover {
+  background-color: #2563eb !important;
+  border-color: #2563eb !important;
+}
+
+.numerosPagina {
+  display: flex;
+  gap: 4px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .controles {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+  
+  .limitePorPagina {
+    justify-content: center;
+  }
+  
+  .itemActividad {
+    gap: 12px;
+    padding: 12px;
+  }
+  
+  .iconoActividad {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+  
+  .metadatosActividad {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .paginacion {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  
+  .numerosPagina {
+    order: -1;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    margin-bottom: 16px;
+  }
+  
+  .title {
+    font-size: 1.125rem;
+  }
+  
+  .controles {
+    padding: 12px;
+  }
+  
+  .itemActividad {
+    padding: 12px;
+  }
+  
+  .descripcionActividad {
+    font-size: 0.8125rem;
+  }
+  
+  .detallesActividad {
+    font-size: 0.6875rem;
+  }
+  
+  .sinActividades {
+    padding: 40px 16px;
+  }
+  
+  .iconoVacio {
+    font-size: 36px;
+  }
+}
+
+/* Accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+  
+  .itemActividad {
+    transition: none;
+  }
+  
+  .btnPaginacion {
+    transition: none;
+  }
+}
+
+/* Modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .title {
+    color: #f9fafb;
+  }
+  
+  .subtitle {
+    color: #9ca3af;
+  }
+  
+  .controles {
+    background-color: #1f2937;
+    border-color: #374151;
+  }
+  
+  .info {
+    color: #9ca3af;
+  }
+  
+  .limitePorPagina {
+    color: #d1d5db;
+  }
+  
+  .selectLimite {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: #f9fafb;
+  }
+  
+  .sinActividades {
+    background-color: #1f2937;
+    border-color: #374151;
+  }
+  
+  .sinActividades h4 {
+    color: #d1d5db;
+  }
+  
+  .sinActividades p {
+    color: #9ca3af;
+  }
+  
+  .itemActividad {
+    background-color: #1f2937;
+    border-color: #374151;
+  }
+  
+  .itemActividad:hover {
+    border-color: #4b5563;
+  }
+  
+  .descripcionActividad {
+    color: #f9fafb;
+  }
+  
+  .detallesActividad {
+    color: #9ca3af;
+  }
+  
+  .fechaActividad,
+  .ipActividad {
+    color: #6b7280;
+  }
+  
+  .paginacion {
+    border-top-color: #374151;
+  }
+  
+  .btnPaginacion {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: #d1d5db;
+  }
+  
+  .btnPaginacion:hover:not(:disabled) {
+    background-color: #4b5563;
+    border-color: #6b7280;
+  }
+}

@@ -58,7 +58,7 @@ const LoginPage = () => {
     setCargando(true);
     try {
       await login(formData);
-      navigate('/'); // Redirigir al home después del login exitoso
+      navigate('/inicio'); // Redirigir a la página de inicio del usuario autenticado
     } catch (error) {
       console.error('Error en login:', error);
     } finally {

@@ -1,34 +1,50 @@
+/* Alert.module.css - Alertas usando variables del sistema */
+
 .alert {
-  padding: 16px;
-  border-radius: 8px;
-  margin-bottom: 16px;
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  margin-bottom: var(--spacing-md);
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--spacing-md);
+  border: 1px solid;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .alert-success {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
+  background-color: rgba(165, 193, 235, 0.1);
+  color: var(--color-primary-dark);
+  border-color: var(--color-primary-light);
 }
 
 .alert-error {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
+  background-color: rgba(245, 31, 27, 0.1);
+  color: var(--color-danger);
+  border-color: var(--color-danger);
 }
 
 .alert-warning {
-  background-color: #fff3cd;
+  background-color: rgba(245, 229, 120, 0.2);
   color: #856404;
-  border: 1px solid #ffeaa7;
+  border-color: var(--color-warning);
 }
 
 .alert-info {
-  background-color: #d1ecf1;
-  color: #0c5460;
-  border: 1px solid #bee5eb;
+  background-color: rgba(21, 53, 149, 0.1);
+  color: var(--color-primary-main);
+  border-color: var(--color-primary-main);
 }

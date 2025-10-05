@@ -16,3 +16,6 @@ export const manejarErroresValidacion = (req, res, next) => {
   
   next();
 };
+
+// Alias para compatibilidad
+export const validationMiddleware = manejarErroresValidacion;

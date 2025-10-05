@@ -1,16 +1,35 @@
+/* Button.module.css - Botones usando variables del sistema */
+
 .button {
-  padding: 12px 24px;
+  padding: var(--spacing-md) var(--spacing-lg);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   font-family: var(--font-body);
-  font-size: 16px;
-  font-weight: 500;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
   transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--spacing-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.button:hover::before {
+  left: 100%;
 }
 
 .button:disabled {
@@ -18,34 +37,45 @@
   cursor: not-allowed;
 }
 
+.button:disabled::before {
+  display: none;
+}
+
 .button-primary {
-  background-color: var(--color-primary);
-  color: var(--color-neutral-light);
+  background-color: var(--color-primary-main);
+  color: var(--color-neutral-white);
+  box-shadow: var(--shadow-md);
 }
 
 .button-primary:hover:not(:disabled) {
-  background-color: var(--color-tertiary);
+  background-color: var(--color-primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-lg);
 }
 
 .button-secondary {
-  background-color: var(--color-secondary);
-  color: var(--color-tertiary);
+  background-color: var(--color-primary-light);
+  color: var(--color-primary-dark);
+  border: 2px solid var(--color-primary-main);
 }
 
 .button-secondary:hover:not(:disabled) {
-  background-color: var(--color-primary);
-  color: var(--color-neutral-light);
+  background-color: var(--color-primary-main);
+  color: var(--color-neutral-white);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
 }
 
 .button-danger {
-  background-color: var(--color-accent-red);
-  color: var(--color-neutral-light);
+  background-color: var(--color-danger);
+  color: var(--color-neutral-white);
+  box-shadow: var(--shadow-md);
 }
 
 .button-danger:hover:not(:disabled) {
   background-color: #c41813;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
 }
 
 .button-full {
