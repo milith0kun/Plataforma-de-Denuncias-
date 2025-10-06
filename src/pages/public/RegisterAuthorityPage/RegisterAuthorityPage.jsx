@@ -24,7 +24,8 @@ const RegisterAuthorityPage = () => {
     numero_documento: '',
     cargo: '',
     institucion: '',
-    codigo_autoridad: ''
+    codigo_autoridad: '',
+    direccion: ''
   });
   
   const [errors, setErrors] = useState({});
@@ -135,11 +136,14 @@ const RegisterAuthorityPage = () => {
         apellidos: formData.apellidos.trim(),
         email: formData.email.trim().toLowerCase(),
         password: formData.password,
+        confirm_password: formData.confirmPassword, // Agregado campo requerido
         telefono: formData.telefono.trim(),
-        numero_documento: formData.numero_documento.trim(),
+        documento_identidad: formData.numero_documento.trim(),
         cargo: formData.cargo.trim(),
-        institucion: formData.institucion.trim(),
-        codigo_autoridad: formData.codigo_autoridad.trim()
+        area_responsabilidad: formData.institucion.trim(),
+        numero_empleado: formData.codigo_autoridad.trim(),
+        direccion_registro: formData.direccion || 'No especificada',
+        fecha_ingreso: new Date().toISOString().split('T')[0] // Fecha actual en formato YYYY-MM-DD
       };
 
       await registrarAutoridad(datosRegistro);
@@ -275,15 +279,25 @@ const RegisterAuthorityPage = () => {
                     <label htmlFor="cargo" className={styles.label}>
                       Cargo *
                     </label>
-                    <input
-                      type="text"
+                    <select
                       id="cargo"
                       name="cargo"
                       value={formData.cargo}
                       onChange={handleInputChange}
                       className={`${styles.input} ${errors.cargo ? styles.inputError : ''}`}
-                      placeholder="Ej: Comisario, Fiscal, etc."
-                    />
+                    >
+                      <option value="">Seleccione un cargo</option>
+                      <option value="Alcalde">Alcalde</option>
+                      <option value="Regidor">Regidor</option>
+                      <option value="Gerente Municipal">Gerente Municipal</option>
+                      <option value="Subgerente">Subgerente</option>
+                      <option value="Jefe de Área">Jefe de Área</option>
+                      <option value="Supervisor">Supervisor</option>
+                      <option value="Inspector">Inspector</option>
+                      <option value="Coordinador">Coordinador</option>
+                      <option value="Técnico Municipal">Técnico Municipal</option>
+                      <option value="Otro">Otro</option>
+                    </select>
                     {errors.cargo && (
                       <span className={styles.errorMessage}>{errors.cargo}</span>
                     )}
@@ -291,17 +305,27 @@ const RegisterAuthorityPage = () => {
 
                   <div className={styles.inputGroup}>
                     <label htmlFor="institucion" className={styles.label}>
-                      Institución *
+                      Área de Responsabilidad *
                     </label>
-                    <input
-                      type="text"
+                    <select
                       id="institucion"
                       name="institucion"
                       value={formData.institucion}
                       onChange={handleInputChange}
                       className={`${styles.input} ${errors.institucion ? styles.inputError : ''}`}
-                      placeholder="Ej: PNP, Ministerio Público, etc."
-                    />
+                    >
+                      <option value="">Seleccione un área</option>
+                      <option value="Obras Públicas">Obras Públicas</option>
+                      <option value="Servicios Urbanos">Servicios Urbanos</option>
+                      <option value="Limpieza y Saneamiento">Limpieza y Saneamiento</option>
+                      <option value="Seguridad Ciudadana">Seguridad Ciudadana</option>
+                      <option value="Desarrollo Urbano">Desarrollo Urbano</option>
+                      <option value="Gestión Ambiental">Gestión Ambiental</option>
+                      <option value="Transporte y Vialidad">Transporte y Vialidad</option>
+                      <option value="Servicios Públicos">Servicios Públicos</option>
+                      <option value="Administración General">Administración General</option>
+                      <option value="Otra">Otra</option>
+                    </select>
                     {errors.institucion && (
                       <span className={styles.errorMessage}>{errors.institucion}</span>
                     )}
@@ -323,6 +347,24 @@ const RegisterAuthorityPage = () => {
                   />
                   {errors.codigo_autoridad && (
                     <span className={styles.errorMessage}>{errors.codigo_autoridad}</span>
+                  )}
+                </div>
+
+                <div className={styles.inputGroup}>
+                  <label htmlFor="direccion" className={styles.label}>
+                    Dirección
+                  </label>
+                  <input
+                    type="text"
+                    id="direccion"
+                    name="direccion"
+                    value={formData.direccion}
+                    onChange={handleInputChange}
+                    className={`${styles.input} ${errors.direccion ? styles.inputError : ''}`}
+                    placeholder="Dirección de la institución (opcional)"
+                  />
+                  {errors.direccion && (
+                    <span className={styles.errorMessage}>{errors.direccion}</span>
                   )}
                 </div>
               </div>
