@@ -58,7 +58,7 @@ const LoginPage = () => {
     setCargando(true);
     try {
       await login(formData);
-      navigate('/'); // Redirigir al home después del login exitoso
+      navigate('/inicio'); // Redirigir a la página de inicio del usuario autenticado
     } catch (error) {
       console.error('Error en login:', error);
     } finally {
@@ -120,6 +120,11 @@ const LoginPage = () => {
         <div className={styles['register-link']}>
           ¿No tienes cuenta?{' '}
           <Link to="/register">Regístrate aquí</Link>
+        </div>
+        
+        <div className={styles['authority-link']}>
+          ¿Eres una autoridad?{' '}
+          <Link to="/register-authority">Regístrate como autoridad</Link>
         </div>
       </div>
     </div>

@@ -23,8 +23,13 @@ const iniciarServidor = async () => {
       console.log(`📡 API disponible en http://localhost:${PORT}/api/v1`);
       console.log(`🔐 Endpoints de autenticación:`);
       console.log(`   POST /api/v1/auth/register/ciudadano`);
+      console.log(`   POST /api/v1/auth/register/autoridad`);
       console.log(`   POST /api/v1/auth/login`);
-      console.log(`   GET  /api/v1/auth/verify-token\n`);
+      console.log(`   GET  /api/v1/auth/verify-token`);
+      console.log(`🔑 Recuperación de contraseña:`);
+      console.log(`   POST /api/v1/auth/forgot-password`);
+      console.log(`   POST /api/v1/auth/reset-password`);
+      console.log(`   GET  /api/v1/auth/verify-reset-token/:token\n`);
     });
   } catch (error) {
     console.error('Error al iniciar el servidor:', error);

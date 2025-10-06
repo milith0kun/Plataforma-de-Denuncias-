@@ -1,0 +1,195 @@
+/* RegisterForm.module.css */
+
+.registerForm {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: var(--spacing-xl);
+  background: var(--color-neutral-white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--color-neutral-light);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.titulo {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-neutral-dark);
+  margin-bottom: var(--spacing-xs);
+  font-family: var(--font-headings);
+}
+
+.subtitulo {
+  font-size: var(--font-size-small);
+  color: #718096;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.fila {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
+.footer {
+  margin-top: var(--spacing-xl);
+  text-align: center;
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-neutral-light);
+}
+
+.textoLogin {
+  font-size: var(--font-size-small);
+  color: #718096;
+  margin: 0;
+}
+
+.textoAutoridad {
+  font-size: var(--font-size-sm);
+  color: #718096;
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.textoAutoridad {
+  margin-bottom: 0;
+}
+
+.enlaceLogin,
+.enlaceAutoridad {
+  color: var(--color-primary-main);
+  text-decoration: none;
+  font-weight: var(--font-weight-semibold);
+  transition: color 0.2s ease;
+}
+
+.enlaceLogin:hover,
+.enlaceAutoridad:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .registerForm {
+    padding: var(--spacing-lg);
+    margin: var(--spacing-md);
+    max-width: none;
+  }
+
+  .titulo {
+    font-size: var(--font-size-h3);
+  }
+
+  .fila {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .registerForm {
+    padding: var(--spacing-md);
+  }
+
+  .titulo {
+    font-size: var(--font-size-h4);
+  }
+}
+
+/* Estados de carga */
+.registerForm :global(.loading) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Animaciones */
+.registerForm {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Focus states mejorados */
+.registerForm input:focus {
+  outline: 2px solid var(--color-primary-main);
+  outline-offset: 2px;
+}
+
+/* Estilos para campos específicos de autoridad */
+.registerForm input[name="area_responsabilidad"],
+.registerForm input[name="cargo"] {
+  background-color: var(--color-primary-light);
+  border-color: var(--color-primary-main);
+}
+
+/* Indicador visual para campos obligatorios */
+.registerForm label::after {
+  content: " *";
+  color: var(--color-error);
+  font-weight: var(--font-weight-bold);
+}
+
+/* Accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  .registerForm {
+    animation: none;
+  }
+  
+  .enlaceLogin,
+  .enlaceAutoridad {
+    transition: none;
+  }
+}
+
+/* Mejoras de UX */
+.registerForm input[type="password"] {
+  font-family: monospace;
+}
+
+.registerForm input[type="tel"],
+.registerForm input[name="documento_identidad"] {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Estados de validación */
+.registerForm input:valid {
+  border-color: var(--color-success);
+}
+
+.registerForm input:invalid:not(:focus):not(:placeholder-shown) {
+  border-color: var(--color-error);
+}
+
+/* Espaciado mejorado para móviles */
+@media (max-width: 768px) {
+  .footer {
+    padding-top: var(--spacing-md);
+  }
+  
+  .textoLogin,
+  .textoAutoridad {
+    margin-bottom: var(--spacing-xs);
+  }
+}
