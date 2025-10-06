@@ -1,40 +1,44 @@
+/* Input.module.css - Inputs usando variables del sistema */
+
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-bottom: 16px;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
 }
 
 .label {
   font-family: var(--font-body);
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--color-tertiary);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-neutral-dark);
 }
 
 .label-required::after {
   content: ' *';
-  color: var(--color-accent-red);
+  color: var(--color-danger);
 }
 
 .input {
-  padding: 12px 16px;
-  border: 2px solid var(--color-secondary);
-  border-radius: 8px;
+  padding: var(--spacing-md) var(--spacing-md);
+  border: 2px solid var(--color-primary-light);
+  border-radius: var(--border-radius-md);
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: var(--font-size-base);
   transition: all 0.3s ease;
-  background-color: var(--color-neutral-light);
+  background-color: var(--color-neutral-white);
+  color: var(--color-neutral-dark);
 }
 
 .input:focus {
   outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(117, 146, 235, 0.1);
+  border-color: var(--color-primary-main);
+  box-shadow: 0 0 0 3px rgba(21, 53, 149, 0.1);
+  transform: translateY(-1px);
 }
 
 .input-error {
-  border-color: var(--color-accent-red);
+  border-color: var(--color-danger);
 }
 
 .input-error:focus {
@@ -42,13 +46,15 @@
 }
 
 .error-message {
-  font-size: 13px;
-  color: var(--color-accent-red);
-  margin-top: 4px;
+  font-size: var(--font-size-small);
+  color: var(--color-danger);
+  margin-top: var(--spacing-xs);
+  font-weight: var(--font-weight-medium);
 }
 
 .input:disabled {
-  background-color: #f5f5f5;
+  background-color: var(--color-neutral-light);
   cursor: not-allowed;
   opacity: 0.6;
+  border-color: rgba(165, 193, 235, 0.5);
 }

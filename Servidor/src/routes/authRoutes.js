@@ -3,6 +3,12 @@ import { body } from 'express-validator';
 import AuthController from '../controllers/authController.js';
 import { manejarErroresValidacion } from '../middlewares/validationMiddleware.js';
 import { verificarToken } from '../middlewares/authMiddleware.js';
+import { validarRegistroAutoridad } from '../middlewares/validators/autoridadValidator.js';
+import { 
+  validarSolicitudRecuperacion, 
+  validarRestablecerPassword,
+  validarToken 
+} from '../middlewares/validators/passwordResetValidator.js';
 
 const router = express.Router();
 
@@ -54,6 +60,32 @@ router.get(
   '/verify-token',
   verificarToken,
   AuthController.verificarToken
+);
+
+// Ruta para registro de autoridad
+router.post(
+  '/register/autoridad',
+  validarRegistroAutoridad,
+  AuthController.registroAutoridad
+);
+
+// Rutas de recuperación de contraseña
+router.post(
+  '/forgot-password',
+  validarSolicitudRecuperacion,
+  AuthController.solicitarRecuperacion
+);
+
+router.post(
+  '/reset-password',
+  validarRestablecerPassword,
+  AuthController.restablecerPassword
+);
+
+router.get(
+  '/verify-reset-token/:token',
+  validarToken,
+  AuthController.verificarTokenRecuperacion
 );
 
 export default router;
