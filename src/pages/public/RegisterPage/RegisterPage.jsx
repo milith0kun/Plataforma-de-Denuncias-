@@ -212,6 +212,11 @@ const RegisterPage = () => {
           ¿Ya tienes cuenta?{' '}
           <Link to="/login">Inicia sesión aquí</Link>
         </div>
+        
+        <div className={styles['authority-link']}>
+          ¿Eres una autoridad?{' '}
+          <Link to="/register-authority">Regístrate como autoridad</Link>
+        </div>
       </div>
     </div>
   );

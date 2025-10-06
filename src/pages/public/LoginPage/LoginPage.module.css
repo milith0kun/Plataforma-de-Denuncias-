@@ -121,6 +121,29 @@
   transform: translateY(-1px);
 }
 
+.authority-link {
+  text-align: center;
+  margin-top: var(--spacing-md);
+  font-size: var(--font-size-sm);
+  color: var(--color-neutral-dark);
+  opacity: 0.6;
+}
+
+.authority-link a {
+  color: var(--color-secondary-main);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  transition: all 0.3s ease;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+}
+
+.authority-link a:hover {
+  color: var(--color-secondary-dark);
+  background: rgba(139, 69, 19, 0.1);
+  transform: translateY(-1px);
+}
+
 /* Estilos responsive */
 @media (max-width: 768px) {
   .login-container {

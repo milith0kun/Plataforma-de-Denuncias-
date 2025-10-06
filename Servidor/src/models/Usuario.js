@@ -62,17 +62,23 @@ class Usuario {
 
   // Buscar usuario por ID
   static async buscarPorId(id_usuario) {
-    const query = `
-      SELECT u.id_usuario, u.id_tipo_usuario, u.nombres, u.apellidos, u.documento_identidad, 
-             u.email, u.telefono, u.direccion_registro, u.activo, u.fecha_registro, t.nombre as nombre_tipo,
-             u.cargo, u.area_responsabilidad, u.numero_empleado, u.fecha_ingreso, u.estado_verificacion
-      FROM usuario u
-      INNER JOIN tipo_usuario t ON u.id_tipo_usuario = t.id_tipo_usuario
-      WHERE u.id_usuario = ?
-    `;
-    
-    const [rows] = await pool.execute(query, [id_usuario]);
-    return rows[0] || null;
+    try {
+      const query = `
+        SELECT u.id_usuario, u.id_tipo_usuario, u.nombres, u.apellidos, u.documento_identidad, 
+               u.email, u.telefono, u.direccion_registro, u.activo, u.fecha_registro, 
+               COALESCE(t.nombre, 'Sin tipo') as nombre_tipo,
+               u.cargo, u.area_responsabilidad, u.numero_empleado, u.fecha_ingreso, u.estado_verificacion
+        FROM usuario u
+        LEFT JOIN tipo_usuario t ON u.id_tipo_usuario = t.id_tipo_usuario
+        WHERE u.id_usuario = ?
+      `;
+      
+      const [rows] = await pool.execute(query, [id_usuario]);
+      return rows[0] || null;
+    } catch (error) {
+      console.error('Error en buscarPorId:', error);
+      throw error;
+    }
   }
 
   // Buscar por documento de identidad

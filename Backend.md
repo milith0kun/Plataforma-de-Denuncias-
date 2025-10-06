@@ -258,7 +258,7 @@ backend/
 **Tareas backend:**
 - Endpoint de solicitud de recuperación
 - Generación de tokens temporales de recuperación
-- Servicio de envío de emails
+
 - Endpoint de restablecimiento de contraseña
 - Expiración automática de tokens
 
