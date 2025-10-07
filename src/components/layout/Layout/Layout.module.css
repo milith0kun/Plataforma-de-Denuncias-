@@ -1,0 +1,90 @@
+/* Layout principal para usuarios autenticados */
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f8fafc;
+}
+
+.mainContent {
+  flex: 1;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Layout para páginas públicas */
+.publicLayout {
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+  
+  .mainContent {
+    margin-left: 0;
+    padding: 1rem;
+    min-height: calc(100vh - 70px); /* Ajustar por la altura de la navegación móvil */
+  }
+  
+  .publicLayout {
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .mainContent {
+    padding: 0.75rem;
+    min-height: calc(100vh - 60px);
+  }
+  
+  .publicLayout {
+    padding: 0.25rem;
+  }
+}
+
+/* Mejoras para tablets */
+@media (min-width: 481px) and (max-width: 768px) {
+  .mainContent {
+    padding: 1.5rem;
+  }
+}
+
+/* Optimización para pantallas muy pequeñas */
+@media (max-width: 320px) {
+  .mainContent {
+    padding: 0.5rem;
+  }
+}
+
+/* Smooth transitions */
+.layout,
+.publicLayout {
+  transition: all 0.3s ease;
+}
+
+/* Ensure proper spacing for sticky navigation */
+.mainContent {
+  padding-top: 0;
+}
+
+/* Custom scrollbar for better UX */
+.mainContent::-webkit-scrollbar {
+  width: 6px;
+}
+
+.mainContent::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.mainContent::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.mainContent::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}

@@ -153,6 +153,25 @@
   font-weight: 500;
 }
 
+.passwordRequirements {
+  margin-top: 0.5rem;
+}
+
+.helpText {
+  color: #6b7280;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.helpText ul {
+  margin: 0.25rem 0 0 1rem;
+  padding: 0;
+}
+
+.helpText li {
+  margin: 0.125rem 0;
+}
+
 .actions {
   margin-top: 2rem;
   text-align: center;

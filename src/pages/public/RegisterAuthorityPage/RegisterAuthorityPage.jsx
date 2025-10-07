@@ -136,16 +136,18 @@ const RegisterAuthorityPage = () => {
         apellidos: formData.apellidos.trim(),
         email: formData.email.trim().toLowerCase(),
         password: formData.password,
-        confirm_password: formData.confirmPassword, // Agregado campo requerido
-        telefono: formData.telefono.trim(),
+        confirm_password: formData.confirmPassword,
+        telefono: formData.telefono.trim() || '',
         documento_identidad: formData.numero_documento.trim(),
         cargo: formData.cargo.trim(),
         area_responsabilidad: formData.institucion.trim(),
         numero_empleado: formData.codigo_autoridad.trim(),
-        direccion_registro: formData.direccion || 'No especificada',
+        direccion_registro: formData.direccion.trim() || 'No especificada',
         fecha_ingreso: new Date().toISOString().split('T')[0] // Fecha actual en formato YYYY-MM-DD
       };
 
+      console.log('📤 Datos a enviar:', JSON.stringify(datosRegistro, null, 2));
+      
       await registrarAutoridad(datosRegistro);
       
       // Redirigir a página de confirmación o login
@@ -155,7 +157,24 @@ const RegisterAuthorityPage = () => {
         } 
       });
     } catch (error) {
-      console.error('Error en registro de autoridad:', error);
+      console.error('❌ Error en registro de autoridad:', error);
+      
+      // Extraer mensaje específico del error
+      let errorMessage = 'Error desconocido en el registro';
+      
+      if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.response?.data?.errors) {
+        errorMessage = error.response.data.errors.map(err => err.message).join(', ');
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
+      console.error('📋 Mensaje de error específico:', errorMessage);
+      console.error('📊 Datos de respuesta completos:', error.response?.data);
+      
+      // Mostrar el error al usuario (puedes implementar un toast o modal aquí)
+      alert(`Error en el registro: ${errorMessage}`);
     }
   };
 
@@ -399,6 +418,17 @@ const RegisterAuthorityPage = () => {
                     {errors.password && (
                       <span className={styles.errorMessage}>{errors.password}</span>
                     )}
+                    <div className={styles.passwordRequirements}>
+                      <small className={styles.helpText}>
+                        La contraseña debe contener:
+                        <ul>
+                          <li>Mínimo 8 caracteres</li>
+                          <li>Al menos una letra mayúscula</li>
+                          <li>Al menos una letra minúscula</li>
+                          <li>Al menos un número</li>
+                        </ul>
+                      </small>
+                    </div>
                   </div>
 
                   <div className={styles.inputGroup}>
