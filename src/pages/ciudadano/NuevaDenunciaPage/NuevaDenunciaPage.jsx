@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../../components/common/Header/Header';
 import UploadFotos from '../../../components/denuncias/UploadFotos';
+import MapaPicker from '../../../components/denuncias/MapaPicker';
 import denunciaService from '../../../services/denunciaService';
 import styles from './NuevaDenunciaPage.module.css';
 
@@ -56,7 +57,7 @@ const NuevaDenunciaPage = () => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
-    
+
     // Limpiar error del campo cuando el usuario empiece a escribir
     if (errores[name]) {
       setErrores(prev => ({
@@ -64,6 +65,15 @@ const NuevaDenunciaPage = () => {
         [name]: ''
       }));
     }
+  };
+
+  // Manejar cambios en la ubicación del mapa
+  const manejarCambioUbicacion = (ubicacion) => {
+    setFormData(prev => ({
+      ...prev,
+      latitud: ubicacion.lat,
+      longitud: ubicacion.lng
+    }));
   };
 
   // Validar formulario
@@ -224,9 +234,21 @@ const NuevaDenunciaPage = () => {
           <div className={styles.section}>
             <h2 className={styles.sectionTitle}>Ubicación</h2>
 
+            {/* Mapa interactivo */}
+            <MapaPicker
+              ubicacion={
+                formData.latitud && formData.longitud
+                  ? { lat: formData.latitud, lng: formData.longitud }
+                  : null
+              }
+              onChange={manejarCambioUbicacion}
+              zoom={13}
+            />
+
+            {/* Dirección de referencia */}
             <div className={styles.formGroup}>
               <label htmlFor="direccion_geolocalizada" className={styles.label}>
-                Dirección o Ubicación (Opcional)
+                Dirección de Referencia (Opcional)
               </label>
               <input
                 type="text"
@@ -235,10 +257,10 @@ const NuevaDenunciaPage = () => {
                 value={formData.direccion_geolocalizada}
                 onChange={manejarCambio}
                 className={styles.input}
-                placeholder="Ej: Calle 123 #45-67, Barrio Centro"
+                placeholder="Ej: Calle 123 #45-67, Barrio Centro, cerca del parque"
               />
               <p className={styles.fieldNote}>
-                Puedes especificar la dirección aproximada donde ocurrió el incidente
+                Especifica referencias adicionales que ayuden a ubicar el problema
               </p>
             </div>
           </div>

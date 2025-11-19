@@ -16,8 +16,8 @@ import HomePage from '../pages/ciudadano/HomePage/HomePage';
 import PerfilPage from '../pages/ciudadano/PerfilPage/PerfilPage';
 import DenunciasPage from '../pages/ciudadano/DenunciasPage/DenunciasPage';
 import NuevaDenunciaPage from '../pages/ciudadano/NuevaDenunciaPage/NuevaDenunciaPage';
-import DetalleDenunciaPage from '../pages/DetalleDenunciaPage/DetalleDenunciaPage';
-import SeguimientoDenunciaPage from '../pages/SeguimientoDenunciaPage/SeguimientoDenunciaPage';
+import DetalleDenunciaPage from '../pages/ciudadano/DetalleDenunciaPage/DetalleDenunciaPage';
+import ReportesPage from '../pages/ciudadano/ReportesPage/ReportesPage';
 
 // Páginas privadas (autoridades)
 import DashboardAutoridadPage from '../pages/autoridad/DashboardAutoridadPage/DashboardAutoridadPage';
@@ -84,10 +84,10 @@ const AppRoutes = () => {
             }
         />
         <Route
-          path="/denuncias/:id/seguimiento"
+          path="/reportes"
           element={
               <PrivateRoute>
-                <SeguimientoDenunciaPage />
+                <ReportesPage />
               </PrivateRoute>
             }
         />
