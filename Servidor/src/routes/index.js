@@ -4,6 +4,7 @@ import usuarioRoutes from './usuarioRoutes.js';
 import denunciaRoutes from './denunciaRoutes.js';
 import categoriaRoutes from './categoriaRoutes.js';
 import estadoRoutes from './estadoRoutes.js';
+import comentarioRoutes from './comentarioRoutes.js';
 
 const router = express.Router();
 
@@ -21,6 +22,9 @@ router.use('/categorias', categoriaRoutes);
 
 // Rutas de estados
 router.use('/estados', estadoRoutes);
+
+// Rutas de comentarios (incluye /denuncias/:id/comentarios y /comentarios/:id)
+router.use('/', comentarioRoutes);
 
 // Ruta de bienvenida
 router.get('/', (req, res) => {
