@@ -3,6 +3,7 @@ import { useAuth } from '../../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../../components/common/Header/Header';
 import LottieIcon from '../../../components/LottieIcon/LottieIcon';
+import denunciaService from '../../../services/denunciaService';
 import './HomePage.css';
 
 // Importar iconos JSON
@@ -18,48 +19,110 @@ const HomePage = () => {
   const navigate = useNavigate();
   const { usuario, estaAutenticado, esCiudadano, esAutoridad, esAdmin } = useAuth();
 
-  // Datos de ejemplo para las estadísticas
-  const estadisticas = {
-    denunciasRealizadas: 12,
-    denunciasPendientes: 3,
-    denunciasEnProceso: 5,
-    denunciasResueltas: 4
-  };
+  // Estados para datos de la API
+  const [estadisticas, setEstadisticas] = useState({
+    denunciasRealizadas: 0,
+    denunciasPendientes: 0,
+    denunciasEnProceso: 0,
+    denunciasResueltas: 0
+  });
+  const [denunciasRecientes, setDenunciasRecientes] = useState([]);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Datos de ejemplo para denuncias recientes
-  const denunciasRecientes = [
-    {
-      id: 1,
-      titulo: "Bache en Av. Principal",
-      estado: "En proceso",
-      categoria: "Infraestructura",
-      fecha: "2024-01-15"
-    },
-    {
-      id: 2,
-      titulo: "Ruido excesivo nocturno",
-      estado: "Pendiente",
-      categoria: "Ruido",
-      fecha: "2024-01-14"
-    },
-    {
-      id: 3,
-      titulo: "Falta de iluminación",
-      estado: "Resuelto",
-      categoria: "Servicios",
-      fecha: "2024-01-13"
+  // Cargar datos de la API
+  useEffect(() => {
+    cargarDatos();
+  }, []);
+
+  const cargarDatos = async () => {
+    try {
+      setCargando(true);
+      setError(null);
+
+      // Obtener estadísticas
+      const stats = await denunciaService.obtenerEstadisticasUsuario();
+      setEstadisticas({
+        denunciasRealizadas: stats.total,
+        denunciasPendientes: stats.pendientes,
+        denunciasEnProceso: stats.enProceso,
+        denunciasResueltas: stats.resueltas
+      });
+
+      // Obtener denuncias recientes (últimas 3)
+      const response = await denunciaService.obtenerDenuncias({
+        limite: 3,
+        orden: 'fecha_registro',
+        direccion: 'DESC'
+      });
+
+      if (response.success) {
+        setDenunciasRecientes(response.data.denuncias);
+      }
+    } catch (err) {
+      console.error('Error al cargar datos:', err);
+      setError(err.message || 'Error al cargar los datos');
+    } finally {
+      setCargando(false);
     }
-  ];
+  };
 
   // Función para navegar a diferentes secciones
   const navegarA = (ruta) => {
     navigate(ruta);
   };
 
+  // Formatear fecha
+  const formatearFecha = (fecha) => {
+    if (!fecha) return '';
+    const date = new Date(fecha);
+    return date.toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  // Mostrar estado de carga
+  if (cargando) {
+    return (
+      <>
+        <Header />
+        <section className="dashboard-section">
+          <div className="dashboard-container">
+            <div className="loading-container">
+              <div className="spinner"></div>
+              <p>Cargando datos...</p>
+            </div>
+          </div>
+        </section>
+      </>
+    );
+  }
+
+  // Mostrar error si existe
+  if (error) {
+    return (
+      <>
+        <Header />
+        <section className="dashboard-section">
+          <div className="dashboard-container">
+            <div className="error-container">
+              <p className="error-message">⚠️ {error}</p>
+              <button onClick={cargarDatos} className="retry-button">
+                Reintentar
+              </button>
+            </div>
+          </div>
+        </section>
+      </>
+    );
+  }
+
   return (
     <>
       <Header />
-      
+
       <section className="dashboard-section">
         <div className="dashboard-container">
           <div className="welcome-section">
@@ -212,22 +275,36 @@ const HomePage = () => {
 
           <div className="section">
             <h2 className="section-title">Denuncias Recientes</h2>
-            <div className="denuncias-recientes">
-              {denunciasRecientes.map((denuncia, index) => (
-                <div key={index} className="denuncia-card">
-                  <div className="denuncia-header">
-                    <h3 className="denuncia-title">{denuncia.titulo}</h3>
-                    <span className={`denuncia-estado ${denuncia.estado.toLowerCase().replace(' ', '')}`}>
-                      {denuncia.estado}
-                    </span>
+            {denunciasRecientes.length === 0 ? (
+              <div className="empty-state">
+                <p>No tienes denuncias registradas aún.</p>
+                <button onClick={() => navigate('/nueva-denuncia')} className="quick-access-btn">
+                  Crear Primera Denuncia
+                </button>
+              </div>
+            ) : (
+              <div className="denuncias-recientes">
+                {denunciasRecientes.map((denuncia) => (
+                  <div
+                    key={denuncia.id_denuncia}
+                    className="denuncia-card"
+                    onClick={() => navigate(`/denuncias/${denuncia.id_denuncia}`)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <div className="denuncia-header">
+                      <h3 className="denuncia-title">{denuncia.titulo}</h3>
+                      <span className={`denuncia-estado ${denuncia.estado_nombre?.toLowerCase().replace(/\s+/g, '')}`}>
+                        {denuncia.estado_nombre}
+                      </span>
+                    </div>
+                    <div className="denuncia-info">
+                      <span className="denuncia-categoria">{denuncia.categoria_nombre}</span>
+                      <span className="denuncia-fecha">{formatearFecha(denuncia.fecha_registro)}</span>
+                    </div>
                   </div>
-                  <div className="denuncia-info">
-                    <span className="denuncia-categoria">{denuncia.categoria}</span>
-                    <span className="denuncia-fecha">{denuncia.fecha}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>
