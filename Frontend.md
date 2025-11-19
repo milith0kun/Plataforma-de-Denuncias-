@@ -191,15 +191,23 @@ Para la especificación completa del sistema de diseño, consultar **[DESIGN_SYS
 ### 4.1 Resumen de Variables CSS
 
 **Colores principales:**
-- `--color-primary-main: #7592EB` - Azul principal
+- `--color-primary: #153595` - Azul principal oscuro
 - `--color-primary-light: #A5C1EB` - Azul claro
-- `--color-primary-dark: #03193B` - Azul oscuro
+- `--color-primary-dark: #03193B` - Azul navy
+
+**Colores de estado:**
+- `--color-success: #10b981` - Verde
+- `--color-warning: #f59e0b` - Ámbar
+- `--color-danger: #ef4444` - Rojo
+- `--color-info: #3b82f6` - Azul
 
 **Tipografía:**
 - Títulos: `--font-headings` (DM Serif Text)
 - Contenido: `--font-body` (Montserrat)
 
 **Espaciado:** Múltiplos de 8px (`--spacing-xs` a `--spacing-3xl`)
+
+**Sistema de grises:** Gray-50 a Gray-900 para textos y fondos
 
 ### 4.2 Principios de Diseño
 
