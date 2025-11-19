@@ -223,12 +223,6 @@ const DenunciasPage = () => {
                   >
                     Ver Detalles
                   </button>
-                  <button
-                    className={styles.actionBtn}
-                    onClick={() => navigate(`/denuncias/${denuncia.id_denuncia}/seguimiento`)}
-                  >
-                    Seguimiento
-                  </button>
                 </div>
               </div>
             ))
