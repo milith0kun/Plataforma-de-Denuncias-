@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
 import Layout from '../../../components/layout/Layout/Layout';
+import denunciaService from '../../../services/denunciaService';
 import { getEstadoColor, getPrioridadColor } from '../../../constants/colors';
 import styles from './DashboardAutoridadPage.module.css';
 
@@ -14,6 +15,7 @@ const DashboardAutoridadPage = () => {
   });
   const [denunciasRecientes, setDenunciasRecientes] = useState([]);
   const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     cargarDatos();
@@ -22,59 +24,91 @@ const DashboardAutoridadPage = () => {
   const cargarDatos = async () => {
     try {
       setCargando(true);
-      // TODO: Implementar llamadas a la API para obtener datos reales
-      // Datos simulados por ahora
-      setTimeout(() => {
+      setError(null);
+
+      // Obtener todas las denuncias (autoridades ven todas)
+      const response = await denunciaService.obtenerDenuncias({
+        limite: 100,
+        orden: 'fecha_registro',
+        direccion: 'DESC'
+      });
+
+      if (response.success) {
+        const denuncias = response.data.denuncias;
+
+        // Calcular métricas
+        const pendientes = denuncias.filter(d =>
+          d.id_estado_actual === 1 || d.id_estado_actual === 2
+        ).length;
+        const asignadas = denuncias.filter(d =>
+          d.id_estado_actual === 3
+        ).length;
+        const resueltas = denuncias.filter(d =>
+          d.id_estado_actual === 5
+        ).length;
+        // Para "urgentes" podríamos filtrar por fecha reciente o prioridad alta
+        const urgentes = denuncias.filter(d => {
+          const diasDesdeCreacion = Math.floor(
+            (new Date() - new Date(d.fecha_registro)) / (1000 * 60 * 60 * 24)
+          );
+          return d.id_estado_actual === 1 && diasDesdeCreacion > 7; // Pendientes de más de 7 días
+        }).length;
+
         setMetricas({
-          denunciasPendientes: 24,
-          denunciasAsignadas: 8,
-          denunciasResueltas: 156,
-          denunciasUrgentes: 3
+          denunciasPendientes: pendientes,
+          denunciasAsignadas: asignadas,
+          denunciasResueltas: resueltas,
+          denunciasUrgentes: urgentes
         });
-        
-        setDenunciasRecientes([
-          {
-            id: 1,
-            titulo: 'Bache en Av. Principal',
-            categoria: 'Infraestructura',
-            estado: 'Pendiente',
-            fecha: '2024-01-15',
-            prioridad: 'Alta'
-          },
-          {
-            id: 2,
-            titulo: 'Falta de alumbrado público',
-            categoria: 'Servicios Públicos',
-            estado: 'En Proceso',
-            fecha: '2024-01-14',
-            prioridad: 'Media'
-          },
-          {
-            id: 3,
-            titulo: 'Acumulación de basura',
-            categoria: 'Limpieza',
-            estado: 'Asignada',
-            fecha: '2024-01-13',
-            prioridad: 'Alta'
-          }
-        ]);
-        setCargando(false);
-      }, 1000);
-    } catch (error) {
-      console.error('Error al cargar datos:', error);
+
+        // Denuncias recientes (últimas 5)
+        setDenunciasRecientes(denuncias.slice(0, 5));
+      }
+    } catch (err) {
+      console.error('Error al cargar datos:', err);
+      setError(err.message || 'Error al cargar datos del dashboard');
+    } finally {
       setCargando(false);
     }
+  };
+
+  // Formatear fecha
+  const formatearFecha = (fecha) => {
+    if (!fecha) return '';
+    const date = new Date(fecha);
+    return date.toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
   };
 
 
   if (cargando) {
     return (
-      <div className={styles.dashboardPage}>
-        <div className={styles.loadingContainer}>
-          <div className={styles.spinner}></div>
-          <p>Cargando dashboard...</p>
+      <Layout>
+        <div className={styles.dashboardPage}>
+          <div className={styles.loadingContainer}>
+            <div className={styles.spinner}></div>
+            <p>Cargando dashboard...</p>
+          </div>
         </div>
-      </div>
+      </Layout>
+    );
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <div className={styles.dashboardPage}>
+          <div className={styles.errorContainer}>
+            <p className={styles.errorMessage}>⚠️ {error}</p>
+            <button onClick={cargarDatos} className={styles.retryButton}>
+              Reintentar
+            </button>
+          </div>
+        </div>
+      </Layout>
     );
   }
 
@@ -177,41 +211,44 @@ const DashboardAutoridadPage = () => {
           </div>
           
           <div className={styles.denunciasGrid}>
-            {denunciasRecientes.map((denuncia) => (
-              <div key={denuncia.id} className={styles.denunciaCard}>
-                <div className={styles.denunciaHeader}>
-                  <h3 className={styles.denunciaTitulo}>{denuncia.titulo}</h3>
-                  <div className={styles.denunciaBadges}>
-                    <span
-                      className={styles.estadoBadge}
-                      style={{ backgroundColor: getEstadoColor(denuncia.estado) }}
+            {denunciasRecientes.length === 0 ? (
+              <div className={styles.emptyState}>
+                <p>No hay denuncias registradas en el sistema</p>
+              </div>
+            ) : (
+              denunciasRecientes.map((denuncia) => (
+                <div key={denuncia.id_denuncia} className={styles.denunciaCard}>
+                  <div className={styles.denunciaHeader}>
+                    <h3 className={styles.denunciaTitulo}>{denuncia.titulo}</h3>
+                    <div className={styles.denunciaBadges}>
+                      <span
+                        className={styles.estadoBadge}
+                        style={{ backgroundColor: getEstadoColor(denuncia.estado_nombre) }}
+                      >
+                        {denuncia.estado_nombre}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className={styles.denunciaInfo}>
+                    <p className={styles.categoria}>{denuncia.categoria_nombre}</p>
+                    <p className={styles.fecha}>{formatearFecha(denuncia.fecha_registro)}</p>
+                  </div>
+
+                  <div className={styles.denunciaActions}>
+                    <button
+                      className={styles.actionButton}
+                      onClick={() => window.location.href = `/denuncias/${denuncia.id_denuncia}`}
                     >
-                      {denuncia.estado}
-                    </span>
-                    <span
-                      className={styles.prioridadBadge}
-                      style={{ backgroundColor: getPrioridadColor(denuncia.prioridad) }}
-                    >
-                      {denuncia.prioridad}
-                    </span>
+                      Ver detalles
+                    </button>
+                    <button className={styles.actionButton}>
+                      Gestionar
+                    </button>
                   </div>
                 </div>
-                
-                <div className={styles.denunciaInfo}>
-                  <p className={styles.categoria}>{denuncia.categoria}</p>
-                  <p className={styles.fecha}>{denuncia.fecha}</p>
-                </div>
-                
-                <div className={styles.denunciaActions}>
-                  <button className={styles.actionButton}>
-                    Ver detalles
-                  </button>
-                  <button className={styles.actionButton}>
-                    Asignar
-                  </button>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
 
