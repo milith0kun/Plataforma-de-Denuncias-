@@ -1,5 +1,16 @@
 # 🚀 BACKEND - PLATAFORMA WEB PARA DENUNCIA CIUDADANA
 
+> Documentación del estado actual, API endpoints y arquitectura del backend
+
+## 📑 Navegación Rápida
+
+- **[⬅️ README Principal](README.md)** - Vista general del proyecto
+- **[🌐 Documentación Frontend](README_FRONTEND.md)** - Interfaz y componentes
+- **[📖 Informe Técnico Backend](Backend.md)** - Arquitectura y especificaciones detalladas
+- **[🎨 Sistema de Diseño](DESIGN_SYSTEM.md)** - Guía de diseño visual
+
+---
+
 ## 📋 Estado Actual del Proyecto
 
 ### ✅ Implementado (Sprint 1 - Completado)
@@ -324,27 +335,63 @@ npm run dev
 
 ---
 
-## 📚 Documentación Adicional
+## 📚 Recursos Relacionados
 
-- [HU04_RECUPERACION_PASSWORD.md](HU04_RECUPERACION_PASSWORD.md) - Documentación de recuperación de contraseña
-- [VERIFICACION_HU01_HU02.md](VERIFICACION_HU01_HU02.md) - Verificación de historias de usuario
-- [Backend.md](../Backend.md) - Documentación técnica completa
+### Documentación del Proyecto
+- **[README Principal](README.md)** - Información general del proyecto
+- **[Frontend Documentation](README_FRONTEND.md)** - Documentación del cliente web
+- **[Informe Técnico Backend](Backend.md)** - Arquitectura detallada y especificaciones
+- **[Sistema de Diseño](DESIGN_SYSTEM.md)** - Guía de diseño del sistema
+
+### Archivos de Configuración
+- `Servidor/src/config/database.js` - Configuración de MySQL
+- `Servidor/src/config/jwt.js` - Configuración de tokens
+- `Servidor/.env` - Variables de entorno (no en repositorio)
+- `Servidor/package.json` - Dependencias y scripts
+
+### Esquemas de Base de Datos
+- `Servidor/src/database/schema.sql` - Esquema completo de BD
+- `Servidor/src/database/schema_simple.sql` - Esquema simplificado
+- `Servidor/src/database/migration_autoridad.sql` - Migración de autoridades
+
+---
+
+## 🧪 Testing
+
+### Endpoints Probados
+- ✅ Registro de ciudadanos
+- ✅ Registro de autoridades
+- ✅ Inicio de sesión
+- ✅ Recuperación de contraseña
+- ✅ Gestión de perfil
+- ✅ Cambio de contraseña
+
+### Herramientas Recomendadas
+- **[Postman](https://www.postman.com/)** - Testing de API
+- **[Insomnia](https://insomnia.rest/)** - Cliente REST alternativo
+- **Thunder Client** - Extensión de VS Code
 
 ---
 
 ## 👥 Contribución
 
 1. Fork del proyecto
-2. Crear rama feature (`git checkout -b feature/nueva-funcionalidad`)
-3. Commit cambios (`git commit -am 'Agregar nueva funcionalidad'`)
-4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
+2. Crear rama feature: `git checkout -b feature/nueva-funcionalidad`
+3. Commit cambios: `git commit -am 'Agregar nueva funcionalidad'`
+4. Push a la rama: `git push origin feature/nueva-funcionalidad`
 5. Crear Pull Request
+
+### Convenciones
+- Seguir patrón MVC establecido
+- Validar todos los inputs con express-validator
+- Documentar nuevos endpoints en este README
+- Mantener consistencia en formato de respuestas
 
 ---
 
 ## 📄 Licencia
 
-Este proyecto está bajo la Licencia MIT.
+Este proyecto está bajo la Licencia MIT - ver el archivo LICENSE para más detalles.
 
 ---
 
@@ -352,7 +399,8 @@ Este proyecto está bajo la Licencia MIT.
 
 **Equipo de Desarrollo Backend**
 - Email: backend@plataforma-denuncias.com
-- Documentación: [Backend.md](../Backend.md)
+- Documentación técnica completa: [Backend.md](Backend.md)
+- Issues y bugs: [GitHub Issues](https://github.com/usuario/proyecto/issues)
 
 ---
 

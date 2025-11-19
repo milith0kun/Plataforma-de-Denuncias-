@@ -1,5 +1,16 @@
 # 🌐 FRONTEND - PLATAFORMA WEB PARA DENUNCIA CIUDADANA
 
+> Documentación del estado actual, estructura y funcionalidades implementadas del frontend
+
+## 📑 Navegación Rápida
+
+- **[⬅️ README Principal](README.md)** - Vista general del proyecto
+- **[🎨 Sistema de Diseño](DESIGN_SYSTEM.md)** - Guía completa de diseño visual
+- **[📖 Informe Técnico Frontend](Frontend.md)** - Arquitectura y especificaciones detalladas
+- **[🔌 Documentación Backend](README_BACKEND.md)** - API y endpoints
+
+---
+
 ## 📋 Estado Actual del Proyecto
 
 ### ✅ Implementado (Sprint 1 - Completado)
@@ -114,18 +125,14 @@ src/
 
 ## 🎨 Sistema de Diseño
 
-### Colores Principales
-- **Primary**: #7592EB (Azul principal)
-- **Primary Light**: #A5C1EB
-- **Primary Dark**: #03193B
-- **Danger**: #F51F1B
-- **Warning**: #F5E578
-- **Neutral White**: #FFFFFF
-- **Neutral Dark**: #03193B
+Para información completa sobre colores, tipografía, espaciado y componentes, consulta el **[Sistema de Diseño](DESIGN_SYSTEM.md)** dedicado.
 
-### Tipografía
-- **Títulos**: DM Serif Text
-- **Contenido**: Montserrat
+**Resumen rápido**:
+- **Color Primario**: #7592EB
+- **Tipografía Títulos**: DM Serif Text
+- **Tipografía Contenido**: Montserrat
+- **Espaciado**: Múltiplos de 8px
+- **Breakpoints**: Mobile-first (640px, 768px, 1024px, 1280px)
 
 ---
 
@@ -231,11 +238,27 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE.md](LICENSE.m
 
 ---
 
+## 📚 Recursos Relacionados
+
+### Documentación del Proyecto
+- **[README Principal](README.md)** - Información general del proyecto
+- **[Sistema de Diseño](DESIGN_SYSTEM.md)** - Guía de diseño visual y componentes
+- **[Informe Técnico Frontend](Frontend.md)** - Arquitectura detallada y especificaciones
+- **[Backend Documentation](README_BACKEND.md)** - Documentación del servidor y API
+
+### Archivos de Configuración
+- `src/index.css` - Variables CSS y estilos globales
+- `eslint.config.js` - Configuración de ESLint
+- `vite.config.js` - Configuración de Vite
+- `package.json` - Dependencias y scripts
+
+---
+
 ## 📞 Contacto
 
-**Equipo de Desarrollo**
+**Equipo de Desarrollo Frontend**
 - Email: desarrollo@plataforma-denuncias.com
-- Documentación: [Frontend.md](Frontend.md)
+- Documentación técnica completa: [Frontend.md](Frontend.md)
 
 ---
 
