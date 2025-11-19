@@ -6,6 +6,7 @@ import { Router } from 'express';
 import DenunciaController from '../controllers/denunciaController.js';
 import { verificarToken } from '../middlewares/authMiddleware.js';
 import { requireUsuarioActivo } from '../middlewares/roleMiddleware.js';
+import upload, { handleMulterError } from '../config/multer.js';
 
 const router = Router();
 
@@ -53,5 +54,19 @@ router.put('/:id/estado', DenunciaController.cambiarEstado);
  * @access  Privado (Ciudadano propietario, solo en estado Registrada)
  */
 router.delete('/:id', DenunciaController.eliminarDenuncia);
+
+/**
+ * @route   POST /api/v1/denuncias/:id/evidencias
+ * @desc    Subir evidencias fotográficas a una denuncia
+ * @access  Privado (Ciudadano propietario)
+ */
+router.post('/:id/evidencias', upload.array('evidencias', 5), handleMulterError, DenunciaController.subirEvidencias);
+
+/**
+ * @route   GET /api/v1/denuncias/:id/evidencias
+ * @desc    Obtener evidencias de una denuncia
+ * @access  Privado
+ */
+router.get('/:id/evidencias', DenunciaController.obtenerEvidencias);
 
 export default router;
