@@ -390,6 +390,103 @@ class DenunciaController {
       });
     }
   }
+
+  /**
+   * Subir evidencias fotográficas a una denuncia
+   * POST /api/v1/denuncias/:id/evidencias
+   */
+  static async subirEvidencias(req, res) {
+    try {
+      const { id_usuario, id_tipo_usuario } = req.usuario;
+      const { id } = req.params;
+
+      // Verificar que la denuncia existe
+      const denuncia = await Denuncia.obtenerPorId(id);
+
+      if (!denuncia) {
+        return res.status(404).json({
+          success: false,
+          message: 'Denuncia no encontrada'
+        });
+      }
+
+      // Verificar permisos: solo el ciudadano que creó la denuncia puede subir evidencias
+      if (id_tipo_usuario === 1 && denuncia.id_ciudadano !== id_usuario) {
+        return res.status(403).json({
+          success: false,
+          message: 'No tienes permiso para subir evidencias a esta denuncia'
+        });
+      }
+
+      // Verificar que se subieron archivos
+      if (!req.files || req.files.length === 0) {
+        return res.status(400).json({
+          success: false,
+          message: 'No se subieron archivos'
+        });
+      }
+
+      // Preparar datos de evidencias para guardar en BD
+      const evidencias = req.files.map(file => ({
+        ruta_archivo: `/uploads/${file.path.split('uploads/')[1].replace(/\\/g, '/')}`,
+        tipo_archivo: file.mimetype,
+        tamano_bytes: file.size,
+        nombre_original: file.originalname
+      }));
+
+      // Guardar evidencias en la base de datos
+      const evidenciasCreadas = await EvidenciaFoto.crearMultiples(id, evidencias);
+
+      res.status(201).json({
+        success: true,
+        message: `${evidencias.length} evidencia(s) subida(s) exitosamente`,
+        data: {
+          evidencias: evidenciasCreadas
+        }
+      });
+    } catch (error) {
+      console.error('Error en subirEvidencias:', error);
+      res.status(500).json({
+        success: false,
+        message: MENSAJES_ERROR.ERROR_SERVIDOR || 'Error al subir evidencias'
+      });
+    }
+  }
+
+  /**
+   * Obtener evidencias de una denuncia
+   * GET /api/v1/denuncias/:id/evidencias
+   */
+  static async obtenerEvidencias(req, res) {
+    try {
+      const { id } = req.params;
+
+      // Verificar que la denuncia existe
+      const denuncia = await Denuncia.obtenerPorId(id);
+
+      if (!denuncia) {
+        return res.status(404).json({
+          success: false,
+          message: 'Denuncia no encontrada'
+        });
+      }
+
+      const evidencias = await EvidenciaFoto.obtenerPorDenuncia(id);
+
+      res.status(200).json({
+        success: true,
+        data: {
+          evidencias
+        }
+      });
+    } catch (error) {
+      console.error('Error en obtenerEvidencias:', error);
+      res.status(500).json({
+        success: false,
+        message: MENSAJES_ERROR.ERROR_SERVIDOR || 'Error al obtener evidencias'
+      });
+    }
+  }
 }
 
 export default DenunciaController;

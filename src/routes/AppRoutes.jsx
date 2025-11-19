@@ -16,9 +16,12 @@ import HomePage from '../pages/ciudadano/HomePage/HomePage';
 import PerfilPage from '../pages/ciudadano/PerfilPage/PerfilPage';
 import DenunciasPage from '../pages/ciudadano/DenunciasPage/DenunciasPage';
 import NuevaDenunciaPage from '../pages/ciudadano/NuevaDenunciaPage/NuevaDenunciaPage';
+import DetalleDenunciaPage from '../pages/DetalleDenunciaPage/DetalleDenunciaPage';
+import SeguimientoDenunciaPage from '../pages/SeguimientoDenunciaPage/SeguimientoDenunciaPage';
 
 // Páginas privadas (autoridades)
 import DashboardAutoridadPage from '../pages/autoridad/DashboardAutoridadPage/DashboardAutoridadPage';
+import GestionDenunciasPage from '../pages/autoridad/GestionDenunciasPage/GestionDenunciasPage';
 
 // Componentes de protección
 import PrivateRoute from './PrivateRoute';
@@ -64,23 +67,47 @@ const AppRoutes = () => {
               </PrivateRoute>
             } 
         />
-        <Route 
-          path="/nueva-denuncia" 
+        <Route
+          path="/nueva-denuncia"
           element={
               <PrivateRoute requireRole="ciudadano">
                 <NuevaDenunciaPage />
               </PrivateRoute>
-            } 
+            }
+        />
+        <Route
+          path="/denuncias/:id"
+          element={
+              <PrivateRoute>
+                <DetalleDenunciaPage />
+              </PrivateRoute>
+            }
+        />
+        <Route
+          path="/denuncias/:id/seguimiento"
+          element={
+              <PrivateRoute>
+                <SeguimientoDenunciaPage />
+              </PrivateRoute>
+            }
         />
 
         {/* Rutas privadas para autoridades */}
-        <Route 
-          path="/dashboard-autoridad" 
+        <Route
+          path="/dashboard-autoridad"
           element={
               <PrivateRoute requireRole="autoridad">
                 <DashboardAutoridadPage />
               </PrivateRoute>
-            } 
+            }
+        />
+        <Route
+          path="/autoridad/gestion-denuncias"
+          element={
+              <PrivateRoute requireRole="autoridad">
+                <GestionDenunciasPage />
+              </PrivateRoute>
+            }
         />
         
         {/* Redirección inteligente del dashboard basada en rol */}
