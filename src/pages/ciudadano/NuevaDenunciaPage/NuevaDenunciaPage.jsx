@@ -1,41 +1,54 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../../components/common/Header/Header';
+import UploadFotos from '../../../components/denuncias/UploadFotos';
+import MapaPicker from '../../../components/denuncias/MapaPicker';
+import denunciaService from '../../../services/denunciaService';
 import styles from './NuevaDenunciaPage.module.css';
 
 const NuevaDenunciaPage = () => {
   const navigate = useNavigate();
-  
+
   // Estado del formulario
   const [formData, setFormData] = useState({
     titulo: '',
-    descripcion: '',
-    categoria: '',
-    ubicacion: '',
-    fechaIncidente: '',
-    prioridad: 'media',
-    esAnonima: false,
-    evidencias: []
+    descripcion_detallada: '',
+    id_categoria: '',
+    direccion_geolocalizada: '',
+    latitud: null,
+    longitud: null,
+    es_anonima: false
   });
 
-  // Estado para manejo de archivos
-  const [archivos, setArchivos] = useState([]);
-  const [cargandoArchivos, setCargandoArchivos] = useState(false);
+  // Estado para manejo de fotos
+  const [fotos, setFotos] = useState([]);
 
   // Estado del formulario
   const [enviando, setEnviando] = useState(false);
   const [errores, setErrores] = useState({});
 
-  // Categorías disponibles
-  const categorias = [
-    { value: 'corrupcion', label: 'Corrupción' },
-    { value: 'abuso_autoridad', label: 'Abuso de Autoridad' },
-    { value: 'fraude', label: 'Fraude' },
-    { value: 'discriminacion', label: 'Discriminación' },
-    { value: 'acoso', label: 'Acoso' },
-    { value: 'negligencia', label: 'Negligencia' },
-    { value: 'otros', label: 'Otros' }
-  ];
+  // Categorías disponibles (de la API)
+  const [categorias, setCategorias] = useState([]);
+  const [cargandoCategorias, setCargandoCategorias] = useState(true);
+
+  // Cargar categorías al montar el componente
+  useEffect(() => {
+    cargarCategorias();
+  }, []);
+
+  const cargarCategorias = async () => {
+    try {
+      setCargandoCategorias(true);
+      const response = await denunciaService.obtenerCategorias();
+      if (response.success) {
+        setCategorias(response.data.categorias);
+      }
+    } catch (error) {
+      console.error('Error al cargar categorías:', error);
+    } finally {
+      setCargandoCategorias(false);
+    }
+  };
 
   // Manejar cambios en inputs
   const manejarCambio = (e) => {
@@ -44,7 +57,7 @@ const NuevaDenunciaPage = () => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
-    
+
     // Limpiar error del campo cuando el usuario empiece a escribir
     if (errores[name]) {
       setErrores(prev => ({
@@ -54,21 +67,13 @@ const NuevaDenunciaPage = () => {
     }
   };
 
-  // Manejar carga de archivos
-  const manejarArchivos = (e) => {
-    const nuevosArchivos = Array.from(e.target.files);
-    setCargandoArchivos(true);
-    
-    // Simular procesamiento de archivos
-    setTimeout(() => {
-      setArchivos(prev => [...prev, ...nuevosArchivos]);
-      setCargandoArchivos(false);
-    }, 1000);
-  };
-
-  // Eliminar archivo
-  const eliminarArchivo = (index) => {
-    setArchivos(prev => prev.filter((_, i) => i !== index));
+  // Manejar cambios en la ubicación del mapa
+  const manejarCambioUbicacion = (ubicacion) => {
+    setFormData(prev => ({
+      ...prev,
+      latitud: ubicacion.lat,
+      longitud: ubicacion.lng
+    }));
   };
 
   // Validar formulario
@@ -79,22 +84,14 @@ const NuevaDenunciaPage = () => {
       nuevosErrores.titulo = 'El título es obligatorio';
     }
 
-    if (!formData.descripcion.trim()) {
-      nuevosErrores.descripcion = 'La descripción es obligatoria';
-    } else if (formData.descripcion.length < 50) {
-      nuevosErrores.descripcion = 'La descripción debe tener al menos 50 caracteres';
+    if (!formData.descripcion_detallada.trim()) {
+      nuevosErrores.descripcion_detallada = 'La descripción es obligatoria';
+    } else if (formData.descripcion_detallada.length < 20) {
+      nuevosErrores.descripcion_detallada = 'La descripción debe tener al menos 20 caracteres';
     }
 
-    if (!formData.categoria) {
-      nuevosErrores.categoria = 'Selecciona una categoría';
-    }
-
-    if (!formData.ubicacion.trim()) {
-      nuevosErrores.ubicacion = 'La ubicación es obligatoria';
-    }
-
-    if (!formData.fechaIncidente) {
-      nuevosErrores.fechaIncidente = 'La fecha del incidente es obligatoria';
+    if (!formData.id_categoria) {
+      nuevosErrores.id_categoria = 'Selecciona una categoría';
     }
 
     setErrores(nuevosErrores);
@@ -104,7 +101,7 @@ const NuevaDenunciaPage = () => {
   // Enviar formulario
   const manejarEnvio = async (e) => {
     e.preventDefault();
-    
+
     if (!validarFormulario()) {
       return;
     }
@@ -112,15 +109,40 @@ const NuevaDenunciaPage = () => {
     setEnviando(true);
 
     try {
-      // Simular envío de denuncia
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Mostrar mensaje de éxito y redirigir
-      alert('Denuncia enviada exitosamente');
-      navigate('/denuncias');
+      // Preparar datos para enviar
+      const datosDenuncia = {
+        titulo: formData.titulo.trim(),
+        descripcion_detallada: formData.descripcion_detallada.trim(),
+        id_categoria: parseInt(formData.id_categoria),
+        direccion_geolocalizada: formData.direccion_geolocalizada?.trim() || null,
+        latitud: formData.latitud || null,
+        longitud: formData.longitud || null,
+        es_anonima: formData.es_anonima
+      };
+
+      // Crear la denuncia
+      const response = await denunciaService.crearDenuncia(datosDenuncia);
+
+      if (response.success) {
+        // Subir fotos si hay
+        if (fotos.length > 0) {
+          try {
+            const archivosFiles = fotos.map(f => f.file);
+            await denunciaService.subirEvidencias(response.data.denuncia.id_denuncia, archivosFiles);
+          } catch (errorFotos) {
+            console.error('Error al subir fotos:', errorFotos);
+            // La denuncia ya fue creada, solo mostramos advertencia
+            alert('⚠️ Denuncia creada, pero hubo un error al subir las fotos');
+          }
+        }
+
+        alert('✅ Denuncia creada exitosamente');
+        navigate('/denuncias');
+      }
     } catch (error) {
       console.error('Error al enviar denuncia:', error);
-      alert('Error al enviar la denuncia. Inténtalo de nuevo.');
+      const mensajeError = error.message || 'Error al enviar la denuncia. Inténtalo de nuevo.';
+      alert('❌ ' + mensajeError);
     } finally {
       setEnviando(false);
     }
@@ -161,166 +183,116 @@ const NuevaDenunciaPage = () => {
             </div>
 
             <div className={styles.formGroup}>
-              <label htmlFor="categoria" className={styles.label}>
+              <label htmlFor="id_categoria" className={styles.label}>
                 Categoría *
               </label>
-              <select
-                id="categoria"
-                name="categoria"
-                value={formData.categoria}
-                onChange={manejarCambio}
-                className={`${styles.select} ${errores.categoria ? styles.inputError : ''}`}
-              >
-                <option value="">Selecciona una categoría</option>
-                {categorias.map(cat => (
-                  <option key={cat.value} value={cat.value}>
-                    {cat.label}
-                  </option>
-                ))}
-              </select>
-              {errores.categoria && <span className={styles.error}>{errores.categoria}</span>}
+              {cargandoCategorias ? (
+                <p>Cargando categorías...</p>
+              ) : (
+                <>
+                  <select
+                    id="id_categoria"
+                    name="id_categoria"
+                    value={formData.id_categoria}
+                    onChange={manejarCambio}
+                    className={`${styles.select} ${errores.id_categoria ? styles.inputError : ''}`}
+                  >
+                    <option value="">Selecciona una categoría</option>
+                    {categorias.map(cat => (
+                      <option key={cat.id_categoria} value={cat.id_categoria}>
+                        {cat.nombre}
+                      </option>
+                    ))}
+                  </select>
+                  {errores.id_categoria && <span className={styles.error}>{errores.id_categoria}</span>}
+                </>
+              )}
             </div>
 
             <div className={styles.formGroup}>
-              <label htmlFor="descripcion" className={styles.label}>
+              <label htmlFor="descripcion_detallada" className={styles.label}>
                 Descripción Detallada *
               </label>
               <textarea
-                id="descripcion"
-                name="descripcion"
-                value={formData.descripcion}
+                id="descripcion_detallada"
+                name="descripcion_detallada"
+                value={formData.descripcion_detallada}
                 onChange={manejarCambio}
-                className={`${styles.textarea} ${errores.descripcion ? styles.inputError : ''}`}
+                className={`${styles.textarea} ${errores.descripcion_detallada ? styles.inputError : ''}`}
                 placeholder="Describe detalladamente lo ocurrido, incluyendo fechas, lugares, personas involucradas y cualquier información relevante..."
                 rows={6}
                 maxLength={2000}
               />
               <div className={styles.charCount}>
-                {formData.descripcion.length}/2000 caracteres
+                {formData.descripcion_detallada.length}/2000 caracteres
               </div>
-              {errores.descripcion && <span className={styles.error}>{errores.descripcion}</span>}
+              {errores.descripcion_detallada && <span className={styles.error}>{errores.descripcion_detallada}</span>}
             </div>
           </div>
 
-          {/* Detalles del incidente */}
+          {/* Ubicación */}
           <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Detalles del Incidente</h2>
-            
-            <div className={styles.formRow}>
-              <div className={styles.formGroup}>
-                <label htmlFor="fechaIncidente" className={styles.label}>
-                  Fecha del Incidente *
-                </label>
-                <input
-                  type="date"
-                  id="fechaIncidente"
-                  name="fechaIncidente"
-                  value={formData.fechaIncidente}
-                  onChange={manejarCambio}
-                  className={`${styles.input} ${errores.fechaIncidente ? styles.inputError : ''}`}
-                  max={new Date().toISOString().split('T')[0]}
-                />
-                {errores.fechaIncidente && <span className={styles.error}>{errores.fechaIncidente}</span>}
-              </div>
+            <h2 className={styles.sectionTitle}>Ubicación</h2>
 
-              <div className={styles.formGroup}>
-                <label htmlFor="prioridad" className={styles.label}>
-                  Prioridad
-                </label>
-                <select
-                  id="prioridad"
-                  name="prioridad"
-                  value={formData.prioridad}
-                  onChange={manejarCambio}
-                  className={styles.select}
-                >
-                  <option value="baja">Baja</option>
-                  <option value="media">Media</option>
-                  <option value="alta">Alta</option>
-                </select>
-              </div>
-            </div>
+            {/* Mapa interactivo */}
+            <MapaPicker
+              ubicacion={
+                formData.latitud && formData.longitud
+                  ? { lat: formData.latitud, lng: formData.longitud }
+                  : null
+              }
+              onChange={manejarCambioUbicacion}
+              zoom={13}
+            />
 
+            {/* Dirección de referencia */}
             <div className={styles.formGroup}>
-              <label htmlFor="ubicacion" className={styles.label}>
-                Ubicación *
+              <label htmlFor="direccion_geolocalizada" className={styles.label}>
+                Dirección de Referencia (Opcional)
               </label>
               <input
                 type="text"
-                id="ubicacion"
-                name="ubicacion"
-                value={formData.ubicacion}
+                id="direccion_geolocalizada"
+                name="direccion_geolocalizada"
+                value={formData.direccion_geolocalizada}
                 onChange={manejarCambio}
-                className={`${styles.input} ${errores.ubicacion ? styles.inputError : ''}`}
-                placeholder="Dirección, institución o lugar donde ocurrió el incidente"
+                className={styles.input}
+                placeholder="Ej: Calle 123 #45-67, Barrio Centro, cerca del parque"
               />
-              {errores.ubicacion && <span className={styles.error}>{errores.ubicacion}</span>}
+              <p className={styles.fieldNote}>
+                Especifica referencias adicionales que ayuden a ubicar el problema
+              </p>
             </div>
           </div>
 
-          {/* Evidencias */}
+          {/* Evidencias Fotográficas */}
           <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Evidencias (Opcional)</h2>
+            <h2 className={styles.sectionTitle}>Evidencias Fotográficas (Opcional)</h2>
             <p className={styles.sectionDescription}>
-              Puedes adjuntar documentos, imágenes o videos que respalden tu denuncia
+              Adjunta hasta 5 fotos que respalden tu denuncia
             </p>
-            
-            <div className={styles.fileUpload}>
-              <input
-                type="file"
-                id="evidencias"
-                multiple
-                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.mp4,.mp3"
-                onChange={manejarArchivos}
-                className={styles.fileInput}
-              />
-              <label htmlFor="evidencias" className={styles.fileLabel}>
-                <span className={styles.fileIcon}>📎</span>
-                Seleccionar Archivos
-              </label>
-            </div>
 
-            {cargandoArchivos && (
-              <div className={styles.loading}>
-                Procesando archivos...
-              </div>
-            )}
-
-            {archivos.length > 0 && (
-              <div className={styles.fileList}>
-                {archivos.map((archivo, index) => (
-                  <div key={index} className={styles.fileItem}>
-                    <span className={styles.fileName}>{archivo.name}</span>
-                    <span className={styles.fileSize}>
-                      ({(archivo.size / 1024 / 1024).toFixed(2)} MB)
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => eliminarArchivo(index)}
-                      className={styles.removeFile}
-                    >
-                      ✕
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
+            <UploadFotos
+              fotos={fotos}
+              setFotos={setFotos}
+              maxFotos={5}
+            />
           </div>
 
           {/* Opciones de privacidad */}
           <div className={styles.section}>
             <h2 className={styles.sectionTitle}>Opciones de Privacidad</h2>
-            
+
             <div className={styles.checkboxGroup}>
               <input
                 type="checkbox"
-                id="esAnonima"
-                name="esAnonima"
-                checked={formData.esAnonima}
+                id="es_anonima"
+                name="es_anonima"
+                checked={formData.es_anonima}
                 onChange={manejarCambio}
                 className={styles.checkbox}
               />
-              <label htmlFor="esAnonima" className={styles.checkboxLabel}>
+              <label htmlFor="es_anonima" className={styles.checkboxLabel}>
                 Enviar denuncia de forma anónima
               </label>
             </div>

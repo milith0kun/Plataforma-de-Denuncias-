@@ -1,6 +1,16 @@
 # INFORME TÉCNICO FRONTEND
 ## PLATAFORMA WEB PARA DENUNCIA CIUDADANA DE PROBLEMAS URBANOS
 
+> Informe técnico completo con arquitectura, especificaciones y guía de implementación del frontend
+
+## 📑 Navegación de Documentación
+
+- **[⬅️ README Principal](README.md)** - Vista general del proyecto
+- **[📱 README Frontend](README_FRONTEND.md)** - Estado actual y funcionalidades
+- **[🔌 README Backend](README_BACKEND.md)** - Documentación del servidor
+- **[🎨 Sistema de Diseño](DESIGN_SYSTEM.md)** - Guía de diseño completa
+- **[📖 Informe Backend](Backend.md)** - Especificaciones técnicas del servidor
+
 ---
 
 ## 1. CONTEXTO DEL PROYECTO
@@ -176,34 +186,38 @@ frontend/
 
 ## 4. SISTEMA DE DISEÑO
 
-### 4.1 Variables CSS Definidas
+Para la especificación completa del sistema de diseño, consultar **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)**.
 
-**Colores:**
-```css
---color-primary-main: #7592EB
---color-primary-light: #A5C1EB
---color-primary-dark: #03193B
---color-danger: #F51F1B
---color-warning: #F5E578
---color-neutral-white: #FFFFFF
---color-neutral-dark: #03193B
---color-neutral-light: #F8F8F8
-```
+### 4.1 Resumen de Variables CSS
+
+**Colores principales:**
+- `--color-primary: #153595` - Azul principal oscuro
+- `--color-primary-light: #A5C1EB` - Azul claro
+- `--color-primary-dark: #03193B` - Azul navy
+
+**Colores de estado:**
+- `--color-success: #10b981` - Verde
+- `--color-warning: #f59e0b` - Ámbar
+- `--color-danger: #ef4444` - Rojo
+- `--color-info: #3b82f6` - Azul
 
 **Tipografía:**
-- Títulos (H1-H6): DM Serif Text
-- Contenido: Montserrat
-- Tamaños definidos desde `--font-size-h1` hasta `--font-size-small`
-- Pesos definidos desde `--font-weight-light` hasta `--font-weight-bold`
+- Títulos: `--font-headings` (DM Serif Text)
+- Contenido: `--font-body` (Montserrat)
+
+**Espaciado:** Múltiplos de 8px (`--spacing-xs` a `--spacing-3xl`)
+
+**Sistema de grises:** Gray-50 a Gray-900 para textos y fondos
 
 ### 4.2 Principios de Diseño
 
-- Diseño mobile-first con breakpoints responsive
-- Espaciado consistente basado en múltiplos de 8px
-- Paleta de colores limitada y coherente
-- Tipografía clara y legible
-- Feedback visual inmediato en interacciones
-- Accesibilidad y contraste adecuados
+✅ Diseño mobile-first con breakpoints responsive
+✅ Espaciado consistente basado en múltiplos de 8px
+✅ Paleta de colores limitada y coherente (WCAG AA)
+✅ Feedback visual inmediato en interacciones
+✅ Componentes reutilizables y modulares
+
+**Ver más**: [Sistema de Diseño completo](DESIGN_SYSTEM.md)
 
 ---
 

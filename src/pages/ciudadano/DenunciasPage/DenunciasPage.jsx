@@ -1,60 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../../components/common/Header/Header';
+import denunciaService from '../../../services/denunciaService';
 import styles from './DenunciasPage.module.css';
 
 const DenunciasPage = () => {
   const navigate = useNavigate();
   const [filtroEstado, setFiltroEstado] = useState('todas');
-  
-  // Datos de ejemplo para las denuncias
-  const denuncias = [
-    {
-      id: 1,
-      titulo: "Ruido excesivo en zona residencial",
-      descripcion: "Música alta durante la madrugada en el sector residencial",
-      fecha: "2024-01-15",
-      estado: "En proceso",
-      categoria: "Ruido",
-      ubicacion: "Calle 123 #45-67",
-      prioridad: "Media"
-    },
-    {
-      id: 2,
-      titulo: "Basura acumulada en vía pública",
-      descripcion: "Acumulación de basura en la esquina que no ha sido recolectada",
-      fecha: "2024-01-10",
-      estado: "Resuelta",
-      categoria: "Limpieza",
-      ubicacion: "Carrera 45 #12-34",
-      prioridad: "Alta"
-    },
-    {
-      id: 3,
-      titulo: "Semáforo dañado en intersección",
-      descripcion: "El semáforo no funciona correctamente, causando problemas de tráfico",
-      fecha: "2024-01-08",
-      estado: "Pendiente",
-      categoria: "Infraestructura",
-      ubicacion: "Intersección Calle 50 con Carrera 30",
-      prioridad: "Alta"
-    },
-    {
-      id: 4,
-      titulo: "Hueco en la vía principal",
-      descripcion: "Hueco grande que puede causar daños a los vehículos",
-      fecha: "2024-01-05",
-      estado: "En proceso",
-      categoria: "Vías",
-      ubicacion: "Avenida Principal Km 5",
-      prioridad: "Media"
+  const [denuncias, setDenuncias] = useState([]);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Cargar denuncias de la API
+  useEffect(() => {
+    cargarDenuncias();
+  }, []);
+
+  const cargarDenuncias = async () => {
+    try {
+      setCargando(true);
+      setError(null);
+
+      const response = await denunciaService.obtenerDenuncias({
+        limite: 100,
+        orden: 'fecha_registro',
+        direccion: 'DESC'
+      });
+
+      if (response.success) {
+        setDenuncias(response.data.denuncias);
+      }
+    } catch (err) {
+      console.error('Error al cargar denuncias:', err);
+      setError(err.message || 'Error al cargar las denuncias');
+    } finally {
+      setCargando(false);
     }
-  ];
+  };
+
+  // Mapear estados de la BD a los filtros
+  const mapearEstadoAFiltro = (estadoNombre) => {
+    if (!estadoNombre) return 'pendiente';
+    const estado = estadoNombre.toLowerCase().replace(/\s+/g, '');
+    if (estado === 'registrada' || estado === 'enrevision') return 'pendiente';
+    if (estado === 'asignada' || estado === 'enproceso') return 'enproceso';
+    if (estado === 'resuelta' || estado === 'cerrada') return 'resuelta';
+    return 'pendiente';
+  };
 
   // Filtrar denuncias según el estado seleccionado
-  const denunciasFiltradas = filtroEstado === 'todas' 
-    ? denuncias 
-    : denuncias.filter(denuncia => denuncia.estado.toLowerCase().replace(' ', '') === filtroEstado);
+  const denunciasFiltradas = filtroEstado === 'todas'
+    ? denuncias
+    : denuncias.filter(denuncia => mapearEstadoAFiltro(denuncia.estado_nombre) === filtroEstado);
 
   // Función para obtener el color del estado
   const obtenerColorEstado = (estado) => {
@@ -84,10 +81,53 @@ const DenunciasPage = () => {
     }
   };
 
+  // Formatear fecha
+  const formatearFecha = (fecha) => {
+    if (!fecha) return '';
+    const date = new Date(fecha);
+    return date.toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  // Mostrar estado de carga
+  if (cargando) {
+    return (
+      <div className={styles.pageContainer}>
+        <Header />
+        <div className={styles.container}>
+          <div className={styles.loadingContainer}>
+            <div className={styles.spinner}></div>
+            <p>Cargando denuncias...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Mostrar error
+  if (error) {
+    return (
+      <div className={styles.pageContainer}>
+        <Header />
+        <div className={styles.container}>
+          <div className={styles.errorContainer}>
+            <p className={styles.errorMessage}>⚠️ {error}</p>
+            <button onClick={cargarDenuncias} className={styles.retryButton}>
+              Reintentar
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.pageContainer}>
       <Header />
-      
+
       <div className={styles.container}>
         {/* Header */}
         <div className={styles.header}>
@@ -120,19 +160,19 @@ const DenunciasPage = () => {
             </div>
             <div className={styles.estadistica}>
               <span className={styles.estadisticaNumero}>
-                {denuncias.filter(d => d.estado === 'Pendiente').length}
+                {denuncias.filter(d => mapearEstadoAFiltro(d.estado_nombre) === 'pendiente').length}
               </span>
               <span className={styles.estadisticaLabel}>Pendientes</span>
             </div>
             <div className={styles.estadistica}>
               <span className={styles.estadisticaNumero}>
-                {denuncias.filter(d => d.estado === 'En proceso').length}
+                {denuncias.filter(d => mapearEstadoAFiltro(d.estado_nombre) === 'enproceso').length}
               </span>
               <span className={styles.estadisticaLabel}>En Proceso</span>
             </div>
             <div className={styles.estadistica}>
               <span className={styles.estadisticaNumero}>
-                {denuncias.filter(d => d.estado === 'Resuelta').length}
+                {denuncias.filter(d => mapearEstadoAFiltro(d.estado_nombre) === 'resuelta').length}
               </span>
               <span className={styles.estadisticaLabel}>Resueltas</span>
             </div>
@@ -143,43 +183,45 @@ const DenunciasPage = () => {
         <div className={styles.denunciasList}>
           {denunciasFiltradas.length > 0 ? (
             denunciasFiltradas.map((denuncia) => (
-              <div key={denuncia.id} className={styles.denunciaCard}>
+              <div key={denuncia.id_denuncia} className={styles.denunciaCard}>
                 <div className={styles.denunciaHeader}>
                   <div className={styles.denunciaInfo}>
                     <h3 className={styles.denunciaTitle}>{denuncia.titulo}</h3>
-                    <p className={styles.denunciaDescripcion}>{denuncia.descripcion}</p>
+                    <p className={styles.denunciaDescripcion}>
+                      {denuncia.descripcion_detallada?.substring(0, 150)}
+                      {denuncia.descripcion_detallada?.length > 150 ? '...' : ''}
+                    </p>
                   </div>
                   <div className={styles.denunciaEstados}>
-                    <span className={`${styles.estado} ${obtenerColorEstado(denuncia.estado)}`}>
-                      {denuncia.estado}
-                    </span>
-                    <span className={`${styles.prioridad} ${obtenerColorPrioridad(denuncia.prioridad)}`}>
-                      {denuncia.prioridad}
+                    <span className={`${styles.estado} ${obtenerColorEstado(denuncia.estado_nombre)}`}>
+                      {denuncia.estado_nombre}
                     </span>
                   </div>
                 </div>
-                
+
                 <div className={styles.denunciaDetails}>
                   <div className={styles.detailItem}>
                     <span className={styles.detailIcon}>📅</span>
-                    <span className={styles.detailText}>{denuncia.fecha}</span>
+                    <span className={styles.detailText}>{formatearFecha(denuncia.fecha_registro)}</span>
                   </div>
                   <div className={styles.detailItem}>
                     <span className={styles.detailIcon}>📍</span>
-                    <span className={styles.detailText}>{denuncia.ubicacion}</span>
+                    <span className={styles.detailText}>
+                      {denuncia.direccion_geolocalizada || 'Ubicación no especificada'}
+                    </span>
                   </div>
                   <div className={styles.detailItem}>
                     <span className={styles.detailIcon}>🏷️</span>
-                    <span className={styles.detailText}>{denuncia.categoria}</span>
+                    <span className={styles.detailText}>{denuncia.categoria_nombre}</span>
                   </div>
                 </div>
-                
+
                 <div className={styles.denunciaActions}>
-                  <button className={styles.actionBtn}>
+                  <button
+                    className={styles.actionBtn}
+                    onClick={() => navigate(`/denuncias/${denuncia.id_denuncia}`)}
+                  >
                     Ver Detalles
-                  </button>
-                  <button className={styles.actionBtn}>
-                    Seguimiento
                   </button>
                 </div>
               </div>

@@ -1,0 +1,211 @@
+.container {
+  width: 100%;
+  margin: var(--spacing-md) 0;
+}
+
+.dropZone {
+  border: 2px dashed var(--color-border);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-2xl);
+  text-align: center;
+  background-color: var(--color-bg-secondary);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropZone:hover:not(.disabled) {
+  border-color: var(--color-primary);
+  background-color: var(--color-bg-tertiary);
+}
+
+.dropZone.dragging {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-light);
+  opacity: 0.8;
+  transform: scale(1.02);
+}
+
+.dropZone.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: var(--color-gray-100);
+}
+
+.fileInput {
+  display: none;
+}
+
+.dropZoneContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  pointer-events: none;
+}
+
+.uploadIcon {
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.mainText {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.subText {
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background-color: #fee2e2;
+  border: 1px solid var(--color-danger);
+  border-radius: var(--border-radius-md);
+  color: var(--color-danger);
+  margin-top: var(--spacing-md);
+  font-size: var(--font-size-small);
+}
+
+.error svg {
+  flex-shrink: 0;
+}
+
+.previewGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+}
+
+.previewItem {
+  position: relative;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  background-color: var(--color-white);
+  transition: all 0.3s ease;
+}
+
+.previewItem:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.previewItem:hover .deleteButton {
+  opacity: 1;
+}
+
+.previewImage {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+}
+
+.deleteButton {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  background-color: var(--color-danger);
+  color: var(--color-white);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-md);
+}
+
+.deleteButton:hover {
+  background-color: #dc2626;
+  transform: scale(1.1);
+}
+
+.deleteButton:active {
+  transform: scale(0.95);
+}
+
+.fileInfo {
+  padding: var(--spacing-sm);
+  background-color: var(--color-bg-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fileName {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fileSize {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.counter {
+  text-align: right;
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dropZone {
+    padding: var(--spacing-lg);
+    min-height: 150px;
+  }
+
+  .previewGrid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: var(--spacing-sm);
+  }
+
+  .previewImage {
+    height: 120px;
+  }
+
+  .deleteButton {
+    opacity: 1;
+  }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.previewItem {
+  animation: fadeIn 0.3s ease;
+}
