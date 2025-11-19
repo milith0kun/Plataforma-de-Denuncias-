@@ -88,5 +88,6 @@ export const MENSAJES_EXITO = {
   REGISTRO_AUTORIDAD_PENDIENTE: 'Registro exitoso. Su cuenta está pendiente de aprobación por un administrador',
   LOGIN_EXITOSO: 'Login exitoso',
   ACTUALIZACION_EXITOSA: 'Actualización exitosa',
-  OPERACION_EXITOSA: 'Operación realizada exitosamente'
+  OPERACION_EXITOSA: 'Operación realizada exitosamente',
+  DENUNCIA_CREADA: 'Denuncia registrada exitosamente'
 };

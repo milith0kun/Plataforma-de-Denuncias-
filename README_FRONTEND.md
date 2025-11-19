@@ -128,7 +128,8 @@ src/
 Para información completa sobre colores, tipografía, espaciado y componentes, consulta el **[Sistema de Diseño](DESIGN_SYSTEM.md)** dedicado.
 
 **Resumen rápido**:
-- **Color Primario**: #7592EB
+- **Color Primario**: #153595 (Azul oscuro)
+- **Colores de Estado**: Success (#10b981), Warning (#f59e0b), Danger (#ef4444)
 - **Tipografía Títulos**: DM Serif Text
 - **Tipografía Contenido**: Montserrat
 - **Espaciado**: Múltiplos de 8px

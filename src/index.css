@@ -48,27 +48,66 @@
   --letter-spacing-wider: 0.05em;
   --letter-spacing-widest: 0.1em;
 
-  /* Colores principales del sistema de diseño */
-  --color-primary-main: #7592EB;
-  --color-primary-light: #A5C1EB;
-  --color-primary-dark: #03193B;
-  --color-danger: #F51F1B;
-  --color-warning: #F5E578;
-  --color-neutral-white: #FFFFFF;
-  --color-neutral-dark: #03193B;
-  --color-neutral-light: #F8F8F8;
+  /* === PALETA DE COLORES UNIFICADA === */
 
-  /* Colores adicionales para compatibilidad */
-  --color-primary: #7592EB;
-  --color-secondary: #A5C1EB;
-  --color-tertiary: #03193B;
-  --color-accent-red: #F51F1B;
-  --color-accent-yellow: #F5E578;
+  /* Colores Principales */
+  --color-primary: #153595;       /* Azul principal oscuro */
+  --color-primary-light: #A5C1EB; /* Azul claro */
+  --color-primary-dark: #03193B;  /* Azul muy oscuro/navy */
 
-  /* Gradientes comunes */
-  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --gradient-primary-45: linear-gradient(45deg, #667eea, #764ba2);
-  --gradient-primary-simple: linear-gradient(135deg, #667eea, #764ba2);
+  /* Colores de Estado */
+  --color-success: #10b981;       /* Verde - Éxito/Completado */
+  --color-warning: #f59e0b;       /* Ámbar - Advertencia/Pendiente */
+  --color-danger: #ef4444;        /* Rojo - Error/Urgente */
+  --color-info: #3b82f6;          /* Azul - Información */
+
+  /* Colores Neutrales */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+
+  /* Colores de Roles de Usuario */
+  --color-role-ciudadano: #10b981;  /* Verde */
+  --color-role-autoridad: #3b82f6;  /* Azul */
+  --color-role-admin: #8b5cf6;      /* Violeta */
+
+  /* Estados de Denuncia */
+  --color-estado-registrada: #6b7280;   /* Gris */
+  --color-estado-pendiente: #f59e0b;    /* Ámbar */
+  --color-estado-en-proceso: #3b82f6;   /* Azul */
+  --color-estado-asignada: #8b5cf6;     /* Violeta */
+  --color-estado-resuelta: #10b981;     /* Verde */
+  --color-estado-cerrada: #4b5563;      /* Gris oscuro */
+
+  /* Prioridades de Denuncia */
+  --color-prioridad-baja: #10b981;      /* Verde */
+  --color-prioridad-media: #f59e0b;     /* Ámbar */
+  --color-prioridad-alta: #ef4444;      /* Rojo */
+
+  /* Colores Semánticos */
+  --color-text-primary: #111827;        /* Gray 900 */
+  --color-text-secondary: #6b7280;      /* Gray 500 */
+  --color-text-muted: #9ca3af;          /* Gray 400 */
+  --color-bg-primary: #ffffff;          /* White */
+  --color-bg-secondary: #f9fafb;        /* Gray 50 */
+  --color-bg-tertiary: #f3f4f6;         /* Gray 100 */
+  --color-border: #e5e7eb;              /* Gray 200 */
+  --color-border-light: #f3f4f6;        /* Gray 100 */
+
+  /* Gradientes */
+  --gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  --gradient-primary-light: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
+  --gradient-success: linear-gradient(135deg, var(--color-success) 0%, #059669 100%);
+  --gradient-danger: linear-gradient(135deg, var(--color-danger) 0%, #dc2626 100%);
 
   /* Tipografías */
   --font-headings: "DM Serif Text", serif;
@@ -129,15 +168,15 @@ body {
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-normal);
   line-height: 1.6;
-  color: var(--color-neutral-dark);
-  background-color: var(--color-neutral-white);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-headings);
   font-weight: var(--font-weight-bold);
   line-height: 1.2;
-  color: var(--color-neutral-dark);
+  color: var(--color-text-primary);
   margin-bottom: var(--spacing-md);
 }
 
@@ -184,10 +223,20 @@ h6 {
 .font-bold { font-weight: var(--font-weight-bold); }
 
 /* Utilidades de color */
-.text-primary { color: var(--color-primary-main); }
+.text-primary { color: var(--color-primary); }
+.text-success { color: var(--color-success); }
 .text-danger { color: var(--color-danger); }
 .text-warning { color: var(--color-warning); }
-.text-dark { color: var(--color-neutral-dark); }
+.text-info { color: var(--color-info); }
+.text-dark { color: var(--color-text-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-muted { color: var(--color-text-muted); }
+
+.bg-primary { background-color: var(--color-primary); }
+.bg-success { background-color: var(--color-success); }
+.bg-danger { background-color: var(--color-danger); }
+.bg-warning { background-color: var(--color-warning); }
+.bg-info { background-color: var(--color-info); }
 
 /* Utilidades de flexbox */
 .flex { display: flex; }
@@ -223,7 +272,7 @@ h6 {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-neutral-dark); /* Mismo color del header */
+  background: var(--color-primary-dark); /* Mismo color del header */
   border-radius: 0; /* Sin bordes redondeados para look más integrado */
   border: none;
 }
@@ -259,13 +308,13 @@ h6 {
 
 /* Esquinas de la barra de scroll */
 ::-webkit-scrollbar-corner {
-  background: var(--color-neutral-dark);
+  background: var(--color-primary-dark);
 }
 
 /* Estilos para Firefox */
 html {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.3) var(--color-neutral-dark);
+  scrollbar-color: rgba(255, 255, 255, 0.3) var(--color-primary-dark);
 }
 
 /* Estilos adicionales para mejorar la experiencia */
@@ -285,8 +334,8 @@ body {
 }
 
 .scrollable-container::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, 
-    var(--color-neutral-dark) 0%, 
+  background: linear-gradient(180deg,
+    var(--color-primary-dark) 0%,
     rgba(3, 25, 59, 0.8) 100%
   );
   border-radius: var(--border-radius-sm);
@@ -294,7 +343,7 @@ body {
 }
 
 .scrollable-container::-webkit-scrollbar-thumb:hover {
-  background: var(--color-neutral-dark);
+  background: var(--color-primary-dark);
   border-color: rgba(255, 255, 255, 0.2);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }

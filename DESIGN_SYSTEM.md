@@ -10,25 +10,43 @@
 
 | Variable CSS | Código HEX | Muestra | Uso Recomendado |
 |--------------|------------|---------|-----------------|
-| `--color-primary-main` | `#7592EB` | ![#7592EB](https://via.placeholder.com/20/7592EB/000000?text=+) | Botones primarios, enlaces, elementos destacados |
-| `--color-primary-light` | `#A5C1EB` | ![#A5C1EB](https://via.placeholder.com/20/A5C1EB/000000?text=+) | Fondos suaves, hover states, badges informativos |
-| `--color-primary-dark` | `#03193B` | ![#03193B](https://via.placeholder.com/20/03193B/000000?text=+) | Headers, textos oscuros, elementos de navegación |
+| `--color-primary` | `#153595` | ![#153595](https://via.placeholder.com/20/153595/000000?text=+) | Azul principal oscuro - Botones primarios, enlaces, elementos destacados |
+| `--color-primary-light` | `#A5C1EB` | ![#A5C1EB](https://via.placeholder.com/20/A5C1EB/000000?text=+) | Azul claro - Fondos suaves, hover states, badges informativos |
+| `--color-primary-dark` | `#03193B` | ![#03193B](https://via.placeholder.com/20/03193B/000000?text=+) | Azul muy oscuro/navy - Headers, textos oscuros, navegación |
 
 ### Colores de Estado
 
 | Variable CSS | Código HEX | Muestra | Uso Recomendado |
 |--------------|------------|---------|-----------------|
-| `--color-danger` | `#F51F1B` | ![#F51F1B](https://via.placeholder.com/20/F51F1B/000000?text=+) | Errores, alertas críticas, botones de eliminación |
-| `--color-warning` | `#F5E578` | ![#F5E578](https://via.placeholder.com/20/F5E578/000000?text=+) | Advertencias, estados pendientes, información importante |
-| `--color-success` | `#28a745` | ![#28a745](https://via.placeholder.com/20/28a745/000000?text=+) | Confirmaciones, estados completados exitosamente |
+| `--color-success` | `#10b981` | ![#10b981](https://via.placeholder.com/20/10b981/000000?text=+) | Verde - Éxito, confirmaciones, estados completados |
+| `--color-warning` | `#f59e0b` | ![#f59e0b](https://via.placeholder.com/20/f59e0b/000000?text=+) | Ámbar - Advertencias, estados pendientes, información importante |
+| `--color-danger` | `#ef4444` | ![#ef4444](https://via.placeholder.com/20/ef4444/000000?text=+) | Rojo - Errores, alertas críticas, botones de eliminación |
+| `--color-info` | `#3b82f6` | ![#3b82f6](https://via.placeholder.com/20/3b82f6/000000?text=+) | Azul - Información, notificaciones |
 
-### Colores Neutrales
+### Colores Neutrales (Sistema de Grises)
 
 | Variable CSS | Código HEX | Muestra | Uso Recomendado |
 |--------------|------------|---------|-----------------|
-| `--color-neutral-white` | `#FFFFFF` | ![#FFFFFF](https://via.placeholder.com/20/FFFFFF/000000?text=+) | Fondos principales, tarjetas, modales |
-| `--color-neutral-light` | `#F8F8F8` | ![#F8F8F8](https://via.placeholder.com/20/F8F8F8/000000?text=+) | Fondos alternativos, divisores sutiles |
-| `--color-neutral-dark` | `#03193B` | ![#03193B](https://via.placeholder.com/20/03193B/000000?text=+) | Textos principales, iconos |
+| `--color-white` | `#ffffff` | ![#ffffff](https://via.placeholder.com/20/ffffff/000000?text=+) | Blanco puro - Fondos principales |
+| `--color-gray-50` | `#f9fafb` | ![#f9fafb](https://via.placeholder.com/20/f9fafb/000000?text=+) | Gris muy claro - Fondos secundarios |
+| `--color-gray-100` | `#f3f4f6` | ![#f3f4f6](https://via.placeholder.com/20/f3f4f6/000000?text=+) | Gris claro - Fondos terciarios |
+| `--color-gray-200` | `#e5e7eb` | ![#e5e7eb](https://via.placeholder.com/20/e5e7eb/000000?text=+) | Gris - Bordes, divisores |
+| `--color-gray-300` | `#d1d5db` | ![#d1d5db](https://via.placeholder.com/20/d1d5db/000000?text=+) | Gris medio claro |
+| `--color-gray-400` | `#9ca3af` | ![#9ca3af](https://via.placeholder.com/20/9ca3af/000000?text=+) | Gris medio - Textos secundarios deshabilitados |
+| `--color-gray-500` | `#6b7280` | ![#6b7280](https://via.placeholder.com/20/6b7280/000000?text=+) | Gris - Textos secundarios |
+| `--color-gray-600` | `#4b5563` | ![#4b5563](https://via.placeholder.com/20/4b5563/000000?text=+) | Gris oscuro |
+| `--color-gray-700` | `#374151` | ![#374151](https://via.placeholder.com/20/374151/000000?text=+) | Gris muy oscuro |
+| `--color-gray-800` | `#1f2937` | ![#1f2937](https://via.placeholder.com/20/1f2937/000000?text=+) | Gris casi negro |
+| `--color-gray-900` | `#111827` | ![#111827](https://via.placeholder.com/20/111827/000000?text=+) | Gris máximo oscuro - Textos principales |
+| `--color-black` | `#000000` | ![#000000](https://via.placeholder.com/20/000000/000000?text=+) | Negro puro |
+
+### Colores de Roles de Usuario
+
+| Variable CSS | Código HEX | Color | Rol |
+|--------------|------------|-------|-----|
+| `--color-role-ciudadano` | `#10b981` | Verde | Ciudadanos |
+| `--color-role-autoridad` | `#3b82f6` | Azul | Autoridades |
+| `--color-role-admin` | `#8b5cf6` | Violeta | Administradores |
 
 ---
 
@@ -288,14 +306,35 @@ Todos los pares de colores cumplen con **WCAG AA**:
 
 ## 📋 Estados de Denuncia
 
-| Estado | Color Badge | Descripción |
-|--------|-------------|-------------|
-| **Registrada** | `#6c757d` (gris) | Recién creada |
-| **En Revisión** | `#ffc107` (amarillo) | Bajo análisis |
-| **Asignada** | `#17a2b8` (cyan) | Asignada a autoridad |
-| **En Proceso** | `#007bff` (azul) | En resolución |
-| **Resuelta** | `#28a745` (verde) | Completada |
-| **Cerrada** | `#6c757d` (gris) | Finalizada |
+| Estado | Variable CSS | Código HEX | Color | Descripción |
+|--------|--------------|------------|-------|-------------|
+| **Registrada** | `--color-estado-registrada` | `#6b7280` | Gris (Gray 500) | Recién creada, sin asignar |
+| **Pendiente** | `--color-estado-pendiente` | `#f59e0b` | Ámbar/Amarillo | En espera de revisión |
+| **Asignada** | `--color-estado-asignada` | `#8b5cf6` | Violeta | Asignada a autoridad específica |
+| **En Proceso** | `--color-estado-en-proceso` | `#3b82f6` | Azul | En resolución activa |
+| **Resuelta** | `--color-estado-resuelta` | `#10b981` | Verde | Completada exitosamente |
+| **Cerrada** | `--color-estado-cerrada` | `#4b5563` | Gris oscuro (Gray 600) | Finalizada y archivada |
+
+### Prioridades de Denuncia
+
+| Prioridad | Variable CSS | Código HEX | Color |
+|-----------|--------------|------------|-------|
+| **Baja** | `--color-prioridad-baja` | `#10b981` | Verde |
+| **Media** | `--color-prioridad-media` | `#f59e0b` | Ámbar |
+| **Alta** | `--color-prioridad-alta` | `#ef4444` | Rojo |
+
+### Colores Semánticos
+
+| Variable CSS | Código HEX | Uso |
+|--------------|------------|-----|
+| `--color-text-primary` | `#111827` (Gray 900) | Texto principal |
+| `--color-text-secondary` | `#6b7280` (Gray 500) | Texto secundario |
+| `--color-text-muted` | `#9ca3af` (Gray 400) | Texto deshabilitado/sutil |
+| `--color-bg-primary` | `#ffffff` | Fondo principal |
+| `--color-bg-secondary` | `#f9fafb` (Gray 50) | Fondo secundario |
+| `--color-bg-tertiary` | `#f3f4f6` (Gray 100) | Fondo terciario |
+| `--color-border` | `#e5e7eb` (Gray 200) | Bordes estándar |
+| `--color-border-light` | `#f3f4f6` (Gray 100) | Bordes suaves |
 
 ---
 

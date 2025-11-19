@@ -81,14 +81,15 @@ Plataforma-de-Denuncias-/
 
 | Color | Código HEX | Uso |
 |-------|------------|-----|
-| **Primary** | `#7592EB` | Elementos principales, botones primarios |
-| **Primary Light** | `#A5C1EB` | Fondos suaves, hover states |
-| **Primary Dark** | `#03193B` | Textos oscuros, cabeceras |
-| **Danger** | `#F51F1B` | Alertas, botones de eliminación |
-| **Warning** | `#F5E578` | Advertencias, estados pendientes |
-| **Neutral White** | `#FFFFFF` | Fondos, tarjetas |
-| **Neutral Dark** | `#03193B` | Textos principales |
-| **Neutral Light** | `#F8F8F8` | Fondos alternativos |
+| **Primary** | `#153595` | Azul principal oscuro - Elementos principales, botones primarios |
+| **Primary Light** | `#A5C1EB` | Azul claro - Fondos suaves, hover states |
+| **Primary Dark** | `#03193B` | Azul navy - Textos oscuros, cabeceras, navegación |
+| **Success** | `#10b981` | Verde - Confirmaciones, estados completados |
+| **Warning** | `#f59e0b` | Ámbar - Advertencias, estados pendientes |
+| **Danger** | `#ef4444` | Rojo - Errores, alertas, botones de eliminación |
+| **Info** | `#3b82f6` | Azul - Información, notificaciones |
+
+**Ver sistema completo**: [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) incluye colores para roles, estados de denuncia, prioridades y sistema de grises.
 
 ### Tipografía
 
