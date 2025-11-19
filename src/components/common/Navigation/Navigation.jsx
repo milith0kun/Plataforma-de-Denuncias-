@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
+import { getRolColor, COLORS } from '../../../constants/colors';
 import styles from './Navigation.module.css';
 
 const Navigation = () => {
@@ -149,10 +150,10 @@ const Navigation = () => {
   };
 
   const getRoleBadge = () => {
-    if (esAutoridad) return { text: 'Autoridad', color: '#3b82f6' };
-    if (esCiudadano) return { text: 'Ciudadano', color: '#10b981' };
-    if (esAdmin) return { text: 'Administrador', color: '#8b5cf6' };
-    return { text: 'Usuario', color: '#6b7280' };
+    if (esAutoridad) return { text: 'Autoridad', color: COLORS.roles.autoridad };
+    if (esCiudadano) return { text: 'Ciudadano', color: COLORS.roles.ciudadano };
+    if (esAdmin) return { text: 'Administrador', color: COLORS.roles.admin };
+    return { text: 'Usuario', color: COLORS.gray[500] };
   };
 
   const roleBadge = getRoleBadge();
