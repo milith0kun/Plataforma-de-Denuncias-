@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
 import Layout from '../../../components/layout/Layout/Layout';
+import { getEstadoColor, getPrioridadColor } from '../../../constants/colors';
 import styles from './DashboardAutoridadPage.module.css';
 
 const DashboardAutoridadPage = () => {
@@ -65,24 +66,6 @@ const DashboardAutoridadPage = () => {
     }
   };
 
-  const obtenerColorEstado = (estado) => {
-    switch (estado) {
-      case 'Pendiente': return '#f59e0b';
-      case 'En Proceso': return '#3b82f6';
-      case 'Asignada': return '#8b5cf6';
-      case 'Resuelta': return '#10b981';
-      default: return '#6b7280';
-    }
-  };
-
-  const obtenerColorPrioridad = (prioridad) => {
-    switch (prioridad) {
-      case 'Alta': return '#ef4444';
-      case 'Media': return '#f59e0b';
-      case 'Baja': return '#10b981';
-      default: return '#6b7280';
-    }
-  };
 
   if (cargando) {
     return (
@@ -199,15 +182,15 @@ const DashboardAutoridadPage = () => {
                 <div className={styles.denunciaHeader}>
                   <h3 className={styles.denunciaTitulo}>{denuncia.titulo}</h3>
                   <div className={styles.denunciaBadges}>
-                    <span 
+                    <span
                       className={styles.estadoBadge}
-                      style={{ backgroundColor: obtenerColorEstado(denuncia.estado) }}
+                      style={{ backgroundColor: getEstadoColor(denuncia.estado) }}
                     >
                       {denuncia.estado}
                     </span>
-                    <span 
+                    <span
                       className={styles.prioridadBadge}
-                      style={{ backgroundColor: obtenerColorPrioridad(denuncia.prioridad) }}
+                      style={{ backgroundColor: getPrioridadColor(denuncia.prioridad) }}
                     >
                       {denuncia.prioridad}
                     </span>
