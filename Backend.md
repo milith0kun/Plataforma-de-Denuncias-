@@ -1,6 +1,16 @@
 # INFORME TÉCNICO BACKEND
 ## PLATAFORMA WEB PARA DENUNCIA CIUDADANA DE PROBLEMAS URBANOS
 
+> Informe técnico completo con arquitectura, API REST y especificaciones del backend
+
+## 📑 Navegación de Documentación
+
+- **[⬅️ README Principal](README.md)** - Vista general del proyecto
+- **[🔌 README Backend](README_BACKEND.md)** - Estado actual y endpoints
+- **[📱 README Frontend](README_FRONTEND.md)** - Documentación del cliente
+- **[🎨 Sistema de Diseño](DESIGN_SYSTEM.md)** - Guía de diseño completa
+- **[📖 Informe Frontend](Frontend.md)** - Especificaciones técnicas del frontend
+
 ---
 
 ## 1. CONTEXTO DEL PROYECTO

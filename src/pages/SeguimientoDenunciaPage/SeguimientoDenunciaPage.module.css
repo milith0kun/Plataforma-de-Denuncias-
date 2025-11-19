@@ -1,0 +1,531 @@
+.pageContainer {
+  min-height: 100vh;
+  background-color: var(--color-background);
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* Loading & Error States */
+.loadingContainer,
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--color-gray-200);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.errorMessage {
+  color: var(--color-danger);
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.retryButton,
+.backButton {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 0.5rem;
+}
+
+.retryButton:hover,
+.backButton:hover {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-2px);
+}
+
+.backButton {
+  background-color: var(--color-gray-600);
+}
+
+.backButton:hover {
+  background-color: var(--color-gray-700);
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--color-gray-600);
+}
+
+.breadcrumbLink {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0;
+  transition: color 0.3s ease;
+}
+
+.breadcrumbLink:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+.breadcrumbSeparator {
+  color: var(--color-gray-400);
+}
+
+.breadcrumbCurrent {
+  color: var(--color-gray-700);
+  font-weight: 500;
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  color: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.headerContent {
+  text-align: center;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+  color: white;
+}
+
+.denunciaTitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0 0 0.5rem 0;
+  font-weight: 500;
+}
+
+.denunciaId {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+/* Progress Section */
+.progressSection {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.progressInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.estadoActual {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.estadoIcon {
+  font-size: 2.5rem;
+}
+
+.estadoLabel {
+  font-size: 0.85rem;
+  color: var(--color-gray-600);
+  margin: 0 0 0.25rem 0;
+  font-weight: 500;
+}
+
+.estadoNombre {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.progresoNumero {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.progresoValue {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: 1;
+}
+
+.progresoLabel {
+  font-size: 0.85rem;
+  color: var(--color-gray-600);
+  font-weight: 500;
+}
+
+.progressBarContainer {
+  height: 12px;
+  background-color: var(--color-gray-200);
+  border-radius: 100px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progressBar {
+  height: 100%;
+  border-radius: 100px;
+  transition: width 1s ease, background-color 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.progressBar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Timeline Section */
+.timelineSection {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-gray-900);
+  margin: 0 0 2rem 0;
+}
+
+/* Timeline */
+.timeline {
+  position: relative;
+}
+
+.timelineItem {
+  display: flex;
+  gap: 2rem;
+  position: relative;
+}
+
+.timelineMarker {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.timelineDot {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: white;
+  border: 4px solid var(--color-gray-300);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.timelineDotIcon {
+  font-size: 1.5rem;
+}
+
+.timelineDotActive {
+  border-width: 4px;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(59, 130, 246, 0.15);
+  }
+}
+
+.timelineLine {
+  width: 4px;
+  flex: 1;
+  background-color: var(--color-gray-200);
+  margin: 8px 0;
+  opacity: 0.5;
+}
+
+.timelineContent {
+  flex: 1;
+  padding-bottom: 2.5rem;
+}
+
+.timelineContentActive .timelineCard {
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.15);
+}
+
+.timelineCard {
+  background: var(--color-gray-50);
+  border: 2px solid var(--color-gray-200);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.timelineCard:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.timelineCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.timelineEstado {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.timelineFecha {
+  font-size: 0.9rem;
+  color: var(--color-gray-600);
+  font-weight: 500;
+}
+
+.timelineComentario {
+  font-size: 1rem;
+  color: var(--color-gray-700);
+  margin: 0 0 1rem 0;
+  line-height: 1.6;
+}
+
+.timelineFooter {
+  border-top: 1px solid var(--color-gray-200);
+  padding-top: 0.75rem;
+}
+
+.timelineUsuario {
+  font-size: 0.9rem;
+  color: var(--color-gray-600);
+  font-weight: 500;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.emptyMessage {
+  color: var(--color-gray-500);
+  font-size: 1.1rem;
+  font-style: italic;
+}
+
+/* Info Section */
+.infoSection {
+  margin-bottom: 2rem;
+}
+
+.infoCard {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.infoCardTitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-gray-900);
+  margin: 0 0 1.5rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--color-gray-200);
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.infoItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.infoIcon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.infoLabel {
+  font-size: 0.85rem;
+  color: var(--color-gray-600);
+  margin: 0 0 0.25rem 0;
+  font-weight: 500;
+}
+
+.infoValue {
+  font-size: 1rem;
+  color: var(--color-gray-900);
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Action Section */
+.actionSection {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.actionButton,
+.actionButtonSecondary {
+  flex: 1;
+  min-width: 200px;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.actionButton {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.actionButton:hover {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+}
+
+.actionButtonSecondary {
+  background-color: white;
+  color: var(--color-gray-700);
+  border: 2px solid var(--color-gray-300);
+}
+
+.actionButtonSecondary:hover {
+  background-color: var(--color-gray-50);
+  border-color: var(--color-gray-400);
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .denunciaTitle {
+    font-size: 1rem;
+  }
+
+  .progressInfo {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .progresoNumero {
+    align-items: flex-start;
+  }
+
+  .timelineItem {
+    gap: 1rem;
+  }
+
+  .timelineDot {
+    width: 40px;
+    height: 40px;
+  }
+
+  .timelineDotIcon {
+    font-size: 1.2rem;
+  }
+
+  .infoGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .actionSection {
+    flex-direction: column;
+  }
+
+  .actionButton,
+  .actionButtonSecondary {
+    min-width: 100%;
+  }
+}
