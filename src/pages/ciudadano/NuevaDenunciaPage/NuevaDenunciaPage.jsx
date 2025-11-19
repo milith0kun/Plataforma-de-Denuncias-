@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../../components/common/Header/Header';
+import UploadFotos from '../../../components/denuncias/UploadFotos';
 import denunciaService from '../../../services/denunciaService';
 import styles from './NuevaDenunciaPage.module.css';
 
@@ -18,9 +19,8 @@ const NuevaDenunciaPage = () => {
     es_anonima: false
   });
 
-  // Estado para manejo de archivos
-  const [archivos, setArchivos] = useState([]);
-  const [cargandoArchivos, setCargandoArchivos] = useState(false);
+  // Estado para manejo de fotos
+  const [fotos, setFotos] = useState([]);
 
   // Estado del formulario
   const [enviando, setEnviando] = useState(false);
@@ -64,23 +64,6 @@ const NuevaDenunciaPage = () => {
         [name]: ''
       }));
     }
-  };
-
-  // Manejar carga de archivos
-  const manejarArchivos = (e) => {
-    const nuevosArchivos = Array.from(e.target.files);
-    setCargandoArchivos(true);
-    
-    // Simular procesamiento de archivos
-    setTimeout(() => {
-      setArchivos(prev => [...prev, ...nuevosArchivos]);
-      setCargandoArchivos(false);
-    }, 1000);
-  };
-
-  // Eliminar archivo
-  const eliminarArchivo = (index) => {
-    setArchivos(prev => prev.filter((_, i) => i !== index));
   };
 
   // Validar formulario
@@ -131,10 +114,17 @@ const NuevaDenunciaPage = () => {
       const response = await denunciaService.crearDenuncia(datosDenuncia);
 
       if (response.success) {
-        // TODO: Subir evidencias si hay archivos
-        // if (archivos.length > 0) {
-        //   await subirEvidencias(response.data.denuncia.id_denuncia, archivos);
-        // }
+        // Subir fotos si hay
+        if (fotos.length > 0) {
+          try {
+            const archivosFiles = fotos.map(f => f.file);
+            await denunciaService.subirEvidencias(response.data.denuncia.id_denuncia, archivosFiles);
+          } catch (errorFotos) {
+            console.error('Error al subir fotos:', errorFotos);
+            // La denuncia ya fue creada, solo mostramos advertencia
+            alert('⚠️ Denuncia creada, pero hubo un error al subir las fotos');
+          }
+        }
 
         alert('✅ Denuncia creada exitosamente');
         navigate('/denuncias');
@@ -253,53 +243,18 @@ const NuevaDenunciaPage = () => {
             </div>
           </div>
 
-          {/* Evidencias */}
+          {/* Evidencias Fotográficas */}
           <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Evidencias (Opcional)</h2>
+            <h2 className={styles.sectionTitle}>Evidencias Fotográficas (Opcional)</h2>
             <p className={styles.sectionDescription}>
-              Puedes adjuntar documentos, imágenes o videos que respalden tu denuncia
+              Adjunta hasta 5 fotos que respalden tu denuncia
             </p>
-            
-            <div className={styles.fileUpload}>
-              <input
-                type="file"
-                id="evidencias"
-                multiple
-                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.mp4,.mp3"
-                onChange={manejarArchivos}
-                className={styles.fileInput}
-              />
-              <label htmlFor="evidencias" className={styles.fileLabel}>
-                <span className={styles.fileIcon}>📎</span>
-                Seleccionar Archivos
-              </label>
-            </div>
 
-            {cargandoArchivos && (
-              <div className={styles.loading}>
-                Procesando archivos...
-              </div>
-            )}
-
-            {archivos.length > 0 && (
-              <div className={styles.fileList}>
-                {archivos.map((archivo, index) => (
-                  <div key={index} className={styles.fileItem}>
-                    <span className={styles.fileName}>{archivo.name}</span>
-                    <span className={styles.fileSize}>
-                      ({(archivo.size / 1024 / 1024).toFixed(2)} MB)
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => eliminarArchivo(index)}
-                      className={styles.removeFile}
-                    >
-                      ✕
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
+            <UploadFotos
+              fotos={fotos}
+              setFotos={setFotos}
+              maxFotos={5}
+            />
           </div>
 
           {/* Opciones de privacidad */}

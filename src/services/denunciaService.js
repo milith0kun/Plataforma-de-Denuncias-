@@ -164,6 +164,46 @@ const denunciaService = {
     } catch (error) {
       throw error;
     }
+  },
+
+  /**
+   * Subir evidencias fotográficas a una denuncia
+   * @param {number} idDenuncia - ID de la denuncia
+   * @param {Array<File>} archivos - Archivos de imágenes
+   * @returns {Promise} Respuesta de la API
+   */
+  async subirEvidencias(idDenuncia, archivos) {
+    try {
+      const formData = new FormData();
+
+      archivos.forEach((archivo) => {
+        formData.append('evidencias', archivo);
+      });
+
+      const response = await api.post(`/denuncias/${idDenuncia}/evidencias`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
+  },
+
+  /**
+   * Eliminar una evidencia fotográfica
+   * @param {number} idEvidencia - ID de la evidencia
+   * @returns {Promise} Respuesta de la API
+   */
+  async eliminarEvidencia(idEvidencia) {
+    try {
+      const response = await api.delete(`/denuncias/evidencias/${idEvidencia}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
   }
 };
 
