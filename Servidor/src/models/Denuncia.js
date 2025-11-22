@@ -1,442 +1,405 @@
-/**
- * Modelo para gestión de Denuncias
- */
+import mongoose from 'mongoose';
+import HistorialEstado from './HistorialEstado.js';
+import EstadoDenuncia from './EstadoDenuncia.js';
 
-import pool from '../config/database.js';
-
-class Denuncia {
-  /**
-   * Crear una nueva denuncia
-   * @param {Object} datosDenuncia - Datos de la denuncia
-   * @returns {Promise<number>} ID de la denuncia creada
-   */
-  static async crear(datosDenuncia) {
-    const connection = await pool.getConnection();
-
-    try {
-      await connection.beginTransaction();
-
-      const {
-        id_ciudadano,
-        id_categoria,
-        titulo,
-        descripcion_detallada,
-        latitud,
-        longitud,
-        direccion_geolocalizada,
-        es_anonima = false
-      } = datosDenuncia;
-
-      // El estado inicial siempre es "Registrada" (id_estado = 1)
-      const id_estado_inicial = 1;
-
-      const [resultado] = await connection.query(
-        `INSERT INTO denuncia (
-          id_ciudadano,
-          id_categoria,
-          id_estado_actual,
-          titulo,
-          descripcion_detallada,
-          latitud,
-          longitud,
-          direccion_geolocalizada,
-          es_anonima,
-          fecha_registro,
-          ultima_actualizacion
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
-        [
-          id_ciudadano,
-          id_categoria,
-          id_estado_inicial,
-          titulo,
-          descripcion_detallada,
-          latitud || null,
-          longitud || null,
-          direccion_geolocalizada || null,
-          es_anonima
-        ]
-      );
-
-      const id_denuncia = resultado.insertId;
-
-      // Registrar el estado inicial en el historial
-      await connection.query(
-        `INSERT INTO historial_estado (
-          id_denuncia,
-          id_estado_anterior,
-          id_estado_nuevo,
-          id_usuario_cambio,
-          comentario,
-          fecha_cambio
-        ) VALUES (?, NULL, ?, ?, ?, NOW())`,
-        [id_denuncia, id_estado_inicial, id_ciudadano, 'Denuncia registrada']
-      );
-
-      await connection.commit();
-      return id_denuncia;
-    } catch (error) {
-      await connection.rollback();
-      console.error('Error al crear denuncia:', error);
-      throw error;
-    } finally {
-      connection.release();
-    }
+const denunciaSchema = new mongoose.Schema({
+  id_ciudadano: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Usuario',
+    required: true
+  },
+  id_categoria: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Categoria',
+    required: true
+  },
+  id_estado_actual: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'EstadoDenuncia',
+    required: true
+  },
+  titulo: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  descripcion_detallada: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  latitud: {
+    type: Number,
+    default: null
+  },
+  longitud: {
+    type: Number,
+    default: null
+  },
+  direccion_geolocalizada: {
+    type: String,
+    trim: true,
+    default: null
+  },
+  es_anonima: {
+    type: Boolean,
+    default: false
+  },
+  fecha_registro: {
+    type: Date,
+    default: Date.now
+  },
+  ultima_actualizacion: {
+    type: Date,
+    default: Date.now
   }
+}, {
+  timestamps: true,
+  collection: 'denuncias'
+});
 
-  /**
-   * Obtener una denuncia por ID
-   * @param {number} id_denuncia - ID de la denuncia
-   * @returns {Promise<Object|null>} Datos de la denuncia o null
-   */
-  static async obtenerPorId(id_denuncia) {
-    try {
-      const [denuncias] = await pool.query(
-        `SELECT
-          d.id_denuncia,
-          d.id_ciudadano,
-          d.id_categoria,
-          d.id_estado_actual,
-          d.titulo,
-          d.descripcion_detallada,
-          d.latitud,
-          d.longitud,
-          d.direccion_geolocalizada,
-          d.es_anonima,
-          d.fecha_registro,
-          d.ultima_actualizacion,
-          c.nombre as categoria_nombre,
-          e.nombre as estado_nombre,
-          u.nombres as ciudadano_nombres,
-          u.apellidos as ciudadano_apellidos,
-          u.email as ciudadano_email
-        FROM denuncia d
-        LEFT JOIN categoria c ON d.id_categoria = c.id_categoria
-        LEFT JOIN estado_denuncia e ON d.id_estado_actual = e.id_estado
-        LEFT JOIN usuario u ON d.id_ciudadano = u.id_usuario
-        WHERE d.id_denuncia = ?`,
-        [id_denuncia]
-      );
+// Índices
+denunciaSchema.index({ id_ciudadano: 1 });
+denunciaSchema.index({ id_categoria: 1 });
+denunciaSchema.index({ id_estado_actual: 1 });
+denunciaSchema.index({ fecha_registro: -1 });
+denunciaSchema.index({ titulo: 'text', descripcion_detallada: 'text' });
 
-      if (denuncias.length === 0) {
-        return null;
+// Virtual para id_denuncia (para compatibilidad con controladores)
+denunciaSchema.virtual('id_denuncia').get(function() {
+  return this._id;
+});
+
+// Configurar toJSON para incluir virtuals
+denunciaSchema.set('toJSON', { virtuals: true });
+denunciaSchema.set('toObject', { virtuals: true });
+
+// Middleware para actualizar fecha de última actualización
+denunciaSchema.pre('save', function(next) {
+  this.ultima_actualizacion = new Date();
+  next();
+});
+
+// Métodos estáticos
+denunciaSchema.statics.crear = async function(datosDenuncia) {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    const {
+      id_ciudadano,
+      id_categoria,
+      titulo,
+      descripcion_detallada,
+      latitud,
+      longitud,
+      direccion_geolocalizada,
+      es_anonima = false
+    } = datosDenuncia;
+
+    // Obtener el estado inicial "Registrada"
+    let estadoInicial = await EstadoDenuncia.findOne({ nombre: 'Registrada' });
+
+    // Si no existe el estado, crear uno por defecto
+    if (!estadoInicial) {
+      estadoInicial = await EstadoDenuncia.create([{
+        nombre: 'Registrada',
+        descripcion: 'Denuncia registrada en el sistema',
+        orden_flujo: 1
+      }], { session });
+      estadoInicial = estadoInicial[0];
+    }
+
+    // Crear la denuncia
+    const denuncia = new this({
+      id_ciudadano,
+      id_categoria,
+      id_estado_actual: estadoInicial._id,
+      titulo,
+      descripcion_detallada,
+      latitud: latitud || null,
+      longitud: longitud || null,
+      direccion_geolocalizada: direccion_geolocalizada || null,
+      es_anonima
+    });
+
+    await denuncia.save({ session });
+
+    // Registrar el estado inicial en el historial
+    await HistorialEstado.create([{
+      id_denuncia: denuncia._id,
+      id_estado_anterior: null,
+      id_estado_nuevo: estadoInicial._id,
+      id_usuario_cambio: id_ciudadano,
+      comentario: 'Denuncia registrada'
+    }], { session });
+
+    await session.commitTransaction();
+    return denuncia._id;
+  } catch (error) {
+    await session.abortTransaction();
+    console.error('Error al crear denuncia:', error);
+    throw error;
+  } finally {
+    session.endSession();
+  }
+};
+
+denunciaSchema.statics.obtenerPorId = async function(id_denuncia) {
+  try {
+    const denuncia = await this.findById(id_denuncia)
+      .populate('id_categoria', 'nombre')
+      .populate('id_estado_actual', 'nombre')
+      .populate('id_ciudadano', 'nombres apellidos email')
+      .lean();
+
+    if (!denuncia) {
+      return null;
+    }
+
+    // Si es anónima, ocultar datos del ciudadano
+    if (denuncia.es_anonima) {
+      denuncia.id_ciudadano = {
+        nombres: 'Anónimo',
+        apellidos: '',
+        email: null
+      };
+    }
+
+    // Renombrar campos para compatibilidad
+    if (denuncia.id_categoria) {
+      denuncia.categoria_nombre = denuncia.id_categoria.nombre;
+    }
+    if (denuncia.id_estado_actual) {
+      denuncia.estado_nombre = denuncia.id_estado_actual.nombre;
+    }
+    if (denuncia.id_ciudadano) {
+      denuncia.ciudadano_nombres = denuncia.id_ciudadano.nombres;
+      denuncia.ciudadano_apellidos = denuncia.id_ciudadano.apellidos;
+      denuncia.ciudadano_email = denuncia.id_ciudadano.email;
+    }
+
+    return denuncia;
+  } catch (error) {
+    console.error('Error al obtener denuncia por ID:', error);
+    throw error;
+  }
+};
+
+denunciaSchema.statics.obtenerConFiltros = async function(filtros = {}, paginacion = {}) {
+  try {
+    const {
+      id_ciudadano,
+      id_categoria,
+      id_estado,
+      busqueda,
+      fecha_inicio,
+      fecha_fin
+    } = filtros;
+
+    const {
+      pagina = 1,
+      limite = 10,
+      orden = 'fecha_registro',
+      direccion = 'DESC'
+    } = paginacion;
+
+    // Construir query
+    const query = {};
+
+    if (id_ciudadano) {
+      query.id_ciudadano = id_ciudadano;
+    }
+
+    if (id_categoria) {
+      query.id_categoria = id_categoria;
+    }
+
+    if (id_estado) {
+      query.id_estado_actual = id_estado;
+    }
+
+    if (busqueda) {
+      query.$or = [
+        { titulo: { $regex: busqueda, $options: 'i' } },
+        { descripcion_detallada: { $regex: busqueda, $options: 'i' } }
+      ];
+    }
+
+    if (fecha_inicio || fecha_fin) {
+      query.fecha_registro = {};
+      if (fecha_inicio) {
+        query.fecha_registro.$gte = new Date(fecha_inicio);
+      }
+      if (fecha_fin) {
+        query.fecha_registro.$lte = new Date(fecha_fin);
+      }
+    }
+
+    // Contar total
+    const total = await this.countDocuments(query);
+
+    // Calcular offset
+    const offset = (pagina - 1) * limite;
+
+    // Ordenamiento
+    const ordenValidos = ['fecha_registro', 'ultima_actualizacion', 'titulo'];
+    const ordenFinal = ordenValidos.includes(orden) ? orden : 'fecha_registro';
+    const direccionFinal = direccion.toUpperCase() === 'ASC' ? 1 : -1;
+
+    // Obtener denuncias
+    let denuncias = await this.find(query)
+      .populate('id_categoria', 'nombre')
+      .populate('id_estado_actual', 'nombre')
+      .populate('id_ciudadano', 'nombres apellidos')
+      .sort({ [ordenFinal]: direccionFinal })
+      .skip(offset)
+      .limit(parseInt(limite))
+      .lean();
+
+    // Procesar denuncias para compatibilidad
+    denuncias = denuncias.map(denuncia => {
+      if (denuncia.es_anonima) {
+        denuncia.id_ciudadano = {
+          nombres: 'Anónimo',
+          apellidos: ''
+        };
       }
 
-      const denuncia = denuncias[0];
-
-      // Si es anónima, ocultar datos del ciudadano
-      if (denuncia.es_anonima) {
-        denuncia.ciudadano_nombres = 'Anónimo';
-        denuncia.ciudadano_apellidos = '';
-        denuncia.ciudadano_email = null;
-        denuncia.id_ciudadano = null;
+      // Renombrar campos
+      if (denuncia.id_categoria) {
+        denuncia.categoria_nombre = denuncia.id_categoria.nombre;
+      }
+      if (denuncia.id_estado_actual) {
+        denuncia.estado_nombre = denuncia.id_estado_actual.nombre;
+      }
+      if (denuncia.id_ciudadano) {
+        denuncia.ciudadano_nombres = denuncia.id_ciudadano.nombres;
+        denuncia.ciudadano_apellidos = denuncia.id_ciudadano.apellidos;
       }
 
       return denuncia;
-    } catch (error) {
-      console.error('Error al obtener denuncia por ID:', error);
-      throw error;
-    }
+    });
+
+    return {
+      denuncias,
+      total,
+      pagina: parseInt(pagina),
+      limite: parseInt(limite),
+      totalPaginas: Math.ceil(total / limite)
+    };
+  } catch (error) {
+    console.error('Error al obtener denuncias con filtros:', error);
+    throw error;
   }
+};
 
-  /**
-   * Obtener denuncias con filtros
-   * @param {Object} filtros - Filtros de búsqueda
-   * @param {Object} paginacion - Opciones de paginación
-   * @returns {Promise<Object>} { denuncias, total }
-   */
-  static async obtenerConFiltros(filtros = {}, paginacion = {}) {
-    try {
-      const {
-        id_ciudadano,
-        id_categoria,
-        id_estado,
-        busqueda,
-        fecha_inicio,
-        fecha_fin
-      } = filtros;
+denunciaSchema.statics.cambiarEstado = async function(id_denuncia, id_estado_nuevo, id_usuario, comentario) {
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
-      const {
-        pagina = 1,
-        limite = 10,
-        orden = 'fecha_registro',
-        direccion = 'DESC'
-      } = paginacion;
+  try {
+    // Obtener denuncia actual
+    const denuncia = await this.findById(id_denuncia).session(session);
 
-      let condiciones = [];
-      let parametros = [];
-
-      if (id_ciudadano) {
-        condiciones.push('d.id_ciudadano = ?');
-        parametros.push(id_ciudadano);
-      }
-
-      if (id_categoria) {
-        condiciones.push('d.id_categoria = ?');
-        parametros.push(id_categoria);
-      }
-
-      if (id_estado) {
-        condiciones.push('d.id_estado_actual = ?');
-        parametros.push(id_estado);
-      }
-
-      if (busqueda) {
-        condiciones.push('(d.titulo LIKE ? OR d.descripcion_detallada LIKE ?)');
-        parametros.push(`%${busqueda}%`, `%${busqueda}%`);
-      }
-
-      if (fecha_inicio) {
-        condiciones.push('d.fecha_registro >= ?');
-        parametros.push(fecha_inicio);
-      }
-
-      if (fecha_fin) {
-        condiciones.push('d.fecha_registro <= ?');
-        parametros.push(fecha_fin);
-      }
-
-      const whereClause = condiciones.length > 0
-        ? 'WHERE ' + condiciones.join(' AND ')
-        : '';
-
-      // Contar total
-      const [countResult] = await pool.query(
-        `SELECT COUNT(*) as total
-        FROM denuncia d
-        ${whereClause}`,
-        parametros
-      );
-
-      const total = countResult[0].total;
-
-      // Calcular offset
-      const offset = (pagina - 1) * limite;
-
-      // Obtener denuncias
-      const ordenValidos = ['fecha_registro', 'ultima_actualizacion', 'titulo'];
-      const ordenFinal = ordenValidos.includes(orden) ? orden : 'fecha_registro';
-      const direccionFinal = direccion.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
-
-      const [denuncias] = await pool.query(
-        `SELECT
-          d.id_denuncia,
-          d.id_ciudadano,
-          d.id_categoria,
-          d.id_estado_actual,
-          d.titulo,
-          d.descripcion_detallada,
-          d.latitud,
-          d.longitud,
-          d.direccion_geolocalizada,
-          d.es_anonima,
-          d.fecha_registro,
-          d.ultima_actualizacion,
-          c.nombre as categoria_nombre,
-          e.nombre as estado_nombre,
-          u.nombres as ciudadano_nombres,
-          u.apellidos as ciudadano_apellidos
-        FROM denuncia d
-        LEFT JOIN categoria c ON d.id_categoria = c.id_categoria
-        LEFT JOIN estado_denuncia e ON d.id_estado_actual = e.id_estado
-        LEFT JOIN usuario u ON d.id_ciudadano = u.id_usuario
-        ${whereClause}
-        ORDER BY d.${ordenFinal} ${direccionFinal}
-        LIMIT ? OFFSET ?`,
-        [...parametros, limite, offset]
-      );
-
-      // Ocultar datos de denuncias anónimas
-      denuncias.forEach(denuncia => {
-        if (denuncia.es_anonima) {
-          denuncia.ciudadano_nombres = 'Anónimo';
-          denuncia.ciudadano_apellidos = '';
-          denuncia.id_ciudadano = null;
-        }
-      });
-
-      return {
-        denuncias,
-        total,
-        pagina: parseInt(pagina),
-        limite: parseInt(limite),
-        totalPaginas: Math.ceil(total / limite)
-      };
-    } catch (error) {
-      console.error('Error al obtener denuncias con filtros:', error);
-      throw error;
+    if (!denuncia) {
+      throw new Error('Denuncia no encontrada');
     }
+
+    const id_estado_anterior = denuncia.id_estado_actual;
+
+    // Actualizar estado
+    denuncia.id_estado_actual = id_estado_nuevo;
+    denuncia.ultima_actualizacion = new Date();
+    await denuncia.save({ session });
+
+    // Registrar en historial
+    await HistorialEstado.create([{
+      id_denuncia,
+      id_estado_anterior,
+      id_estado_nuevo,
+      id_usuario_cambio: id_usuario,
+      comentario
+    }], { session });
+
+    await session.commitTransaction();
+    return true;
+  } catch (error) {
+    await session.abortTransaction();
+    console.error('Error al cambiar estado:', error);
+    throw error;
+  } finally {
+    session.endSession();
   }
+};
 
-  /**
-   * Actualizar el estado de una denuncia
-   * @param {number} id_denuncia - ID de la denuncia
-   * @param {number} id_estado_nuevo - ID del nuevo estado
-   * @param {number} id_usuario - ID del usuario que hace el cambio
-   * @param {string} comentario - Comentario sobre el cambio
-   * @returns {Promise<boolean>} true si se actualizó
-   */
-  static async cambiarEstado(id_denuncia, id_estado_nuevo, id_usuario, comentario) {
-    const connection = await pool.getConnection();
+denunciaSchema.statics.obtenerHistorialEstados = async function(id_denuncia) {
+  try {
+    return await HistorialEstado.obtenerPorDenuncia(id_denuncia);
+  } catch (error) {
+    console.error('Error al obtener historial de estados:', error);
+    throw error;
+  }
+};
 
-    try {
-      await connection.beginTransaction();
+denunciaSchema.statics.actualizar = async function(id_denuncia, datos) {
+  try {
+    const camposPermitidos = ['titulo', 'descripcion_detallada', 'latitud', 'longitud', 'direccion_geolocalizada'];
+    const datosActualizacion = {};
 
-      // Obtener estado actual
-      const [denuncias] = await connection.query(
-        'SELECT id_estado_actual FROM denuncia WHERE id_denuncia = ?',
-        [id_denuncia]
-      );
-
-      if (denuncias.length === 0) {
-        throw new Error('Denuncia no encontrada');
+    for (const campo of camposPermitidos) {
+      if (datos.hasOwnProperty(campo)) {
+        datosActualizacion[campo] = datos[campo];
       }
-
-      const id_estado_anterior = denuncias[0].id_estado_actual;
-
-      // Actualizar estado en denuncia
-      await connection.query(
-        `UPDATE denuncia
-        SET id_estado_actual = ?,
-            ultima_actualizacion = NOW()
-        WHERE id_denuncia = ?`,
-        [id_estado_nuevo, id_denuncia]
-      );
-
-      // Registrar en historial
-      await connection.query(
-        `INSERT INTO historial_estado (
-          id_denuncia,
-          id_estado_anterior,
-          id_estado_nuevo,
-          id_usuario_cambio,
-          comentario,
-          fecha_cambio
-        ) VALUES (?, ?, ?, ?, ?, NOW())`,
-        [id_denuncia, id_estado_anterior, id_estado_nuevo, id_usuario, comentario]
-      );
-
-      await connection.commit();
-      return true;
-    } catch (error) {
-      await connection.rollback();
-      console.error('Error al cambiar estado:', error);
-      throw error;
-    } finally {
-      connection.release();
     }
-  }
 
-  /**
-   * Obtener historial de estados de una denuncia
-   * @param {number} id_denuncia - ID de la denuncia
-   * @returns {Promise<Array>} Historial de cambios de estado
-   */
-  static async obtenerHistorialEstados(id_denuncia) {
-    try {
-      const [historial] = await pool.query(
-        `SELECT
-          h.id_historial,
-          h.id_estado_anterior,
-          h.id_estado_nuevo,
-          h.comentario,
-          h.fecha_cambio,
-          ea.nombre as estado_anterior_nombre,
-          en.nombre as estado_nuevo_nombre,
-          u.nombres as usuario_nombres,
-          u.apellidos as usuario_apellidos
-        FROM historial_estado h
-        LEFT JOIN estado_denuncia ea ON h.id_estado_anterior = ea.id_estado
-        LEFT JOIN estado_denuncia en ON h.id_estado_nuevo = en.id_estado
-        LEFT JOIN usuario u ON h.id_usuario_cambio = u.id_usuario
-        WHERE h.id_denuncia = ?
-        ORDER BY h.fecha_cambio ASC`,
-        [id_denuncia]
-      );
-
-      return historial;
-    } catch (error) {
-      console.error('Error al obtener historial de estados:', error);
-      throw error;
+    if (Object.keys(datosActualizacion).length === 0) {
+      return false;
     }
+
+    datosActualizacion.ultima_actualizacion = new Date();
+
+    const denuncia = await this.findByIdAndUpdate(
+      id_denuncia,
+      datosActualizacion,
+      { new: true, runValidators: true }
+    );
+
+    return denuncia !== null;
+  } catch (error) {
+    console.error('Error al actualizar denuncia:', error);
+    throw error;
   }
+};
 
-  /**
-   * Actualizar información de una denuncia
-   * @param {number} id_denuncia - ID de la denuncia
-   * @param {Object} datos - Datos a actualizar
-   * @returns {Promise<boolean>} true si se actualizó
-   */
-  static async actualizar(id_denuncia, datos) {
-    try {
-      const camposPermitidos = ['titulo', 'descripcion_detallada', 'latitud', 'longitud', 'direccion_geolocalizada'];
-      const campos = [];
-      const valores = [];
+denunciaSchema.statics.eliminar = async function(id_denuncia) {
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
-      for (const campo of camposPermitidos) {
-        if (datos.hasOwnProperty(campo)) {
-          campos.push(`${campo} = ?`);
-          valores.push(datos[campo]);
-        }
-      }
+  try {
+    // Importar EvidenciaFoto aquí para evitar dependencias circulares
+    const EvidenciaFoto = mongoose.model('EvidenciaFoto');
 
-      if (campos.length === 0) {
-        return false;
-      }
+    // Eliminar evidencias
+    await EvidenciaFoto.deleteMany({ id_denuncia }).session(session);
 
-      campos.push('ultima_actualizacion = NOW()');
-      valores.push(id_denuncia);
+    // Eliminar historial
+    await HistorialEstado.deleteMany({ id_denuncia }).session(session);
 
-      const [resultado] = await pool.query(
-        `UPDATE denuncia SET ${campos.join(', ')} WHERE id_denuncia = ?`,
-        valores
-      );
+    // Eliminar denuncia
+    const resultado = await this.findByIdAndDelete(id_denuncia).session(session);
 
-      return resultado.affectedRows > 0;
-    } catch (error) {
-      console.error('Error al actualizar denuncia:', error);
-      throw error;
-    }
+    await session.commitTransaction();
+    return resultado !== null;
+  } catch (error) {
+    await session.abortTransaction();
+    console.error('Error al eliminar denuncia:', error);
+    throw error;
+  } finally {
+    session.endSession();
   }
+};
 
-  /**
-   * Eliminar una denuncia (soft delete o hard delete según configuración)
-   * @param {number} id_denuncia - ID de la denuncia
-   * @returns {Promise<boolean>} true si se eliminó
-   */
-  static async eliminar(id_denuncia) {
-    const connection = await pool.getConnection();
-
-    try {
-      await connection.beginTransaction();
-
-      // Eliminar evidencias primero (CASCADE should handle this, but being explicit)
-      await connection.query(
-        'DELETE FROM evidencia_foto WHERE id_denuncia = ?',
-        [id_denuncia]
-      );
-
-      // Eliminar historial
-      await connection.query(
-        'DELETE FROM historial_estado WHERE id_denuncia = ?',
-        [id_denuncia]
-      );
-
-      // Eliminar denuncia
-      const [resultado] = await connection.query(
-        'DELETE FROM denuncia WHERE id_denuncia = ?',
-        [id_denuncia]
-      );
-
-      await connection.commit();
-      return resultado.affectedRows > 0;
-    } catch (error) {
-      await connection.rollback();
-      console.error('Error al eliminar denuncia:', error);
-      throw error;
-    } finally {
-      connection.release();
-    }
-  }
-}
+const Denuncia = mongoose.model('Denuncia', denunciaSchema);
 
 export default Denuncia;
