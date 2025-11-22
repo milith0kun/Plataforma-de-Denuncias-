@@ -1,195 +1,160 @@
-/**
- * Modelo de Comentario
- * Gestiona comentarios y seguimiento de denuncias
- */
+import mongoose from 'mongoose';
 
-const db = require('../config/database');
-
-const Comentario = {
-  /**
-   * Crear un nuevo comentario
-   * @param {Object} datosComentario - Datos del comentario
-   * @returns {Promise<Object>} Comentario creado
-   */
-  async crear(datosComentario) {
-    try {
-      const query = `
-        INSERT INTO comentarios
-        (id_denuncia, id_usuario, comentario, es_interno)
-        VALUES (?, ?, ?, ?)
-      `;
-
-      const [resultado] = await db.execute(query, [
-        datosComentario.id_denuncia,
-        datosComentario.id_usuario,
-        datosComentario.comentario,
-        datosComentario.es_interno || false
-      ]);
-
-      // Obtener el comentario recién creado
-      const comentarioCreado = await this.obtenerPorId(resultado.insertId);
-
-      return comentarioCreado;
-    } catch (error) {
-      throw error;
-    }
+const comentarioSchema = new mongoose.Schema({
+  id_denuncia: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Denuncia',
+    required: true
   },
-
-  /**
-   * Obtener un comentario por ID
-   * @param {number} id - ID del comentario
-   * @returns {Promise<Object>} Comentario
-   */
-  async obtenerPorId(id) {
-    try {
-      const query = `
-        SELECT
-          c.*,
-          u.nombres,
-          u.apellidos,
-          u.tipo_usuario_id,
-          tu.nombre AS tipo_usuario
-        FROM comentarios c
-        INNER JOIN usuarios u ON c.id_usuario = u.id_usuario
-        LEFT JOIN tipos_usuario tu ON u.tipo_usuario_id = tu.id
-        WHERE c.id_comentario = ?
-      `;
-
-      const [comentarios] = await db.execute(query, [id]);
-
-      return comentarios[0] || null;
-    } catch (error) {
-      throw error;
-    }
+  id_usuario: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Usuario',
+    required: true
   },
+  comentario: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  es_interno: {
+    type: Boolean,
+    default: false
+  },
+  fecha_comentario: {
+    type: Date,
+    default: Date.now
+  }
+}, {
+  timestamps: true,
+  collection: 'comentarios'
+});
 
-  /**
-   * Obtener comentarios de una denuncia
-   * @param {number} idDenuncia - ID de la denuncia
-   * @param {boolean} incluirInternos - Si incluir comentarios internos (solo para autoridades)
-   * @returns {Promise<Array>} Lista de comentarios
-   */
-  async obtenerPorDenuncia(idDenuncia, incluirInternos = false) {
-    try {
-      let query = `
-        SELECT
-          c.*,
-          u.nombres,
-          u.apellidos,
-          u.tipo_usuario_id,
-          tu.nombre AS tipo_usuario
-        FROM comentarios c
-        INNER JOIN usuarios u ON c.id_usuario = u.id_usuario
-        LEFT JOIN tipos_usuario tu ON u.tipo_usuario_id = tu.id
-        WHERE c.id_denuncia = ?
-      `;
+// Índices
+comentarioSchema.index({ id_denuncia: 1, fecha_comentario: -1 });
+comentarioSchema.index({ id_usuario: 1 });
 
-      // Si no se incluyen internos, filtrar
-      if (!incluirInternos) {
-        query += ' AND c.es_interno = FALSE';
+// Métodos estáticos
+comentarioSchema.statics.crear = async function(datosComentario) {
+  try {
+    const comentario = new this(datosComentario);
+    await comentario.save();
+
+    // Obtener el comentario completo con populate
+    return await this.obtenerPorId(comentario._id);
+  } catch (error) {
+    throw error;
+  }
+};
+
+comentarioSchema.statics.obtenerPorId = async function(id) {
+  try {
+    return await this.findById(id)
+      .populate('id_usuario', 'nombres apellidos id_tipo_usuario')
+      .lean();
+  } catch (error) {
+    throw error;
+  }
+};
+
+comentarioSchema.statics.obtenerPorDenuncia = async function(idDenuncia, incluirInternos = false) {
+  try {
+    const query = { id_denuncia: idDenuncia };
+
+    // Si no se incluyen internos, filtrar
+    if (!incluirInternos) {
+      query.es_interno = false;
+    }
+
+    const comentarios = await this.find(query)
+      .populate('id_usuario', 'nombres apellidos id_tipo_usuario')
+      .sort({ fecha_comentario: -1 })
+      .lean();
+
+    // Agregar campo tipo_usuario para compatibilidad
+    return comentarios.map(comentario => ({
+      ...comentario,
+      id_comentario: comentario._id,
+      tipo_usuario_id: comentario.id_usuario?.id_tipo_usuario,
+      tipo_usuario: comentario.id_usuario?.id_tipo_usuario === 1 ? 'Ciudadano' : 'Autoridad',
+      nombres: comentario.id_usuario?.nombres,
+      apellidos: comentario.id_usuario?.apellidos
+    }));
+  } catch (error) {
+    throw error;
+  }
+};
+
+comentarioSchema.statics.actualizar = async function(id, nuevoComentario) {
+  try {
+    await this.findByIdAndUpdate(
+      id,
+      { comentario: nuevoComentario },
+      { new: true }
+    );
+
+    return await this.obtenerPorId(id);
+  } catch (error) {
+    throw error;
+  }
+};
+
+comentarioSchema.statics.eliminar = async function(id) {
+  try {
+    const resultado = await this.findByIdAndDelete(id);
+    return resultado !== null;
+  } catch (error) {
+    throw error;
+  }
+};
+
+comentarioSchema.statics.perteneceAUsuario = async function(idComentario, idUsuario) {
+  try {
+    const comentario = await this.findOne({
+      _id: idComentario,
+      id_usuario: idUsuario
+    });
+    return comentario !== null;
+  } catch (error) {
+    throw error;
+  }
+};
+
+comentarioSchema.statics.obtenerEstadisticas = async function(idDenuncia) {
+  try {
+    const estadisticas = await this.aggregate([
+      { $match: { id_denuncia: new mongoose.Types.ObjectId(idDenuncia) } },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: 1 },
+          publicos: {
+            $sum: { $cond: [{ $eq: ['$es_interno', false] }, 1, 0] }
+          },
+          internos: {
+            $sum: { $cond: [{ $eq: ['$es_interno', true] }, 1, 0] }
+          },
+          primer_comentario: { $min: '$fecha_comentario' },
+          ultimo_comentario: { $max: '$fecha_comentario' }
+        }
       }
+    ]);
 
-      query += ' ORDER BY c.fecha_comentario DESC';
-
-      const [comentarios] = await db.execute(query, [idDenuncia]);
-
-      return comentarios;
-    } catch (error) {
-      throw error;
-    }
-  },
-
-  /**
-   * Actualizar un comentario
-   * @param {number} id - ID del comentario
-   * @param {string} nuevoComentario - Nuevo texto del comentario
-   * @returns {Promise<Object>} Comentario actualizado
-   */
-  async actualizar(id, nuevoComentario) {
-    try {
-      const query = `
-        UPDATE comentarios
-        SET comentario = ?
-        WHERE id_comentario = ?
-      `;
-
-      await db.execute(query, [nuevoComentario, id]);
-
-      return await this.obtenerPorId(id);
-    } catch (error) {
-      throw error;
-    }
-  },
-
-  /**
-   * Eliminar un comentario
-   * @param {number} id - ID del comentario
-   * @returns {Promise<boolean>} True si se eliminó correctamente
-   */
-  async eliminar(id) {
-    try {
-      const query = 'DELETE FROM comentarios WHERE id_comentario = ?';
-      const [resultado] = await db.execute(query, [id]);
-
-      return resultado.affectedRows > 0;
-    } catch (error) {
-      throw error;
-    }
-  },
-
-  /**
-   * Verificar si un comentario pertenece a un usuario
-   * @param {number} idComentario - ID del comentario
-   * @param {number} idUsuario - ID del usuario
-   * @returns {Promise<boolean>} True si el comentario pertenece al usuario
-   */
-  async perteneceAUsuario(idComentario, idUsuario) {
-    try {
-      const query = `
-        SELECT id_comentario
-        FROM comentarios
-        WHERE id_comentario = ? AND id_usuario = ?
-      `;
-
-      const [resultados] = await db.execute(query, [idComentario, idUsuario]);
-
-      return resultados.length > 0;
-    } catch (error) {
-      throw error;
-    }
-  },
-
-  /**
-   * Obtener estadísticas de comentarios de una denuncia
-   * @param {number} idDenuncia - ID de la denuncia
-   * @returns {Promise<Object>} Estadísticas
-   */
-  async obtenerEstadisticas(idDenuncia) {
-    try {
-      const query = `
-        SELECT
-          COUNT(*) as total,
-          SUM(CASE WHEN es_interno = FALSE THEN 1 ELSE 0 END) as publicos,
-          SUM(CASE WHEN es_interno = TRUE THEN 1 ELSE 0 END) as internos,
-          MIN(fecha_comentario) as primer_comentario,
-          MAX(fecha_comentario) as ultimo_comentario
-        FROM comentarios
-        WHERE id_denuncia = ?
-      `;
-
-      const [estadisticas] = await db.execute(query, [idDenuncia]);
-
-      return estadisticas[0] || {
+    if (estadisticas.length === 0) {
+      return {
         total: 0,
         publicos: 0,
         internos: 0,
         primer_comentario: null,
         ultimo_comentario: null
       };
-    } catch (error) {
-      throw error;
     }
+
+    return estadisticas[0];
+  } catch (error) {
+    throw error;
   }
 };
 
-module.exports = Comentario;
+const Comentario = mongoose.model('Comentario', comentarioSchema);
+
+export default Comentario;

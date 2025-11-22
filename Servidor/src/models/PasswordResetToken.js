@@ -1,94 +1,112 @@
-import { pool } from '../config/database.js';
+import mongoose from 'mongoose';
 import crypto from 'crypto';
 
-class PasswordResetToken {
-  // Generar token único
-  static generarToken() {
-    return crypto.randomBytes(32).toString('hex');
+const passwordResetTokenSchema = new mongoose.Schema({
+  id_usuario: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Usuario',
+    required: true
+  },
+  token: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  fecha_expiracion: {
+    type: Date,
+    required: true
+  },
+  ip_solicitud: {
+    type: String,
+    default: null
+  },
+  usado: {
+    type: Boolean,
+    default: false
+  },
+  fecha_creacion: {
+    type: Date,
+    default: Date.now
   }
+}, {
+  timestamps: true,
+  collection: 'password_reset_tokens'
+});
 
-  // Crear token de recuperación
-  static async crear(id_usuario, ip_solicitud = null) {
-    const token = this.generarToken();
-    const fecha_expiracion = new Date(Date.now() + 60 * 60 * 1000); // 1 hora
+// Índices
+passwordResetTokenSchema.index({ token: 1 });
+passwordResetTokenSchema.index({ id_usuario: 1 });
+passwordResetTokenSchema.index({ fecha_expiracion: 1 });
 
-    const query = `
-      INSERT INTO password_reset_token (id_usuario, token, fecha_expiracion, ip_solicitud)
-      VALUES (?, ?, ?, ?)
-    `;
+// Método estático para generar token único
+passwordResetTokenSchema.statics.generarToken = function() {
+  return crypto.randomBytes(32).toString('hex');
+};
 
-    await pool.execute(query, [
-      id_usuario,
-      token,
-      fecha_expiracion,
-      ip_solicitud
-    ]);
+// Método estático para crear token de recuperación
+passwordResetTokenSchema.statics.crear = async function(id_usuario, ip_solicitud = null) {
+  const token = this.generarToken();
+  const fecha_expiracion = new Date(Date.now() + 60 * 60 * 1000); // 1 hora
 
-    return token;
-  }
+  const resetToken = new this({
+    id_usuario,
+    token,
+    fecha_expiracion,
+    ip_solicitud
+  });
 
-  // Buscar token válido
-  static async buscarTokenValido(token) {
-    const query = `
-      SELECT prt.*, u.email, u.nombres, u.apellidos
-      FROM password_reset_token prt
-      INNER JOIN usuario u ON prt.id_usuario = u.id_usuario
-      WHERE prt.token = ?
-        AND prt.usado = FALSE
-        AND prt.fecha_expiracion > NOW()
-    `;
+  await resetToken.save();
+  return token;
+};
 
-    const [rows] = await pool.execute(query, [token]);
-    return rows[0] || null;
-  }
+// Método estático para buscar token válido
+passwordResetTokenSchema.statics.buscarTokenValido = async function(token) {
+  return await this.findOne({
+    token,
+    usado: false,
+    fecha_expiracion: { $gt: new Date() }
+  }).populate('id_usuario', 'email nombres apellidos');
+};
 
-  // Marcar token como usado
-  static async marcarComoUsado(token) {
-    const query = `
-      UPDATE password_reset_token
-      SET usado = TRUE
-      WHERE token = ?
-    `;
+// Método estático para marcar token como usado
+passwordResetTokenSchema.statics.marcarComoUsado = async function(token) {
+  const resultado = await this.updateOne(
+    { token },
+    { usado: true }
+  );
+  return resultado.modifiedCount > 0;
+};
 
-    const [resultado] = await pool.execute(query, [token]);
-    return resultado.affectedRows > 0;
-  }
+// Método estático para invalidar todos los tokens de un usuario
+passwordResetTokenSchema.statics.invalidarTokensUsuario = async function(id_usuario) {
+  await this.updateMany(
+    { id_usuario, usado: false },
+    { usado: true }
+  );
+};
 
-  // Invalidar todos los tokens de un usuario
-  static async invalidarTokensUsuario(id_usuario) {
-    const query = `
-      UPDATE password_reset_token
-      SET usado = TRUE
-      WHERE id_usuario = ? AND usado = FALSE
-    `;
+// Método estático para limpiar tokens expirados
+passwordResetTokenSchema.statics.limpiarTokensExpirados = async function() {
+  const resultado = await this.deleteMany({
+    $or: [
+      { fecha_expiracion: { $lt: new Date() } },
+      { usado: true }
+    ]
+  });
+  return resultado.deletedCount;
+};
 
-    await pool.execute(query, [id_usuario]);
-  }
+// Método estático para verificar si existe un token reciente
+passwordResetTokenSchema.statics.existeTokenReciente = async function(id_usuario, minutos = 5) {
+  const fechaLimite = new Date(Date.now() - minutos * 60 * 1000);
+  const count = await this.countDocuments({
+    id_usuario,
+    fecha_creacion: { $gt: fechaLimite },
+    usado: false
+  });
+  return count > 0;
+};
 
-  // Limpiar tokens expirados (mantenimiento)
-  static async limpiarTokensExpirados() {
-    const query = `
-      DELETE FROM password_reset_token
-      WHERE fecha_expiracion < NOW() OR usado = TRUE
-    `;
-
-    const [resultado] = await pool.execute(query);
-    return resultado.affectedRows;
-  }
-
-  // Verificar si existe un token reciente para el usuario (prevenir spam)
-  static async existeTokenReciente(id_usuario, minutos = 5) {
-    const query = `
-      SELECT COUNT(*) as count
-      FROM password_reset_token
-      WHERE id_usuario = ?
-        AND fecha_creacion > DATE_SUB(NOW(), INTERVAL ? MINUTE)
-        AND usado = FALSE
-    `;
-
-    const [rows] = await pool.execute(query, [id_usuario, minutos]);
-    return rows[0].count > 0;
-  }
-}
+const PasswordResetToken = mongoose.model('PasswordResetToken', passwordResetTokenSchema);
 
 export default PasswordResetToken;
