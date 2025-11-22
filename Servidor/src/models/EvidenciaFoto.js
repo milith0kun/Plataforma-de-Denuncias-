@@ -1,198 +1,93 @@
-/**
- * Modelo para gestión de Evidencias Fotográficas de Denuncias
- */
+import mongoose from 'mongoose';
 
-import pool from '../config/database.js';
+const evidenciaFotoSchema = new mongoose.Schema({
+  id_denuncia: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Denuncia',
+    required: true
+  },
+  url_archivo: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  nombre_archivo: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  fecha_carga: {
+    type: Date,
+    default: Date.now
+  }
+}, {
+  timestamps: true,
+  collection: 'evidencias_foto'
+});
 
-class EvidenciaFoto {
-  /**
-   * Crear una nueva evidencia
-   * @param {Object} datosEvidencia - Datos de la evidencia
-   * @returns {Promise<number>} ID de la evidencia creada
-   */
-  static async crear(datosEvidencia) {
-    try {
-      const { id_denuncia, url_archivo, nombre_archivo } = datosEvidencia;
+// Índices
+evidenciaFotoSchema.index({ id_denuncia: 1 });
+evidenciaFotoSchema.index({ fecha_carga: -1 });
 
-      const [resultado] = await pool.query(
-        `INSERT INTO evidencia_foto (id_denuncia, url_archivo, nombre_archivo, fecha_carga)
-        VALUES (?, ?, ?, NOW())`,
-        [id_denuncia, url_archivo, nombre_archivo || null]
-      );
+// Virtual para id_evidencia (para compatibilidad con controladores)
+evidenciaFotoSchema.virtual('id_evidencia').get(function() {
+  return this._id;
+});
 
-      return resultado.insertId;
-    } catch (error) {
-      console.error('Error al crear evidencia:', error);
-      throw error;
-    }
+// Configurar toJSON para incluir virtuals
+evidenciaFotoSchema.set('toJSON', { virtuals: true });
+evidenciaFotoSchema.set('toObject', { virtuals: true });
+
+// Métodos estáticos
+evidenciaFotoSchema.statics.crear = async function(datosEvidencia) {
+  const evidencia = new this(datosEvidencia);
+  return await evidencia.save();
+};
+
+evidenciaFotoSchema.statics.crearMultiples = async function(id_denuncia, evidencias) {
+  const evidenciasConDenuncia = evidencias.map(ev => ({
+    ...ev,
+    id_denuncia
+  }));
+  return await this.insertMany(evidenciasConDenuncia);
+};
+
+evidenciaFotoSchema.statics.obtenerPorDenuncia = async function(id_denuncia) {
+  return await this.find({ id_denuncia }).sort({ fecha_carga: 1 });
+};
+
+evidenciaFotoSchema.statics.obtenerPorId = async function(id_evidencia) {
+  return await this.findById(id_evidencia);
+};
+
+evidenciaFotoSchema.statics.eliminar = async function(id_evidencia) {
+  const evidencia = await this.findById(id_evidencia);
+  if (!evidencia) {
+    throw new Error('Evidencia no encontrada');
   }
 
-  /**
-   * Crear múltiples evidencias de una vez
-   * @param {number} id_denuncia - ID de la denuncia
-   * @param {Array<string>} urls - Array de URLs de archivos
-   * @returns {Promise<Array<number>>} Array de IDs de evidencias creadas
-   */
-  static async crearMultiples(id_denuncia, evidencias) {
-    const connection = await pool.getConnection();
+  const url_archivo = evidencia.url_archivo;
+  await evidencia.deleteOne();
 
-    try {
-      await connection.beginTransaction();
+  return {
+    success: true,
+    url_archivo
+  };
+};
 
-      const ids = [];
+evidenciaFotoSchema.statics.eliminarPorDenuncia = async function(id_denuncia) {
+  const evidencias = await this.find({ id_denuncia });
+  const urls = evidencias.map(e => e.url_archivo);
 
-      for (const evidencia of evidencias) {
-        const [resultado] = await connection.query(
-          `INSERT INTO evidencia_foto (id_denuncia, url_archivo, nombre_archivo, fecha_carga)
-          VALUES (?, ?, ?, NOW())`,
-          [id_denuncia, evidencia.url_archivo, evidencia.nombre_archivo || null]
-        );
-        ids.push(resultado.insertId);
-      }
+  await this.deleteMany({ id_denuncia });
 
-      await connection.commit();
-      return ids;
-    } catch (error) {
-      await connection.rollback();
-      console.error('Error al crear evidencias múltiples:', error);
-      throw error;
-    } finally {
-      connection.release();
-    }
-  }
+  return urls;
+};
 
-  /**
-   * Obtener todas las evidencias de una denuncia
-   * @param {number} id_denuncia - ID de la denuncia
-   * @returns {Promise<Array>} Lista de evidencias
-   */
-  static async obtenerPorDenuncia(id_denuncia) {
-    try {
-      const [evidencias] = await pool.query(
-        `SELECT
-          id_evidencia,
-          id_denuncia,
-          url_archivo,
-          nombre_archivo,
-          fecha_carga
-        FROM evidencia_foto
-        WHERE id_denuncia = ?
-        ORDER BY fecha_carga ASC`,
-        [id_denuncia]
-      );
+evidenciaFotoSchema.statics.contarPorDenuncia = async function(id_denuncia) {
+  return await this.countDocuments({ id_denuncia });
+};
 
-      return evidencias;
-    } catch (error) {
-      console.error('Error al obtener evidencias:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Obtener una evidencia por ID
-   * @param {number} id_evidencia - ID de la evidencia
-   * @returns {Promise<Object|null>} Datos de la evidencia o null
-   */
-  static async obtenerPorId(id_evidencia) {
-    try {
-      const [evidencias] = await pool.query(
-        `SELECT
-          id_evidencia,
-          id_denuncia,
-          url_archivo,
-          nombre_archivo,
-          fecha_carga
-        FROM evidencia_foto
-        WHERE id_evidencia = ?`,
-        [id_evidencia]
-      );
-
-      return evidencias[0] || null;
-    } catch (error) {
-      console.error('Error al obtener evidencia por ID:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Eliminar una evidencia
-   * @param {number} id_evidencia - ID de la evidencia
-   * @returns {Promise<Object>} { success, url_archivo }
-   */
-  static async eliminar(id_evidencia) {
-    try {
-      // Primero obtener la URL para poder eliminar el archivo físico
-      const evidencia = await this.obtenerPorId(id_evidencia);
-
-      if (!evidencia) {
-        throw new Error('Evidencia no encontrada');
-      }
-
-      const [resultado] = await pool.query(
-        'DELETE FROM evidencia_foto WHERE id_evidencia = ?',
-        [id_evidencia]
-      );
-
-      return {
-        success: resultado.affectedRows > 0,
-        url_archivo: evidencia.url_archivo
-      };
-    } catch (error) {
-      console.error('Error al eliminar evidencia:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Eliminar todas las evidencias de una denuncia
-   * @param {number} id_denuncia - ID de la denuncia
-   * @returns {Promise<Array>} Array de URLs de archivos eliminados
-   */
-  static async eliminarPorDenuncia(id_denuncia) {
-    const connection = await pool.getConnection();
-
-    try {
-      await connection.beginTransaction();
-
-      // Obtener URLs antes de eliminar
-      const evidencias = await this.obtenerPorDenuncia(id_denuncia);
-      const urls = evidencias.map(e => e.url_archivo);
-
-      // Eliminar de la base de datos
-      await connection.query(
-        'DELETE FROM evidencia_foto WHERE id_denuncia = ?',
-        [id_denuncia]
-      );
-
-      await connection.commit();
-      return urls;
-    } catch (error) {
-      await connection.rollback();
-      console.error('Error al eliminar evidencias por denuncia:', error);
-      throw error;
-    } finally {
-      connection.release();
-    }
-  }
-
-  /**
-   * Contar evidencias de una denuncia
-   * @param {number} id_denuncia - ID de la denuncia
-   * @returns {Promise<number>} Cantidad de evidencias
-   */
-  static async contarPorDenuncia(id_denuncia) {
-    try {
-      const [resultado] = await pool.query(
-        'SELECT COUNT(*) as total FROM evidencia_foto WHERE id_denuncia = ?',
-        [id_denuncia]
-      );
-
-      return resultado[0].total;
-    } catch (error) {
-      console.error('Error al contar evidencias:', error);
-      throw error;
-    }
-  }
-}
+const EvidenciaFoto = mongoose.model('EvidenciaFoto', evidenciaFotoSchema);
 
 export default EvidenciaFoto;

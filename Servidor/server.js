@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import app from './src/app.js';
-import { verificarConexion } from './src/config/database.js';
+import { conectarDB } from './src/config/database.js';
 
 dotenv.config();
 
@@ -9,9 +9,9 @@ const PORT = process.env.PORT || 5000;
 // Iniciar servidor
 const iniciarServidor = async () => {
   try {
-    // Verificar conexión a la base de datos
-    const conexionExitosa = await verificarConexion();
-    
+    // Conectar a la base de datos MongoDB
+    const conexionExitosa = await conectarDB();
+
     if (!conexionExitosa) {
       console.error('No se pudo conectar a la base de datos. Verifica tu configuración.');
       process.exit(1);
