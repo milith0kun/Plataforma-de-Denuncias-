@@ -1,178 +1,181 @@
-import { pool } from '../config/database.js';
+import mongoose from 'mongoose';
 
-class Usuario {
-  // Crear nuevo usuario (ciudadano o autoridad)
-  static async crear(datosUsuario) {
-    const { 
-      id_tipo_usuario, 
-      nombres, 
-      apellidos, 
-      documento_identidad, 
-      email, 
-      telefono, 
-      direccion_registro, 
-      password_hash,
-      // Campos específicos de autoridad
-      cargo,
-      area_responsabilidad,
-      numero_empleado,
-      fecha_ingreso,
-      estado_verificacion
-    } = datosUsuario;
-    
-    const query = `
-      INSERT INTO usuario (
-        id_tipo_usuario, nombres, apellidos, documento_identidad, email, telefono, direccion_registro, password_hash,
-        cargo, area_responsabilidad, numero_empleado, fecha_ingreso, estado_verificacion
-      )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-    
-    const [resultado] = await pool.execute(query, [
-      id_tipo_usuario,
-      nombres,
-      apellidos,
-      documento_identidad,
-      email,
-      telefono || null,
-      direccion_registro || null,
-      password_hash,
-      cargo || null,
-      area_responsabilidad || null,
-      numero_empleado || null,
-      fecha_ingreso || null,
-      estado_verificacion || 'aprobado'
-    ]);
-    
-    return resultado.insertId;
+const usuarioSchema = new mongoose.Schema({
+  id_tipo_usuario: {
+    type: Number,
+    required: true,
+    enum: [1, 2], // 1: Ciudadano, 2: Autoridad
+    default: 1
+  },
+  nombres: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  apellidos: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  documento_identidad: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true
+  },
+  telefono: {
+    type: String,
+    trim: true,
+    default: null
+  },
+  direccion_registro: {
+    type: String,
+    trim: true,
+    default: null
+  },
+  password_hash: {
+    type: String,
+    required: true
+  },
+  // Campos específicos de autoridad
+  cargo: {
+    type: String,
+    trim: true,
+    default: null
+  },
+  area_responsabilidad: {
+    type: String,
+    trim: true,
+    default: null
+  },
+  numero_empleado: {
+    type: String,
+    trim: true,
+    unique: true,
+    sparse: true, // permite múltiples valores null
+    default: null
+  },
+  fecha_ingreso: {
+    type: Date,
+    default: null
+  },
+  estado_verificacion: {
+    type: String,
+    enum: ['pendiente', 'aprobado', 'rechazado'],
+    default: 'aprobado'
+  },
+  // Campos de control
+  activo: {
+    type: Boolean,
+    default: true
+  },
+  fecha_registro: {
+    type: Date,
+    default: Date.now
   }
+}, {
+  timestamps: true,
+  collection: 'usuarios'
+});
 
-  // Buscar usuario por email
-  static async buscarPorEmail(email) {
-    const query = `
-      SELECT u.*, t.nombre as nombre_tipo 
-      FROM usuario u
-      INNER JOIN tipo_usuario t ON u.id_tipo_usuario = t.id_tipo_usuario
-      WHERE u.email = ?
-    `;
-    
-    const [rows] = await pool.execute(query, [email]);
-    return rows[0] || null;
-  }
+// Índices
+usuarioSchema.index({ email: 1 });
+usuarioSchema.index({ documento_identidad: 1 });
+usuarioSchema.index({ numero_empleado: 1 }, { sparse: true });
 
-  // Buscar usuario por ID
-  static async buscarPorId(id_usuario) {
-    try {
-      const query = `
-        SELECT u.id_usuario, u.id_tipo_usuario, u.nombres, u.apellidos, u.documento_identidad, 
-               u.email, u.telefono, u.direccion_registro, u.activo, u.fecha_registro, 
-               COALESCE(t.nombre, 'Sin tipo') as nombre_tipo,
-               u.cargo, u.area_responsabilidad, u.numero_empleado, u.fecha_ingreso, u.estado_verificacion
-        FROM usuario u
-        LEFT JOIN tipo_usuario t ON u.id_tipo_usuario = t.id_tipo_usuario
-        WHERE u.id_usuario = ?
-      `;
-      
-      const [rows] = await pool.execute(query, [id_usuario]);
-      return rows[0] || null;
-    } catch (error) {
-      console.error('Error en buscarPorId:', error);
-      throw error;
-    }
-  }
+// Virtual para nombre completo
+usuarioSchema.virtual('nombreCompleto').get(function() {
+  return `${this.nombres} ${this.apellidos}`;
+});
 
-  // Buscar por documento de identidad
-  static async buscarPorDocumento(documento_identidad) {
-    const query = `SELECT * FROM usuario WHERE documento_identidad = ?`;
-    const [rows] = await pool.execute(query, [documento_identidad]);
-    return rows[0] || null;
-  }
+// Virtual para nombre de tipo de usuario
+usuarioSchema.virtual('nombre_tipo').get(function() {
+  return this.id_tipo_usuario === 1 ? 'Ciudadano' : 'Autoridad';
+});
 
-  // Verificar si el email ya existe
-  static async emailExiste(email) {
-    const query = `SELECT COUNT(*) as count FROM usuario WHERE email = ?`;
-    const [rows] = await pool.execute(query, [email]);
-    return rows[0].count > 0;
-  }
+// Virtual para id_usuario (para compatibilidad con controladores)
+usuarioSchema.virtual('id_usuario').get(function() {
+  return this._id;
+});
 
-  // Verificar si el documento ya existe
-  static async documentoExiste(documento_identidad) {
-    const query = `SELECT COUNT(*) as count FROM usuario WHERE documento_identidad = ?`;
-    const [rows] = await pool.execute(query, [documento_identidad]);
-    return rows[0].count > 0;
-  }
+// Configurar toJSON para incluir virtuals
+usuarioSchema.set('toJSON', { virtuals: true });
+usuarioSchema.set('toObject', { virtuals: true });
 
-  // Verificar si el número de empleado ya existe
-  static async numeroEmpleadoExiste(numero_empleado) {
-    const query = `SELECT COUNT(*) as count FROM usuario WHERE numero_empleado = ?`;
-    const [rows] = await pool.execute(query, [numero_empleado]);
-    return rows[0].count > 0;
-  }
+// Métodos estáticos
+usuarioSchema.statics.crear = async function(datosUsuario) {
+  const usuario = new this(datosUsuario);
+  await usuario.save();
+  return usuario._id;
+};
 
-  // Actualizar perfil de usuario
-  static async actualizarPerfil(id_usuario, datosActualizacion) {
-    const { nombres, apellidos, telefono, direccion } = datosActualizacion;
-    
-    const query = `
-      UPDATE usuario 
-      SET nombres = ?, apellidos = ?, telefono = ?, direccion_registro = ?
-      WHERE id_usuario = ?
-    `;
-    
-    const [resultado] = await pool.execute(query, [
-      nombres,
-      apellidos,
-      telefono || null,
-      direccion || null,
-      id_usuario
-    ]);
-    
-    return resultado.affectedRows > 0;
-  }
+usuarioSchema.statics.buscarPorEmail = async function(email) {
+  return await this.findOne({ email: email.toLowerCase() });
+};
 
-  // Cambiar contraseña
-  static async cambiarPassword(id_usuario, nuevoPasswordHash) {
-    const query = `
-      UPDATE usuario 
-      SET password_hash = ?
-      WHERE id_usuario = ?
-    `;
-    
-    const [resultado] = await pool.execute(query, [nuevoPasswordHash, id_usuario]);
-    return resultado.affectedRows > 0;
-  }
+usuarioSchema.statics.buscarPorId = async function(id_usuario) {
+  return await this.findById(id_usuario);
+};
 
-  // Verificar contraseña actual
-  static async verificarPassword(id_usuario, passwordHash) {
-    const query = `SELECT password_hash FROM usuario WHERE id_usuario = ?`;
-    const [rows] = await pool.execute(query, [id_usuario]);
-    
-    if (rows.length === 0) {
-      return false;
-    }
-    
-    return rows[0].password_hash;
-  }
+usuarioSchema.statics.buscarPorDocumento = async function(documento_identidad) {
+  return await this.findOne({ documento_identidad });
+};
 
-  // Obtener historial de actividad del usuario (placeholder para futuras implementaciones)
-  static async obtenerHistorialActividad(id_usuario, limite = 10) {
-    // Por ahora retornamos un array vacío, se implementará cuando tengamos tabla de auditoría
-    return [];
-  }
+usuarioSchema.statics.emailExiste = async function(email) {
+  const count = await this.countDocuments({ email: email.toLowerCase() });
+  return count > 0;
+};
 
-  // Verificar si email existe para otro usuario (útil para actualizaciones)
-  static async emailExisteParaOtroUsuario(email, id_usuario) {
-    const query = `SELECT COUNT(*) as count FROM usuario WHERE email = ? AND id_usuario != ?`;
-    const [rows] = await pool.execute(query, [email, id_usuario]);
-    return rows[0].count > 0;
-  }
+usuarioSchema.statics.documentoExiste = async function(documento_identidad) {
+  const count = await this.countDocuments({ documento_identidad });
+  return count > 0;
+};
 
-  // Verificar si documento existe para otro usuario (útil para actualizaciones)
-  static async documentoExisteParaOtroUsuario(documento_identidad, id_usuario) {
-    const query = `SELECT COUNT(*) as count FROM usuario WHERE documento_identidad = ? AND id_usuario != ?`;
-    const [rows] = await pool.execute(query, [documento_identidad, id_usuario]);
-    return rows[0].count > 0;
-  }
-}
+usuarioSchema.statics.numeroEmpleadoExiste = async function(numero_empleado) {
+  const count = await this.countDocuments({ numero_empleado });
+  return count > 0;
+};
+
+usuarioSchema.statics.emailExisteParaOtroUsuario = async function(email, id_usuario) {
+  const count = await this.countDocuments({
+    email: email.toLowerCase(),
+    _id: { $ne: id_usuario }
+  });
+  return count > 0;
+};
+
+usuarioSchema.statics.documentoExisteParaOtroUsuario = async function(documento_identidad, id_usuario) {
+  const count = await this.countDocuments({
+    documento_identidad,
+    _id: { $ne: id_usuario }
+  });
+  return count > 0;
+};
+
+// Métodos de instancia
+usuarioSchema.methods.actualizarPerfil = async function(datosActualizacion) {
+  const { nombres, apellidos, telefono, direccion } = datosActualizacion;
+
+  if (nombres) this.nombres = nombres;
+  if (apellidos) this.apellidos = apellidos;
+  if (telefono !== undefined) this.telefono = telefono;
+  if (direccion !== undefined) this.direccion_registro = direccion;
+
+  return await this.save();
+};
+
+usuarioSchema.methods.cambiarPassword = async function(nuevoPasswordHash) {
+  this.password_hash = nuevoPasswordHash;
+  return await this.save();
+};
+
+const Usuario = mongoose.model('Usuario', usuarioSchema);
 
 export default Usuario;
