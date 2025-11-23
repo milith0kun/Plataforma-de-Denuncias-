@@ -112,10 +112,12 @@ class AuthController {
       });
     } catch (error) {
       console.error('Error en registro de ciudadano:', error);
+      console.error('Stack:', error.stack);
       res.status(500).json({
         success: false,
         message: 'Error al registrar usuario',
-        error: error.message
+        error: error.message,
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
       });
     }
   }
@@ -213,13 +215,13 @@ class AuthController {
   // Registro de autoridad
   static async registroAutoridad(req, res) {
     try {
-      const { 
-        nombres, 
-        apellidos, 
-        documento_identidad, 
-        email, 
-        telefono, 
-        direccion_registro, 
+      const {
+        nombres,
+        apellidos,
+        documento_identidad,
+        email,
+        telefono,
+        direccion_registro,
         password,
         cargo,
         area_responsabilidad,

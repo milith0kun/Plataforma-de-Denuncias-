@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary-main) 100%);
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
   padding: var(--spacing-lg);
   position: relative;
   overflow: hidden;
@@ -28,7 +28,7 @@
 }
 
 .login-card {
-  background: var(--color-neutral-white);
+  background: var(--color-white);
   border-radius: var(--border-radius-xl);
   box-shadow: var(--shadow-xl);
   padding: var(--spacing-3xl);
@@ -61,14 +61,14 @@
   font-size: var(--font-size-h1);
   font-weight: var(--font-weight-bold);
   font-family: var(--font-headings);
-  color: var(--color-neutral-dark);
+  color: var(--color-text-primary);
   margin-bottom: var(--spacing-md);
   line-height: 1.2;
 }
 
 .login-subtitle {
   font-size: var(--font-size-large);
-  color: var(--color-neutral-dark);
+  color: var(--color-text-primary);
   font-weight: var(--font-weight-medium);
   opacity: 0.7;
 }
@@ -86,7 +86,7 @@
 
 .forgot-password-link {
   font-size: var(--font-size-small);
-  color: var(--color-primary-main);
+  color: var(--color-primary);
   text-decoration: none;
   transition: all 0.3s ease;
   font-weight: var(--font-weight-medium);
@@ -102,12 +102,12 @@
   text-align: center;
   margin-top: var(--spacing-xl);
   font-size: var(--font-size-base);
-  color: var(--color-neutral-dark);
+  color: var(--color-text-primary);
   opacity: 0.7;
 }
 
 .register-link a {
-  color: var(--color-primary-main);
+  color: var(--color-primary);
   text-decoration: none;
   font-weight: var(--font-weight-semibold);
   transition: all 0.3s ease;
@@ -125,12 +125,12 @@
   text-align: center;
   margin-top: var(--spacing-md);
   font-size: var(--font-size-sm);
-  color: var(--color-neutral-dark);
+  color: var(--color-text-primary);
   opacity: 0.6;
 }
 
 .authority-link a {
-  color: var(--color-secondary-main);
+  color: var(--color-primary-light);
   text-decoration: none;
   font-weight: var(--font-weight-medium);
   transition: all 0.3s ease;
@@ -139,7 +139,7 @@
 }
 
 .authority-link a:hover {
-  color: var(--color-secondary-dark);
+  color: var(--color-primary-dark);
   background: rgba(139, 69, 19, 0.1);
   transform: translateY(-1px);
 }

@@ -42,8 +42,8 @@
 }
 
 .button-primary {
-  background-color: var(--color-primary-main);
-  color: var(--color-neutral-white);
+  background-color: var(--color-primary);
+  color: var(--color-white);
   box-shadow: var(--shadow-md);
 }
 
@@ -56,19 +56,19 @@
 .button-secondary {
   background-color: var(--color-primary-light);
   color: var(--color-primary-dark);
-  border: 2px solid var(--color-primary-main);
+  border: 2px solid var(--color-primary);
 }
 
 .button-secondary:hover:not(:disabled) {
-  background-color: var(--color-primary-main);
-  color: var(--color-neutral-white);
+  background-color: var(--color-primary);
+  color: var(--color-white);
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
 
 .button-danger {
   background-color: var(--color-danger);
-  color: var(--color-neutral-white);
+  color: var(--color-white);
   box-shadow: var(--shadow-md);
 }
 

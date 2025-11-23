@@ -66,7 +66,7 @@ denunciaSchema.index({ fecha_registro: -1 });
 denunciaSchema.index({ titulo: 'text', descripcion_detallada: 'text' });
 
 // Virtual para id_denuncia (para compatibilidad con controladores)
-denunciaSchema.virtual('id_denuncia').get(function() {
+denunciaSchema.virtual('id_denuncia').get(function () {
   return this._id;
 });
 
@@ -75,13 +75,12 @@ denunciaSchema.set('toJSON', { virtuals: true });
 denunciaSchema.set('toObject', { virtuals: true });
 
 // Middleware para actualizar fecha de última actualización
-denunciaSchema.pre('save', function(next) {
+denunciaSchema.pre('save', function () {
   this.ultima_actualizacion = new Date();
-  next();
 });
 
 // Métodos estáticos
-denunciaSchema.statics.crear = async function(datosDenuncia) {
+denunciaSchema.statics.crear = async function (datosDenuncia) {
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -145,7 +144,7 @@ denunciaSchema.statics.crear = async function(datosDenuncia) {
   }
 };
 
-denunciaSchema.statics.obtenerPorId = async function(id_denuncia) {
+denunciaSchema.statics.obtenerPorId = async function (id_denuncia) {
   try {
     const denuncia = await this.findById(id_denuncia)
       .populate('id_categoria', 'nombre')
@@ -186,7 +185,7 @@ denunciaSchema.statics.obtenerPorId = async function(id_denuncia) {
   }
 };
 
-denunciaSchema.statics.obtenerConFiltros = async function(filtros = {}, paginacion = {}) {
+denunciaSchema.statics.obtenerConFiltros = async function (filtros = {}, paginacion = {}) {
   try {
     const {
       id_ciudadano,
@@ -294,7 +293,7 @@ denunciaSchema.statics.obtenerConFiltros = async function(filtros = {}, paginaci
   }
 };
 
-denunciaSchema.statics.cambiarEstado = async function(id_denuncia, id_estado_nuevo, id_usuario, comentario) {
+denunciaSchema.statics.cambiarEstado = async function (id_denuncia, id_estado_nuevo, id_usuario, comentario) {
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -333,7 +332,7 @@ denunciaSchema.statics.cambiarEstado = async function(id_denuncia, id_estado_nue
   }
 };
 
-denunciaSchema.statics.obtenerHistorialEstados = async function(id_denuncia) {
+denunciaSchema.statics.obtenerHistorialEstados = async function (id_denuncia) {
   try {
     return await HistorialEstado.obtenerPorDenuncia(id_denuncia);
   } catch (error) {
@@ -342,7 +341,7 @@ denunciaSchema.statics.obtenerHistorialEstados = async function(id_denuncia) {
   }
 };
 
-denunciaSchema.statics.actualizar = async function(id_denuncia, datos) {
+denunciaSchema.statics.actualizar = async function (id_denuncia, datos) {
   try {
     const camposPermitidos = ['titulo', 'descripcion_detallada', 'latitud', 'longitud', 'direccion_geolocalizada'];
     const datosActualizacion = {};
@@ -372,7 +371,7 @@ denunciaSchema.statics.actualizar = async function(id_denuncia, datos) {
   }
 };
 
-denunciaSchema.statics.eliminar = async function(id_denuncia) {
+denunciaSchema.statics.eliminar = async function (id_denuncia) {
   const session = await mongoose.startSession();
   session.startTransaction();
 

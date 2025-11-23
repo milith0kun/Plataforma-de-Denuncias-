@@ -40,7 +40,7 @@
 }
 
 .metricCard:hover .metricValue {
-  color: var(--color-primary-main);
+  color: var(--color-primary);
 }
 
 /* Efecto de brillo sutil */

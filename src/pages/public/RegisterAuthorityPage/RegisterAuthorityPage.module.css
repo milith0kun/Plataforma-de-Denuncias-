@@ -1,7 +1,7 @@
 /* Página de registro de autoridades */
 .registerAuthorityPage {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
   display: flex;
   flex-direction: column;
 }
@@ -21,8 +21,8 @@
 }
 
 .registerCard {
-  background: white;
-  border-radius: 16px;
+  background: var(--color-white);
+  border-radius: var(--border-radius-xl);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   animation: slideUp 0.6s ease-out;
@@ -33,6 +33,7 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -40,8 +41,8 @@
 }
 
 .header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
+  color: var(--color-white);
   padding: 2rem;
   text-align: center;
 }
@@ -69,10 +70,10 @@
 .sectionTitle {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #2d3748;
+  color: var(--color-gray-800);
   margin: 0 0 1rem 0;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid #e2e8f0;
+  border-bottom: 2px solid var(--color-gray-200);
 }
 
 .row {
@@ -88,7 +89,7 @@
 .label {
   display: block;
   font-weight: 600;
-  color: #374151;
+  color: var(--color-gray-700);
   margin-bottom: 0.5rem;
   font-size: 0.875rem;
 }
@@ -96,31 +97,31 @@
 .input {
   width: 100%;
   padding: 0.75rem 1rem;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--color-gray-200);
   border-radius: 8px;
   font-size: 1rem;
   transition: all 0.2s ease;
-  background-color: #f9fafb;
+  background-color: var(--color-gray-50);
 }
 
 .input:focus {
   outline: none;
-  border-color: #667eea;
-  background-color: white;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--color-primary);
+  background-color: var(--color-white);
+  box-shadow: 0 0 0 3px rgba(21, 53, 149, 0.1);
 }
 
 .input::placeholder {
-  color: #9ca3af;
+  color: var(--color-gray-400);
 }
 
 .inputError {
-  border-color: #ef4444;
+  border-color: var(--color-danger);
   background-color: #fef2f2;
 }
 
 .inputError:focus {
-  border-color: #ef4444;
+  border-color: var(--color-danger);
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
 }
 
@@ -137,17 +138,17 @@
   border: none;
   cursor: pointer;
   font-size: 1.25rem;
-  color: #6b7280;
+  color: var(--color-gray-500);
   transition: color 0.2s ease;
 }
 
 .passwordToggle:hover {
-  color: #374151;
+  color: var(--color-gray-700);
 }
 
 .errorMessage {
   display: block;
-  color: #ef4444;
+  color: var(--color-danger);
   font-size: 0.875rem;
   margin-top: 0.25rem;
   font-weight: 500;
@@ -158,7 +159,7 @@
 }
 
 .helpText {
-  color: #6b7280;
+  color: var(--color-gray-500);
   font-size: 0.75rem;
   line-height: 1.4;
 }
@@ -183,10 +184,10 @@
   padding: 0.875rem 2rem;
   font-size: 1.1rem;
   font-weight: 600;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
   border: none;
   border-radius: 8px;
-  color: white;
+  color: var(--color-white);
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
@@ -197,7 +198,7 @@
 
 .submitButton:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 10px 20px rgba(21, 53, 149, 0.3);
 }
 
 .submitButton:disabled {
@@ -207,27 +208,27 @@
 }
 
 .footer {
-  background-color: #f8fafc;
+  background-color: var(--color-gray-50);
   padding: 1.5rem 2rem;
   text-align: center;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--color-gray-200);
 }
 
 .footer p {
   margin: 0.5rem 0;
-  color: #64748b;
+  color: var(--color-gray-500);
   font-size: 0.875rem;
 }
 
 .link {
-  color: #667eea;
+  color: var(--color-primary);
   text-decoration: none;
   font-weight: 600;
   transition: color 0.2s ease;
 }
 
 .link:hover {
-  color: #5a67d8;
+  color: var(--color-primary-dark);
   text-decoration: underline;
 }
 
@@ -236,36 +237,36 @@
   .main {
     padding: 1rem;
   }
-  
+
   .container {
     max-width: 100%;
   }
-  
+
   .header {
     padding: 1.5rem;
   }
-  
+
   .title {
     font-size: 1.75rem;
   }
-  
+
   .subtitle {
     font-size: 1rem;
   }
-  
+
   .form {
     padding: 1.5rem;
   }
-  
+
   .row {
     grid-template-columns: 1fr;
     gap: 0;
   }
-  
+
   .sectionTitle {
     font-size: 1.125rem;
   }
-  
+
   .footer {
     padding: 1rem 1.5rem;
   }
@@ -275,28 +276,28 @@
   .main {
     padding: 0.5rem;
   }
-  
+
   .registerCard {
     border-radius: 8px;
   }
-  
+
   .header {
     padding: 1rem;
   }
-  
+
   .title {
     font-size: 1.5rem;
   }
-  
+
   .form {
     padding: 1rem;
   }
-  
+
   .input {
     padding: 0.625rem 0.75rem;
     font-size: 0.875rem;
   }
-  
+
   .submitButton {
     font-size: 1rem;
     padding: 0.75rem 1.5rem;

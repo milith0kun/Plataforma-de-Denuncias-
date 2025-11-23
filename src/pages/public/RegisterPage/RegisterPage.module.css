@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--gradient-primary);
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
   padding: 40px 20px;
   position: relative;
   overflow: hidden;
@@ -21,14 +21,21 @@
 }
 
 @keyframes floatReverse {
-  0%, 100% { transform: translateX(0px) rotate(0deg); }
-  50% { transform: translateX(30px) rotate(-180deg); }
+
+  0%,
+  100% {
+    transform: translateX(0px) rotate(0deg);
+  }
+
+  50% {
+    transform: translateX(30px) rotate(-180deg);
+  }
 }
 
 .register-card {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 20px;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+  background: var(--color-white);
+  border-radius: var(--border-radius-xl);
+  box-shadow: var(--shadow-xl);
   padding: 48px;
   width: 100%;
   max-width: 650px;
@@ -44,20 +51,18 @@
 }
 
 .register-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  background: var(--gradient-primary-45);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+  font-family: var(--font-headings);
+  color: var(--color-text-primary);
   margin-bottom: 12px;
   line-height: 1.2;
 }
 
 .register-subtitle {
-  font-size: 1.1rem;
-  color: #64748b;
-  font-weight: 500;
+  font-size: var(--font-size-large);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
 }
 
 .register-form {
@@ -74,44 +79,44 @@
 
 .login-link {
   text-align: center;
-  margin-top: 32px;
-  font-size: 0.95rem;
-  color: #64748b;
+  margin-top: var(--spacing-xl);
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
 }
 
 .login-link a {
-  color: #667eea;
+  color: var(--color-primary);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   transition: all 0.3s ease;
   padding: 2px 4px;
   border-radius: 4px;
 }
 
 .login-link a:hover {
-  color: #764ba2;
-  background: rgba(102, 126, 234, 0.1);
+  color: var(--color-primary-dark);
+  background: rgba(21, 53, 149, 0.1);
   transform: translateY(-1px);
 }
 
 .authority-link {
   text-align: center;
-  margin-top: 16px;
-  color: #64748b;
-  font-size: 0.875rem;
+  margin-top: var(--spacing-md);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
 }
 
 .authority-link a {
-  color: #10b981;
+  color: var(--color-success);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   transition: all 0.3s ease;
   padding: 2px 4px;
   border-radius: 4px;
 }
 
 .authority-link a:hover {
-  color: #059669;
+  color: #047857;
   background: rgba(16, 185, 129, 0.1);
   transform: translateY(-1px);
 }
@@ -121,15 +126,15 @@
     padding: 32px 24px;
     margin: 16px;
   }
-  
+
   .register-title {
     font-size: 2rem;
   }
-  
+
   .register-subtitle {
     font-size: 1rem;
   }
-  
+
   .form-row {
     grid-template-columns: 1fr;
     gap: 0;

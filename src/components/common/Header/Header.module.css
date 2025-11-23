@@ -27,7 +27,7 @@
 .logo {
   font-size: var(--font-size-h4);
   font-weight: var(--font-weight-bold);
-  color: var(--color-neutral-white);
+  color: var(--color-white);
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -57,7 +57,7 @@
   font-family: var(--font-headings);
   font-size: var(--font-size-h4);
   font-weight: var(--font-weight-bold);
-  color: var(--color-neutral-white);
+  color: var(--color-white);
   display: none;
 }
 
@@ -69,7 +69,7 @@
 }
 
 .navLink {
-  color: var(--color-neutral-white);
+  color: var(--color-white);
   text-decoration: none;
   font-weight: var(--font-weight-medium);
   padding: var(--spacing-xs) var(--spacing-md);
@@ -80,20 +80,20 @@
 
 .navLink:hover {
   background: rgba(255, 255, 255, 0.15);
-  color: var(--color-neutral-white);
+  color: var(--color-white);
   transform: translateY(-1px);
 }
 
 .navButton {
-  background: var(--color-primary-main);
-  color: var(--color-neutral-white);
+  background: var(--color-primary);
+  color: var(--color-white);
   text-decoration: none;
   font-weight: var(--font-weight-semibold);
   padding: var(--spacing-sm) var(--spacing-lg);
   border-radius: var(--border-radius-md);
   transition: all 0.3s ease;
   font-size: var(--font-size-base);
-  border: 2px solid var(--color-primary-main);
+  border: 2px solid var(--color-primary);
 }
 
 .navButton:hover {
@@ -128,13 +128,13 @@
 
 .navMenu .navLink:hover {
   background: rgba(255, 255, 255, 0.15);
-  color: var(--color-neutral-white);
+  color: var(--color-white);
   transform: translateY(-1px);
 }
 
 .navLinkActivo {
   background: rgba(255, 255, 255, 0.25) !important;
-  color: var(--color-neutral-white) !important;
+  color: var(--color-white) !important;
   font-weight: var(--font-weight-semibold) !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -155,7 +155,7 @@
   position: relative;
   background: rgba(255, 255, 255, 0.1);
   border: none;
-  color: var(--color-neutral-white);
+  color: var(--color-white);
   cursor: pointer;
   padding: var(--spacing-sm);
   border-radius: var(--border-radius-lg);
@@ -177,7 +177,7 @@
   top: 2px;
   right: 2px;
   background-color: var(--color-danger);
-  color: var(--color-neutral-white);
+  color: var(--color-white);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   padding: 2px 6px;
@@ -198,7 +198,7 @@
   gap: var(--spacing-sm);
   background: rgba(255, 255, 255, 0.15);
   border: none;
-  color: var(--color-neutral-white);
+  color: var(--color-white);
   padding: var(--spacing-xs) var(--spacing-md);
   border-radius: 25px;
   cursor: pointer;
@@ -215,14 +215,14 @@
 .avatar {
   width: 36px;
   height: 36px;
-  background: linear-gradient(135deg, var(--color-primary-main), var(--color-primary-light));
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-sm);
-  color: var(--color-neutral-white);
+  color: var(--color-white);
   border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
@@ -271,14 +271,14 @@
 .profileAvatar {
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, var(--color-primary-main), var(--color-primary-light));
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-lg);
-  color: var(--color-neutral-white);
+  color: var(--color-white);
   border: 3px solid rgba(255, 255, 255, 0.5);
 }
 
@@ -294,15 +294,15 @@
 }
 
 .profileEmail {
-  color: var(--color-neutral-dark);
+  color: var(--color-text-primary);
   font-size: var(--font-size-sm);
   margin-bottom: var(--spacing-xs);
   opacity: 0.7;
 }
 
 .profileType {
-  background: linear-gradient(135deg, var(--color-primary-main), var(--color-primary-light));
-  color: var(--color-neutral-white);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: var(--color-white);
   padding: 2px var(--spacing-xs);
   border-radius: var(--border-radius-lg);
   font-size: var(--font-size-xs);
@@ -335,20 +335,20 @@
 }
 
 .profileAction:hover {
-  background-color: var(--color-neutral-light);
+  background-color: var(--color-gray-100);
   color: var(--color-primary-dark);
   transform: translateX(4px);
 }
 
 .logoutAction {
-  border-top: 1px solid var(--color-neutral-light);
+  border-top: 1px solid var(--color-gray-100);
   margin-top: var(--spacing-xs);
   padding-top: var(--spacing-md);
   color: var(--color-danger);
 }
 
 .logoutAction:hover {
-  background-color: rgba(245, 31, 27, 0.1);
+  background-color: rgba(239, 68, 68, 0.1);
   color: var(--color-danger);
 }
 
@@ -364,7 +364,7 @@
   flex-direction: column;
   background: rgba(255, 255, 255, 0.1);
   border: 2px solid rgba(255, 255, 255, 0.2);
-  color: var(--color-neutral-white);
+  color: var(--color-white);
   cursor: pointer;
   padding: var(--spacing-xs);
   border-radius: var(--border-radius-md);
@@ -382,7 +382,7 @@
 .hamburger {
   width: 24px;
   height: 3px;
-  background-color: var(--color-neutral-white);
+  background-color: var(--color-white);
   border-radius: 2px;
   transition: all 0.3s ease;
 }
@@ -407,7 +407,7 @@
 }
 
 .mobileNavLink {
-  color: var(--color-neutral-white);
+  color: var(--color-white);
   text-decoration: none;
   font-weight: var(--font-weight-medium);
   padding: var(--spacing-md);
@@ -421,15 +421,15 @@
 }
 
 .mobileNavButton {
-  background: var(--color-primary-main);
-  color: var(--color-neutral-white);
+  background: var(--color-primary);
+  color: var(--color-white);
   text-decoration: none;
   font-weight: var(--font-weight-semibold);
   padding: var(--spacing-md);
   border-radius: var(--border-radius-md);
   transition: all 0.3s ease;
   text-align: center;
-  border: 2px solid var(--color-primary-main);
+  border: 2px solid var(--color-primary);
 }
 
 .mobileNavButton:hover {

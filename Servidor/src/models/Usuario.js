@@ -20,13 +20,11 @@ const usuarioSchema = new mongoose.Schema({
   documento_identidad: {
     type: String,
     required: true,
-    unique: true,
     trim: true
   },
   email: {
     type: String,
     required: true,
-    unique: true,
     trim: true,
     lowercase: true
   },
@@ -58,7 +56,6 @@ const usuarioSchema = new mongoose.Schema({
   numero_empleado: {
     type: String,
     trim: true,
-    unique: true,
     sparse: true, // permite múltiples valores null
     default: null
   },
@@ -85,10 +82,10 @@ const usuarioSchema = new mongoose.Schema({
   collection: 'usuarios'
 });
 
-// Índices
-usuarioSchema.index({ email: 1 });
-usuarioSchema.index({ documento_identidad: 1 });
-usuarioSchema.index({ numero_empleado: 1 }, { sparse: true });
+// Índices únicos (declarados solo una vez)
+usuarioSchema.index({ email: 1 }, { unique: true });
+usuarioSchema.index({ documento_identidad: 1 }, { unique: true });
+usuarioSchema.index({ numero_empleado: 1 }, { unique: true, sparse: true });
 
 // Virtual para nombre completo
 usuarioSchema.virtual('nombreCompleto').get(function() {

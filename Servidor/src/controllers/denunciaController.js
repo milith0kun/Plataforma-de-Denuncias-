@@ -75,7 +75,8 @@ class DenunciaController {
       console.error('Error en crearDenuncia:', error);
       res.status(500).json({
         success: false,
-        message: MENSAJES_ERROR.ERROR_SERVIDOR || 'Error al crear la denuncia'
+        message: MENSAJES_ERROR.ERROR_SERVIDOR || 'Error al crear la denuncia',
+        error_detail: error.message // Temporal para depuración
       });
     }
   }

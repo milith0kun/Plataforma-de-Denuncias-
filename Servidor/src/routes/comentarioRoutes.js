@@ -4,12 +4,12 @@
 
 import express from 'express';
 import * as comentarioController from '../controllers/comentarioController.js';
-import authMiddleware from '../middlewares/authMiddleware.js';
+import { verificarToken } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
 // Todas las rutas requieren autenticación
-router.use(authMiddleware);
+router.use(verificarToken);
 
 // Rutas de comentarios por denuncia
 router.post('/denuncias/:id/comentarios', comentarioController.crearComentario);
