@@ -3,14 +3,14 @@
  * Maneja la lógica de comentarios en denuncias
  */
 
-const Comentario = require('../models/Comentario');
-const Denuncia = require('../models/Denuncia');
-const { TIPOS_USUARIO } = require('../utils/constants');
+import Comentario from '../models/Comentario.js';
+import Denuncia from '../models/Denuncia.js';
+import { TIPOS_USUARIO } from '../utils/constants.js';
 
 /**
  * Crear un nuevo comentario en una denuncia
  */
-exports.crearComentario = async (req, res) => {
+export const crearComentario = async (req, res) => {
   try {
     const { id } = req.params; // ID de la denuncia
     const { comentario, es_interno } = req.body;
@@ -87,7 +87,7 @@ exports.crearComentario = async (req, res) => {
 /**
  * Obtener comentarios de una denuncia
  */
-exports.obtenerComentarios = async (req, res) => {
+export const obtenerComentarios = async (req, res) => {
   try {
     const { id } = req.params; // ID de la denuncia
     const tipoUsuario = req.usuario.tipo_usuario_id;
@@ -130,7 +130,7 @@ exports.obtenerComentarios = async (req, res) => {
 /**
  * Actualizar un comentario
  */
-exports.actualizarComentario = async (req, res) => {
+export const actualizarComentario = async (req, res) => {
   try {
     const { idComentario } = req.params;
     const { comentario } = req.body;
@@ -195,7 +195,7 @@ exports.actualizarComentario = async (req, res) => {
 /**
  * Eliminar un comentario
  */
-exports.eliminarComentario = async (req, res) => {
+export const eliminarComentario = async (req, res) => {
   try {
     const { idComentario } = req.params;
     const idUsuario = req.usuario.id_usuario;
@@ -246,7 +246,7 @@ exports.eliminarComentario = async (req, res) => {
 /**
  * Obtener estadísticas de comentarios de una denuncia
  */
-exports.obtenerEstadisticas = async (req, res) => {
+export const obtenerEstadisticas = async (req, res) => {
   try {
     const { id } = req.params; // ID de la denuncia
 

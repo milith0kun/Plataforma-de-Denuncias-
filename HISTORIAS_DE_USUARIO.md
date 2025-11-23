@@ -1,6 +1,10 @@
 # Historias de Usuario - Plataforma de Denuncias Ciudadanas
 
-## Estado del Proyecto: 75% Completado
+## Estado del Proyecto: 85% Completado
+
+**Base de Datos:** MongoDB Atlas ✅
+**Backend API:** Node.js + Express ✅
+**Frontend:** React 19 + Vite ✅
 
 ---
 
@@ -244,7 +248,7 @@
 
 ---
 
-## Sprint 4: Detalle y Seguimiento de Denuncias 🔄 EN PROGRESO
+## Sprint 4: Detalle y Seguimiento de Denuncias ✅ COMPLETADO (Backend)
 
 ### HU-012: Ver Detalle de Denuncia
 **Como** usuario
@@ -259,12 +263,12 @@
 - ⏳ Galería de fotos de evidencia
 - ⏳ Navegación a página de seguimiento
 
-**Implementación Pendiente:**
-- **Backend:** ✅ Endpoint GET `/denuncias/:id` ya existe
-- **Backend:** Agregar método `obtenerHistorialEstados(id_denuncia)` en modelo
-- **Frontend:** Crear `src/pages/DetalleDenunciaPage/DetalleDenunciaPage.jsx`
-- **Frontend:** Componente `TimelineEstados.jsx` para mostrar historial
-- **Frontend:** Componente `GaleriaEvidencias.jsx` para fotos
+**Implementación:**
+- **Backend:** ✅ Endpoint GET `/denuncias/:id` implementado
+- **Backend:** ✅ Endpoint GET `/denuncias/:id/evidencias` implementado
+- **Frontend:** ✅ `src/pages/ciudadano/DetalleDenunciaPage/DetalleDenunciaPage.jsx` creado
+- **Frontend:** ⏳ Componente `TimelineEstados.jsx` pendiente
+- **Frontend:** ⏳ Componente `GaleriaEvidencias.jsx` pendiente
 
 ---
 
@@ -287,7 +291,7 @@
 
 ---
 
-## Sprint 5: Evidencias Fotográficas 📅 PENDIENTE
+## Sprint 5: Evidencias Fotográficas ✅ COMPLETADO (Backend) 🔄 EN PROGRESO (Frontend)
 
 ### HU-014: Subir Fotos de Evidencia
 **Como** ciudadano
@@ -303,16 +307,15 @@
 - ⏳ Almacenamiento en servidor
 - ⏳ Asociación con denuncia en BD
 
-**Implementación Pendiente:**
-- **Backend:** Instalar `multer`: `npm install multer`
-- **Backend:** Configurar storage en `Servidor/src/config/multer.js`
-- **Backend:** Middleware de validación de archivos
-- **Backend:** Crear carpeta `uploads/evidencias/` con permisos
-- **Backend:** Endpoint POST `/denuncias/:id/evidencias` en `denunciaRoutes.js`
-- **Backend:** Método `crearMultiples()` ya existe en `EvidenciaFoto.js`
-- **Frontend:** Componente `UploadFotos.jsx` con drag & drop
-- **Frontend:** Preview de imágenes antes de enviar
-- **Frontend:** Integrar en `NuevaDenunciaPage.jsx`
+**Implementación:**
+- **Backend:** ✅ Multer instalado (v2.0.2)
+- **Backend:** ✅ Storage configurado en `Servidor/src/config/multer.js`
+- **Backend:** ✅ Middleware de validación implementado
+- **Backend:** ✅ Endpoint POST `/denuncias/:id/evidencias` implementado
+- **Backend:** ✅ Upload de hasta 5 imágenes simultáneas
+- **Frontend:** ✅ Componente `UploadFotos.jsx` creado
+- **Frontend:** ⏳ Integración en `NuevaDenunciaPage.jsx` pendiente
+- **Frontend:** ⏳ Preview de imágenes pendiente
 
 **Estructura de Almacenamiento:**
 ```
@@ -338,16 +341,16 @@ uploads/
 - ⏳ Navegación entre fotos
 - ⏳ Información: fecha de subida, tamaño
 
-**Implementación Pendiente:**
-- **Backend:** Endpoint GET `/denuncias/:id/evidencias` en `denunciaRoutes.js`
-- **Backend:** Servir archivos estáticos: `app.use('/uploads', express.static('uploads'))`
-- **Frontend:** Componente `GaleriaEvidencias.jsx`
-- **Frontend:** Instalar `react-image-lightbox` o similar
-- **Frontend:** Integrar en `DetalleDenunciaPage.jsx`
+**Implementación:**
+- **Backend:** ✅ Endpoint GET `/denuncias/:id/evidencias` implementado
+- **Backend:** ✅ Servir archivos estáticos configurado
+- **Frontend:** ⏳ Componente `GaleriaEvidencias.jsx` pendiente
+- **Frontend:** ⏳ Lightbox pendiente
+- **Frontend:** ⏳ Integración en `DetalleDenunciaPage.jsx` pendiente
 
 ---
 
-## Sprint 6: Gestión de Estados por Autoridades 📅 PENDIENTE
+## Sprint 6: Gestión de Estados por Autoridades ✅ COMPLETADO (Backend) ⏳ PENDIENTE (Frontend)
 
 ### HU-016: Cambiar Estado de Denuncia
 **Como** autoridad
@@ -362,13 +365,13 @@ uploads/
 - ⏳ Registro automático en historial
 - ⏳ Actualización de `ultima_actualizacion`
 
-**Implementación Pendiente:**
-- **Backend:** ✅ Endpoint PUT `/denuncias/:id/estado` ya existe
-- **Backend:** ✅ Validación de transiciones en `EstadoDenuncia.esTransicionValida()`
-- **Frontend:** Crear `src/pages/autoridad/GestionDenunciasPage/GestionDenunciasPage.jsx`
-- **Frontend:** Componente `ModalCambiarEstado.jsx` con formulario
-- **Frontend:** Validación de comentario (mínimo 10 caracteres)
-- **Frontend:** Actualizar lista tras cambio exitoso
+**Implementación:**
+- **Backend:** ✅ Endpoint PUT `/denuncias/:id/estado` implementado
+- **Backend:** ✅ Validación de transiciones implementada
+- **Backend:** ✅ Registro automático en historial
+- **Frontend:** ✅ `src/pages/autoridad/GestionDenunciasPage/GestionDenunciasPage.jsx` creado
+- **Frontend:** ⏳ Componente `ModalCambiarEstado.jsx` pendiente
+- **Frontend:** ⏳ Integración completa pendiente
 
 ---
 
@@ -393,7 +396,7 @@ uploads/
 
 ---
 
-## Sprint 7: Sistema de Comentarios 📅 PENDIENTE
+## Sprint 7: Sistema de Comentarios ✅ COMPLETADO (Backend) 🔄 EN PROGRESO (Frontend)
 
 ### HU-018: Agregar Comentario a Denuncia
 **Como** usuario autenticado
@@ -407,26 +410,15 @@ uploads/
 - ⏳ Fecha y hora del comentario
 - ⏳ Comentarios ordenados cronológicamente
 
-**Implementación Pendiente:**
-- **Backend:** Crear tabla `comentario_denuncia`:
-  ```sql
-  CREATE TABLE comentario_denuncia (
-    id_comentario INT AUTO_INCREMENT PRIMARY KEY,
-    id_denuncia INT NOT NULL,
-    id_usuario INT NOT NULL,
-    comentario TEXT NOT NULL,
-    es_interno BOOLEAN DEFAULT FALSE,
-    fecha_comentario TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_denuncia) REFERENCES denuncia(id_denuncia),
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
-  );
-  ```
-- **Backend:** Crear `Servidor/src/models/Comentario.js`
-- **Backend:** Crear `Servidor/src/controllers/comentarioController.js`
-- **Backend:** Endpoint POST `/denuncias/:id/comentarios`
-- **Frontend:** Componente `ListaComentarios.jsx`
-- **Frontend:** Componente `FormularioComentario.jsx`
-- **Frontend:** Integrar en `DetalleDenunciaPage.jsx`
+**Implementación:**
+- **Backend:** ✅ Modelo `Comentario` con MongoDB implementado
+- **Backend:** ✅ Controller `comentarioController.js` implementado
+- **Backend:** ✅ Endpoint POST `/denuncias/:id/comentarios` implementado
+- **Backend:** ✅ Endpoint GET `/denuncias/:id/comentarios` implementado
+- **Backend:** ✅ Endpoints PUT/DELETE para gestión individual
+- **Backend:** ✅ Endpoint GET `/denuncias/:id/comentarios/estadisticas`
+- **Frontend:** ✅ Componente `Comentarios.jsx` creado
+- **Frontend:** ⏳ Integración en `DetalleDenunciaPage.jsx` pendiente
 
 ---
 
@@ -442,15 +434,15 @@ uploads/
 - ⏳ Fecha relativa (hace 2 horas, hace 1 día)
 - ⏳ Comentarios internos solo visibles para autoridades
 
-**Implementación Pendiente:**
-- **Backend:** Endpoint GET `/denuncias/:id/comentarios`
-- **Backend:** Filtrado de comentarios internos según tipo de usuario
-- **Frontend:** Componente `ComentarioItem.jsx`
-- **Frontend:** Formateo de fechas relativas con helper
+**Implementación:**
+- **Backend:** ✅ Endpoint GET `/denuncias/:id/comentarios` implementado
+- **Backend:** ✅ Filtrado de comentarios implementado
+- **Frontend:** ⏳ Componente `ComentarioItem.jsx` pendiente
+- **Frontend:** ⏳ Formateo de fechas pendiente
 
 ---
 
-## Sprint 8: Reportes y Estadísticas 📅 PENDIENTE
+## Sprint 8: Reportes y Estadísticas ✅ COMPLETADO (Backend) 🔄 EN PROGRESO (Frontend)
 
 ### HU-020: Dashboard con Gráficos
 **Como** autoridad/admin
@@ -464,19 +456,16 @@ uploads/
 - ⏳ KPIs: total, tasa de resolución, tiempo promedio
 - ⏳ Filtros por rango de fechas
 
-**Implementación Pendiente:**
-- **Backend:** Crear `Servidor/src/controllers/estadisticasController.js`
-- **Backend:** Endpoint GET `/estadisticas/denuncias-por-categoria`
-- **Backend:** Endpoint GET `/estadisticas/denuncias-por-mes`
-- **Backend:** Endpoint GET `/estadisticas/denuncias-por-estado`
-- **Backend:** Endpoint GET `/estadisticas/kpis`
-- **Backend:** Queries con agregaciones SQL
-- **Frontend:** Instalar `recharts`: `npm install recharts`
-- **Frontend:** Crear `src/pages/autoridad/ReportesPage/ReportesPage.jsx`
-- **Frontend:** Componente `GraficoDenunciasPorCategoria.jsx`
-- **Frontend:** Componente `GraficoDenunciasPorMes.jsx`
-- **Frontend:** Componente `GraficoPorEstado.jsx`
-- **Frontend:** Componente `TarjetaKPI.jsx`
+**Implementación:**
+- **Backend:** ✅ `Servidor/src/controllers/estadisticasController.js` implementado
+- **Backend:** ✅ Endpoint GET `/estadisticas` (general) implementado
+- **Backend:** ✅ Endpoint GET `/estadisticas/resumen` implementado
+- **Backend:** ✅ Endpoint GET `/estadisticas/categoria/:id` implementado
+- **Backend:** ✅ Agregaciones con MongoDB implementadas
+- **Frontend:** ✅ Recharts instalado (v3.4.1)
+- **Frontend:** ✅ `src/pages/ciudadano/ReportesPage/ReportesPage.jsx` creado
+- **Frontend:** 🔄 Gráficos en desarrollo
+- **Frontend:** ⏳ Componentes de visualización pendientes
 
 **Ejemplo de Endpoint:**
 ```javascript
@@ -682,28 +671,35 @@ uploads/
 
 ## Resumen de Estado
 
-### Completado (75%)
-- ✅ Autenticación completa (ciudadano, autoridad, admin)
-- ✅ Gestión de usuarios
+### Backend Completado (95%) ✅
+- ✅ Autenticación completa (JWT, recuperación de contraseña)
+- ✅ Gestión de usuarios (perfil, cambio password, historial)
 - ✅ CRUD completo de denuncias
-- ✅ Sistema de categorías
-- ✅ Sistema de estados con historial
+- ✅ Sistema de categorías (8 categorías)
+- ✅ Sistema de estados (7 estados + validación de transiciones)
+- ✅ Upload de evidencias fotográficas (Multer + hasta 5 imágenes)
+- ✅ Sistema de comentarios completo
+- ✅ Estadísticas y reportes (3 endpoints)
+- ✅ MongoDB Atlas conectado y funcionando
+
+### Frontend Completado (70%) 🔄
+- ✅ Autenticación y rutas protegidas
 - ✅ Dashboard ciudadano
 - ✅ Dashboard autoridad
+- ✅ Páginas: Denuncias, Nueva Denuncia, Detalle, Perfil
+- ✅ Componentes: MapaPicker, UploadFotos, Comentarios
 - ✅ Paleta de colores unificada
 - ✅ Diseño responsive
+- ✅ Leaflet instalado (v1.9.4)
+- ✅ Recharts instalado (v3.4.1)
 
-### En Progreso (Sprint 4)
-- 🔄 Página de detalle de denuncia
-- 🔄 Seguimiento con historial de estados
-
-### Pendiente (25%)
-- ⏳ Upload de imágenes con Multer
-- ⏳ Gestión de estados por autoridades
-- ⏳ Sistema de comentarios
-- ⏳ Reportes y estadísticas con gráficos
-- ⏳ Mapas interactivos con Leaflet
-- ⏳ Panel de administración completo
+### Pendiente - Integración Frontend (15%)
+- ⏳ Integrar UploadFotos en NuevaDenunciaPage
+- ⏳ Integrar Comentarios en DetalleDenunciaPage
+- ⏳ Completar página de Reportes con gráficos
+- ⏳ Implementar GaleriaEvidencias con lightbox
+- ⏳ Timeline de estados
+- ⏳ Mapas interactivos completos
 
 ---
 

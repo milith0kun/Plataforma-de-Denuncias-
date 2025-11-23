@@ -26,25 +26,25 @@
 }
 
 .alert-success {
-  background-color: rgba(165, 193, 235, 0.1);
-  color: var(--color-primary-dark);
-  border-color: var(--color-primary-light);
+  background-color: rgba(16, 185, 129, 0.1);
+  color: var(--color-success);
+  border-color: var(--color-success);
 }
 
 .alert-error {
-  background-color: rgba(245, 31, 27, 0.1);
+  background-color: rgba(239, 68, 68, 0.1);
   color: var(--color-danger);
   border-color: var(--color-danger);
 }
 
 .alert-warning {
-  background-color: rgba(245, 229, 120, 0.2);
-  color: #856404;
+  background-color: rgba(245, 158, 11, 0.1);
+  color: var(--color-warning);
   border-color: var(--color-warning);
 }
 
 .alert-info {
-  background-color: rgba(21, 53, 149, 0.1);
-  color: var(--color-primary-main);
-  border-color: var(--color-primary-main);
+  background-color: rgba(59, 130, 246, 0.1);
+  color: var(--color-info);
+  border-color: var(--color-info);
 }

@@ -2,12 +2,12 @@
 
 .landing-page {
   min-height: 100vh;
-  background: var(--color-neutral-white);
+  background: var(--color-white);
 }
 
 /* HEADER - ESPECÍFICO DE LANDING PAGE */
 .header {
-  background: var(--color-neutral-dark);
+  background: var(--color-text-primary);
   border-bottom: 1px solid #718096;
   position: sticky;
   top: 0;
@@ -29,7 +29,7 @@
   align-items: center;
   gap: var(--spacing-sm);
   text-decoration: none;
-  color: var(--color-neutral-dark);
+  color: var(--color-text-primary);
 }
 
 .logo-icon {
@@ -42,7 +42,7 @@
   font-family: var(--font-headings);
   font-size: var(--font-size-h4);
   font-weight: var(--font-weight-bold);
-  color: var(--color-neutral-white);
+  color: var(--color-white);
 }
 
 .nav {
@@ -52,7 +52,7 @@
 }
 
 .nav-link {
-  color: var(--color-neutral-white);
+  color: var(--color-white);
   text-decoration: none;
   font-weight: var(--font-weight-medium);
   padding: var(--spacing-xs) var(--spacing-md);
@@ -61,13 +61,13 @@
 }
 
 .nav-link:hover {
-  background: var(--color-neutral-light);
-  color: var(--color-primary-main);
+  background: var(--color-gray-100);
+  color: var(--color-primary);
 }
 
 .nav-button {
   background: var(--color);
-  color: var(--color-neutral-white);
+  color: var(--color-white);
   text-decoration: none;
   font-weight: var(--font-weight-medium);
   padding: var(--spacing-sm) var(--spacing-lg);
@@ -88,7 +88,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  color: var(--color-neutral-white);
+  color: var(--color-white);
   padding: var(--spacing-xl) 0;
   min-height: 80vh;
   display: flex;
@@ -133,8 +133,8 @@
 
 /* BOTONES - ESPECÍFICOS DE LANDING PAGE */
 .primary-button {
-  background: var(--color-neutral-white);
-  color: var(--color-primary-main);
+  background: var(--color-white);
+  color: var(--color-primary);
   text-decoration: none;
   font-weight: var(--font-weight-semibold);
   padding: var(--spacing-md) var(--spacing-xl);
@@ -144,26 +144,26 @@
 }
 
 .primary-button:hover {
-  background: var(--color-neutral-light);
+  background: var(--color-gray-100);
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
 
 .secondary-button {
   background: transparent;
-  color: var(--color-neutral-white);
+  color: var(--color-white);
   text-decoration: none;
   font-weight: var(--font-weight-semibold);
   padding: var(--spacing-md) var(--spacing-xl);
-  border: 2px solid var(--color-neutral-white);
+  border: 2px solid var(--color-white);
   border-radius: var(--border-radius-md);
   transition: all 0.3s ease;
   display: inline-block;
 }
 
 .secondary-button:hover {
-  background: var(--color-neutral-white);
-  color: var(--color-primary-main);
+  background: var(--color-white);
+  color: var(--color-primary);
   transform: translateY(-2px);
 }
 
@@ -176,7 +176,7 @@
 
 /* ESTADÍSTICAS - ESPECÍFICAS DE LANDING PAGE */
 .stats-section {
-  background: var(--color-neutral-light);
+  background: var(--color-gray-100);
   padding: var(--spacing-xl) 0;
 }
 
@@ -187,7 +187,7 @@
 }
 
 .stat-card {
-  background: var(--color-neutral-white);
+  background: var(--color-white);
   padding: var(--spacing-lg);
   border-radius: var(--border-radius-lg);
   text-align: center;
@@ -204,21 +204,21 @@
   font-family: var(--font-headings);
   font-size: var(--font-size-h2);
   font-weight: var(--font-weight-bold);
-  color: var(--color-primary-main);
+  color: var(--color-primary);
   display: block;
   margin-bottom: var(--spacing-xs);
 }
 
 .stat-label {
   font-size: var(--font-size-base);
-  color: var(--color-neutral-dark);
+  color: var(--color-text-primary);
   font-weight: var(--font-weight-medium);
 }
 
 /* BENEFICIOS - ESPECÍFICOS DE LANDING PAGE */
 .benefits-section {
   padding: var(--spacing-xl) 0;
-  background: var(--color-neutral-white);
+  background: var(--color-white);
 }
 
 .section-header {
@@ -236,7 +236,7 @@
 
 .section-subtitle {
   font-size: var(--font-size-lg);
-  color: var(--color-neutral-dark);
+  color: var(--color-text-primary);
   opacity: 0.8;
   max-width: 600px;
   margin: 0 auto;
@@ -250,13 +250,13 @@
 }
 
 .benefit-card {
-  background: var(--color-neutral-white);
+  background: var(--color-white);
   padding: var(--spacing-lg);
   border-radius: var(--border-radius-lg);
   text-align: center;
   box-shadow: var(--shadow-md);
   transition: all 0.3s ease;
-  border: 1px solid var(--color-neutral-light);
+  border: 1px solid var(--color-gray-100);
 }
 
 .benefit-card:hover {
@@ -299,13 +299,13 @@
   font-family: var(--font-headings);
   font-size: var(--font-size-h4);
   font-weight: var(--font-weight-bold);
-  color: var(--color-neutral-dark);
+  color: var(--color-text-primary);
   margin-bottom: var(--spacing-sm);
 }
 
 .benefit-description {
   font-size: var(--font-size-base);
-  color: var(--color-neutral-dark);
+  color: var(--color-text-primary);
   opacity: 0.8;
   line-height: 1.6;
   margin: 0;
@@ -314,7 +314,7 @@
 /* CÓMO FUNCIONA - ESPECÍFICO DE LANDING PAGE */
 .how-it-works-section {
   padding: var(--spacing-xl) 0;
-  background: var(--color-neutral-light);
+  background: var(--color-gray-100);
 }
 
 .steps-container {
@@ -325,7 +325,7 @@
 }
 
 .step-card {
-  background: var(--color-neutral-white);
+  background: var(--color-white);
   padding: var(--spacing-lg);
   border-radius: var(--border-radius-lg);
   text-align: center;
@@ -342,8 +342,8 @@
 .step-number {
   width: 60px;
   height: 60px;
-  background: var(--color-primary-main);
-  color: var(--color-neutral-white);
+  background: var(--color-primary);
+  color: var(--color-white);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -359,13 +359,13 @@
   font-family: var(--font-headings);
   font-size: var(--font-size-h4);
   font-weight: var(--font-weight-bold);
-  color: var(--color-neutral-dark);
+  color: var(--color-text-primary);
   margin-bottom: var(--spacing-sm);
 }
 
 .step-description {
   font-size: var(--font-size-base);
-  color: var(--color-neutral-dark);
+  color: var(--color-text-primary);
   opacity: 0.8;
   line-height: 1.6;
   margin: 0;
@@ -374,7 +374,7 @@
 /* CATEGORÍAS - ESPECÍFICAS DE LANDING PAGE */
 .categories-section {
   padding: var(--spacing-xl) 0;
-  background: var(--color-neutral-white);
+  background: var(--color-white);
 }
 
 .categories-grid {
@@ -384,13 +384,13 @@
 }
 
 .category-card {
-  background: var(--color-neutral-white);
+  background: var(--color-white);
   padding: var(--spacing-lg);
   border-radius: var(--border-radius-lg);
   text-align: center;
   box-shadow: var(--shadow-md);
   transition: all 0.3s ease;
-  border: 1px solid var(--color-neutral-light);
+  border: 1px solid var(--color-gray-100);
 }
 
 .category-card:hover {
@@ -433,13 +433,13 @@
   font-family: var(--font-headings);
   font-size: var(--font-size-h5);
   font-weight: var(--font-weight-bold);
-  color: var(--color-neutral-dark);
+  color: var(--color-text-primary);
   margin-bottom: var(--spacing-sm);
 }
 
 .category-description {
   font-size: var(--font-size-base);
-  color: var(--color-neutral-dark);
+  color: var(--color-text-primary);
   opacity: 0.8;
   line-height: 1.5;
   margin: 0;
@@ -451,7 +451,7 @@
   background-size: cover;
   background-position: top;
   background-repeat: no-repeat;
-  color: var(--color-neutral-white);
+  color: var(--color-white);
   padding: var(--spacing-xl) 0;
   text-align: center;
   position: relative;
@@ -502,41 +502,41 @@
 
 /* Estilos específicos para botones en CTA con imagen de fondo */
 .cta-section .primary-button {
-  background: var(--color-neutral-white);
-  color: var(--color-primary-main);
-  border: 2px solid var(--color-neutral-white);
+  background: var(--color-white);
+  color: var(--color-primary);
+  border: 2px solid var(--color-white);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   font-weight: var(--font-weight-bold);
 }
 
 .cta-section .primary-button:hover {
-  background: var(--color-primary-main);
-  color: var(--color-neutral-white);
-  border-color: var(--color-primary-main);
+  background: var(--color-primary);
+  color: var(--color-white);
+  border-color: var(--color-primary);
   transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .cta-section .secondary-button {
   background: rgba(255, 255, 255, 0.1);
-  color: var(--color-neutral-white);
-  border: 2px solid var(--color-neutral-white);
+  color: var(--color-white);
+  border: 2px solid var(--color-white);
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   font-weight: var(--font-weight-bold);
 }
 
 .cta-section .secondary-button:hover {
-  background: var(--color-neutral-white);
-  color: var(--color-primary-main);
+  background: var(--color-white);
+  color: var(--color-primary);
   transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* FOOTER - ESPECÍFICO DE LANDING PAGE */
 .footer {
-  background: var(--color-neutral-dark);
-  color: var(--color-neutral-white);
+  background: var(--color-text-primary);
+  color: var(--color-white);
   padding: var(--spacing-xl) 0 var(--spacing-lg);
 }
 
@@ -571,7 +571,7 @@
   font-size: var(--font-size-h5);
   font-weight: var(--font-weight-bold);
   margin-bottom: var(--spacing-md);
-  color: var(--color-neutral-white);
+  color: var(--color-white);
 }
 
 .footer-links {
@@ -585,7 +585,7 @@
 }
 
 .footer-links a {
-  color: var(--color-neutral-white);
+  color: var(--color-white);
   text-decoration: none;
   opacity: 0.8;
   transition: opacity 0.3s ease;
@@ -705,9 +705,9 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    var(--color-primary-main) 20%,
-    var(--color-secondary-main) 50%,
-    var(--color-primary-main) 80%,
+    var(--color-primary) 20%,
+    var(--color-primary-light) 50%,
+    var(--color-primary) 80%,
     transparent 100%
   );
   opacity: 0.8;
@@ -722,9 +722,9 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    var(--color-neutral-dark) 25%,
+    var(--color-text-primary) 25%,
     var(--color-primary-light) 50%,
-    var(--color-neutral-dark) 75%,
+    var(--color-text-primary) 75%,
     transparent 100%
   );
   margin: 0 auto;
@@ -758,9 +758,9 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    var(--color-neutral-dark) 25%,
-    var(--color-primary-main) 50%,
-    var(--color-neutral-dark) 75%,
+    var(--color-text-primary) 25%,
+    var(--color-primary) 50%,
+    var(--color-text-primary) 75%,
     transparent 100%
   );
   margin: 0 auto;
@@ -777,7 +777,7 @@
     90deg,
     transparent 0%,
     var(--color-primary-light) 35%,
-    var(--color-secondary-main) 50%,
+    var(--color-primary-light) 50%,
     var(--color-primary-light) 65%,
     transparent 100%
   );
@@ -796,9 +796,9 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    var(--color-neutral-white) 20%,
+    var(--color-white) 20%,
     var(--color-primary-light) 50%,
-    var(--color-neutral-white) 80%,
+    var(--color-white) 80%,
     transparent 100%
   );
   opacity: 0.7;

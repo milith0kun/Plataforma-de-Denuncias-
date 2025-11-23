@@ -1,7 +1,7 @@
 /* Contenedor principal */
 .pageContainer {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: linear-gradient(135deg, var(--color-bg-secondary) 0%, var(--color-border) 100%);
 }
 
 .container {
@@ -20,7 +20,7 @@
 .title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--color-text-primary);
   margin-bottom: 12px;
   background: var(--gradient-primary);
   -webkit-background-clip: text;
@@ -30,14 +30,14 @@
 
 .subtitle {
   font-size: 1.125rem;
-  color: #6b7280;
+  color: var(--color-text-secondary);
   font-weight: 400;
   line-height: 1.6;
 }
 
 /* Filtros */
 .filtros {
-  background: white;
+  background: var(--color-white);
   border-radius: 16px;
   padding: 24px;
   margin-bottom: 32px;
@@ -57,17 +57,17 @@
 
 .filtroLabel {
   font-weight: 500;
-  color: #374151;
+  color: var(--color-gray-700);
   font-size: 0.875rem;
 }
 
 .filtroSelect {
   padding: 8px 16px;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--color-border);
   border-radius: 8px;
   font-size: 0.875rem;
-  background: white;
-  color: #374151;
+  background: var(--color-white);
+  color: var(--color-gray-700);
   cursor: pointer;
   transition: all 0.3s ease;
   min-width: 150px;
@@ -75,8 +75,8 @@
 
 .filtroSelect:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(21, 53, 149, 0.1);
 }
 
 /* Estadísticas */
@@ -95,12 +95,12 @@
 .estadisticaNumero {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--color-text-primary);
 }
 
 .estadisticaLabel {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--color-text-secondary);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -114,7 +114,7 @@
 }
 
 .denunciaCard {
-  background: white;
+  background: var(--color-white);
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -155,14 +155,14 @@
 .denunciaTitle {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--color-text-primary);
   margin-bottom: 8px;
   line-height: 1.4;
 }
 
 .denunciaDescripcion {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--color-text-secondary);
   line-height: 1.5;
   margin: 0;
 }
@@ -232,7 +232,7 @@
   gap: 16px;
   margin-bottom: 20px;
   padding: 16px;
-  background-color: #f9fafb;
+  background-color: var(--color-bg-secondary);
   border-radius: 12px;
 }
 
@@ -248,7 +248,7 @@
 }
 
 .detailText {
-  color: #374151;
+  color: var(--color-gray-700);
   font-weight: 500;
 }
 
@@ -261,10 +261,10 @@
 
 .actionBtn {
   padding: 8px 16px;
-  border: 2px solid #667eea;
+  border: 2px solid var(--color-primary);
   border-radius: 8px;
   background: transparent;
-  color: #667eea;
+  color: var(--color-primary);
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
@@ -272,7 +272,7 @@
 }
 
 .actionBtn:hover {
-  background: #667eea;
+  background: var(--color-primary);
   color: white;
   transform: translateY(-1px);
 }
@@ -292,7 +292,7 @@
 .emptyState {
   text-align: center;
   padding: 60px 20px;
-  background: white;
+  background: var(--color-white);
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
@@ -306,13 +306,13 @@
 .emptyTitle {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--color-text-primary);
   margin-bottom: 12px;
 }
 
 .emptyText {
   font-size: 1rem;
-  color: #6b7280;
+  color: var(--color-text-secondary);
   margin-bottom: 24px;
   line-height: 1.6;
 }
@@ -406,6 +406,7 @@
 
 /* Accesibilidad */
 @media (prefers-reduced-motion: reduce) {
+
   .denunciaCard,
   .actionBtn,
   .emptyAction {
@@ -418,21 +419,21 @@
   .pageContainer {
     background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
   }
-  
+
   .filtros,
   .denunciaCard,
   .emptyState {
     background: #374151;
     border-color: #4b5563;
   }
-  
+
   .title,
   .denunciaTitle,
   .emptyTitle,
   .estadisticaNumero {
     color: #f9fafb;
   }
-  
+
   .subtitle,
   .denunciaDescripcion,
   .emptyText,
@@ -440,17 +441,17 @@
   .detailText {
     color: #d1d5db;
   }
-  
+
   .filtroLabel {
     color: #d1d5db;
   }
-  
+
   .filtroSelect {
     background: #4b5563;
     border-color: #6b7280;
     color: #f9fafb;
   }
-  
+
   .denunciaDetails {
     background-color: #4b5563;
   }

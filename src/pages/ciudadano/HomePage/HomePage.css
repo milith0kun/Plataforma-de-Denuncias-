@@ -11,7 +11,8 @@
   background-attachment: fixed;
   position: relative;
   overflow-x: hidden;
-  padding-top: 80px; /* Espacio para el header fijo */
+  padding-top: 80px;
+  /* Espacio para el header fijo */
 }
 
 /* Contenedor dashboard específico para HomePage */
@@ -28,7 +29,7 @@
   border-radius: var(--border-radius-xl);
   padding: var(--spacing-2xl);
   margin-bottom: var(--spacing-2xl);
-  box-shadow: 
+  box-shadow:
     0 10px 40px rgba(0, 0, 0, 0.08),
     0 4px 16px rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -49,7 +50,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--color-primary-main), var(--color-primary-light), var(--color-primary-main));
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light), var(--color-primary));
   border-radius: var(--border-radius-xl) var(--border-radius-xl) 0 0;
 }
 
@@ -61,10 +62,10 @@
   font-family: var(--font-headings);
   font-size: var(--font-size-h1);
   font-weight: var(--font-weight-bold);
-  color: var(--color-primary-main);
+  color: var(--color-primary);
   margin-bottom: var(--spacing-md);
   line-height: 1.2;
-  background: linear-gradient(135deg, var(--color-primary-main), var(--color-primary-dark));
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -92,7 +93,7 @@
 
 .user-info p {
   font-size: var(--font-size-base);
-  color: var(--color-neutral-dark);
+  color: var(--color-text-primary);
   font-weight: var(--font-weight-normal);
   margin: 0;
   display: flex;
@@ -116,12 +117,12 @@
 }
 
 .welcome-stats .stat-card {
-  background: linear-gradient(135deg, var(--color-primary-main), var(--color-primary-light));
-  color: var(--color-neutral-white);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: var(--color-white);
   padding: var(--spacing-xl);
   border-radius: var(--border-radius-xl);
   text-align: center;
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(117, 146, 235, 0.25),
     0 4px 16px rgba(117, 146, 235, 0.15);
   min-width: 140px;
@@ -176,7 +177,7 @@
   background: rgba(255, 255, 255, 0.95);
   border-radius: var(--border-radius-xl);
   padding: var(--spacing-xl);
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.06),
     0 4px 16px rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -191,7 +192,7 @@
 
 .stat-card:hover {
   transform: translateY(-8px) scale(1.02);
-  box-shadow: 
+  box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.12),
     0 8px 32px rgba(0, 0, 0, 0.08);
 }
@@ -203,7 +204,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--color-primary-main), var(--color-primary-light));
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light));
   transform: scaleX(0);
   transition: transform 0.4s ease;
 }
@@ -219,8 +220,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--color-primary-main), var(--color-primary-light));
-  color: var(--color-neutral-white);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: var(--color-white);
   flex-shrink: 0;
   box-shadow: 0 6px 20px rgba(117, 146, 235, 0.3);
   transition: all 0.3s ease;
@@ -258,7 +259,7 @@
 }
 
 .stat-card:hover .stat-number {
-  color: var(--color-primary-main);
+  color: var(--color-primary);
   transform: scale(1.05);
 }
 
@@ -266,7 +267,7 @@
   display: block;
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
-  color: var(--color-neutral-dark);
+  color: var(--color-text-primary);
   opacity: 0.8;
   transition: all 0.3s ease;
 }
@@ -300,7 +301,7 @@
   transform: translateX(-50%);
   width: 80px;
   height: 4px;
-  background: linear-gradient(90deg, var(--color-primary-main), var(--color-primary-light), var(--color-primary-main));
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light), var(--color-primary));
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(117, 146, 235, 0.3);
 }
@@ -317,7 +318,7 @@
   background: rgba(255, 255, 255, 0.95);
   border-radius: var(--border-radius-xl);
   padding: var(--spacing-xl);
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.06),
     0 4px 16px rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -335,7 +336,7 @@
 
 .quick-access-card:hover {
   transform: translateY(-12px) scale(1.03);
-  box-shadow: 
+  box-shadow:
     0 24px 80px rgba(0, 0, 0, 0.15),
     0 12px 40px rgba(0, 0, 0, 0.1);
 }
@@ -347,7 +348,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--color-primary-main), var(--color-primary-light));
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light));
   transform: scaleX(0);
   transition: transform 0.4s ease;
 }
@@ -379,8 +380,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--color-primary-main), var(--color-primary-light));
-  color: var(--color-neutral-white);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: var(--color-white);
   margin-bottom: var(--spacing-lg);
   box-shadow: 0 8px 32px rgba(117, 146, 235, 0.3);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -421,13 +422,13 @@
 }
 
 .quick-access-card:hover .quick-access-title {
-  color: var(--color-primary-main);
+  color: var(--color-primary);
   transform: translateY(-2px);
 }
 
 .quick-access-description {
   font-size: var(--font-size-base);
-  color: var(--color-neutral-dark);
+  color: var(--color-text-primary);
   font-weight: var(--font-weight-normal);
   opacity: 0.8;
   line-height: 1.5;
@@ -441,8 +442,8 @@
 }
 
 .quick-access-btn {
-  background: linear-gradient(135deg, var(--color-primary-main), var(--color-primary-light));
-  color: var(--color-neutral-white);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: var(--color-white);
   border: none;
   border-radius: var(--border-radius-lg);
   padding: var(--spacing-md) var(--spacing-xl);
@@ -487,7 +488,7 @@
   background: rgba(255, 255, 255, 0.95);
   border-radius: var(--border-radius-lg);
   padding: var(--spacing-xl);
-  box-shadow: 
+  box-shadow:
     0 6px 24px rgba(0, 0, 0, 0.06),
     0 3px 12px rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -504,7 +505,7 @@
   left: 0;
   width: 4px;
   height: 100%;
-  background: linear-gradient(180deg, var(--color-primary-main), var(--color-primary-light));
+  background: linear-gradient(180deg, var(--color-primary), var(--color-primary-light));
   transform: scaleY(0);
   transition: transform 0.3s ease;
 }
@@ -515,7 +516,7 @@
 
 .denuncia-card:hover {
   transform: translateX(8px);
-  box-shadow: 
+  box-shadow:
     0 12px 40px rgba(0, 0, 0, 0.1),
     0 6px 20px rgba(0, 0, 0, 0.06);
 }
@@ -540,7 +541,7 @@
 }
 
 .denuncia-card:hover .denuncia-title {
-  color: var(--color-primary-main);
+  color: var(--color-primary);
 }
 
 .denuncia-estado {
@@ -555,24 +556,24 @@
 }
 
 .denuncia-estado.pendiente {
-  background: linear-gradient(135deg, rgba(245, 229, 120, 0.2), rgba(245, 229, 120, 0.3));
-  color: #8B7000;
-  border: 1px solid rgba(245, 229, 120, 0.4);
-  box-shadow: 0 2px 8px rgba(245, 229, 120, 0.2);
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.2));
+  color: var(--color-estado-pendiente);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.1);
 }
 
 .denuncia-estado.enproceso {
-  background: linear-gradient(135deg, rgba(117, 146, 235, 0.2), rgba(117, 146, 235, 0.3));
-  color: var(--color-primary-main);
-  border: 1px solid rgba(117, 146, 235, 0.4);
-  box-shadow: 0 2px 8px rgba(117, 146, 235, 0.2);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.2));
+  color: var(--color-estado-en-proceso);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
 }
 
 .denuncia-estado.resuelto {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.3));
-  color: #15803d;
-  border: 1px solid rgba(34, 197, 94, 0.4);
-  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.2);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.2));
+  color: var(--color-estado-resuelta);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
 }
 
 .denuncia-info {
@@ -580,7 +581,7 @@
   justify-content: space-between;
   align-items: center;
   font-size: var(--font-size-small);
-  color: var(--color-neutral-dark);
+  color: var(--color-text-primary);
   opacity: 0.7;
   gap: var(--spacing-md);
   transition: all 0.3s ease;
@@ -592,7 +593,7 @@
 
 .denuncia-categoria {
   font-weight: var(--font-weight-semibold);
-  color: var(--color-primary-main);
+  color: var(--color-primary);
   background: rgba(117, 146, 235, 0.1);
   padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--border-radius-md);
@@ -601,7 +602,7 @@
 
 .denuncia-fecha {
   font-weight: var(--font-weight-medium);
-  color: var(--color-neutral-dark);
+  color: var(--color-text-primary);
   opacity: 0.8;
 }
 
@@ -610,7 +611,7 @@
   .stats-grid {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
-  
+
   .quick-access-grid {
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   }
@@ -620,7 +621,7 @@
   .dashboard-section {
     padding-top: 60px;
   }
-  
+
   .dashboard-container {
     padding: var(--spacing-lg) var(--spacing-md);
   }
@@ -663,12 +664,12 @@
     width: 70px;
     height: 70px;
   }
-  
+
   .welcome-stats .stat-card {
     min-width: 120px;
     padding: var(--spacing-lg);
   }
-  
+
   .welcome-stats .stat-number {
     font-size: var(--font-size-h2);
   }
@@ -678,22 +679,22 @@
   .dashboard-container {
     padding: var(--spacing-md) var(--spacing-sm);
   }
-  
+
   .welcome-section {
     padding: var(--spacing-lg);
   }
-  
+
   .quick-access-card {
     min-height: 220px;
     padding: var(--spacing-lg);
   }
-  
+
   .denuncia-header {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-sm);
   }
-  
+
   .denuncia-info {
     flex-direction: column;
     align-items: flex-start;

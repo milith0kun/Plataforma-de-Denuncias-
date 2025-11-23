@@ -2,7 +2,7 @@
 
 > Sistema integral para la gestión de denuncias ciudadanas con geolocalización, evidencia fotográfica y seguimiento en tiempo real.
 
-📚 **[Ver Índice Completo de Documentación](DOCS_INDEX.md)** | 🎨 **[Sistema de Diseño](DESIGN_SYSTEM.md)**
+📚 **[Inicio Rápido](INICIO_RAPIDO.md)** | 🧪 **[Verificación Final](VERIFICACION_FINAL.md)** | 🎨 **[Sistema de Diseño](DESIGN_SYSTEM.md)** | 📖 **[Historias de Usuario](HISTORIAS_DE_USUARIO.md)**
 
 ---
 
@@ -36,11 +36,12 @@ Plataforma web que permite a los ciudadanos reportar problemas urbanos (baches, 
 
 ### Backend
 - **Node.js** con Express.js
-- **MySQL 8.0+** - Base de datos
+- **MongoDB Atlas** - Base de datos en la nube
+- **Mongoose** - ODM para MongoDB
 - **JWT** - Autenticación
 - **Bcrypt** - Hash de contraseñas
 - **Express-validator** - Validaciones
-- **Nodemailer** - Envío de emails
+- **Multer** - Upload de archivos
 
 ---
 
@@ -66,11 +67,20 @@ Plataforma-de-Denuncias-/
 │       └── services/             # Servicios de negocio
 │
 ├── public/                       # Archivos estáticos
-├── README.md                     # Este archivo
-├── README_FRONTEND.md            # Documentación específica del frontend
-├── README_BACKEND.md             # Documentación específica del backend
-├── Frontend.md                   # Informe técnico frontend
-└── Backend.md                    # Informe técnico backend
+│
+├── 📚 Documentación/
+│   ├── INICIO_RAPIDO.md          # Guía de inicio rápido
+│   ├── VERIFICACION_FINAL.md     # Informe completo de testing y verificación
+│   ├── CORRECCIONES_ESTILOS.md   # Correcciones CSS aplicadas al sistema
+│   ├── INFORME_BACKEND.md        # Documentación técnica backend
+│   ├── INFORME_FRONTEND.md       # Documentación técnica frontend
+│   ├── INFORME_TESTING.md        # Procedimientos de testing
+│   ├── RESULTADOS_TESTS.md       # Resultados detallados de 17 pruebas
+│   ├── SPRINT_RESUMEN.md         # Resumen ejecutivo Sprint 8
+│   ├── HISTORIAS_DE_USUARIO.md   # Historias de usuario (85% completado)
+│   └── DESIGN_SYSTEM.md          # Sistema de diseño y colores
+│
+└── README.md                     # Este archivo
 ```
 
 ---
@@ -187,22 +197,19 @@ npm run dev
 
 ---
 
-## 📚 Documentación
+## 📚 Documentación del Proyecto
 
-### Documentación por Componente
+### 🚀 Guías de Inicio
+- **[INICIO_RAPIDO.md](INICIO_RAPIDO.md)** - Configuración e instalación rápida
 
-- **[README_FRONTEND.md](README_FRONTEND.md)** - Estado actual, estructura y guía del frontend
-- **[README_BACKEND.md](README_BACKEND.md)** - Estado actual, endpoints y guía del backend
+### 📊 Informes Técnicos por Área
+- **[INFORME_BACKEND.md](INFORME_BACKEND.md)** - API REST, modelos, endpoints (95% ✅)
+- **[INFORME_FRONTEND.md](INFORME_FRONTEND.md)** - Componentes, páginas, servicios (70% 🔄)
+- **[INFORME_TESTING.md](INFORME_TESTING.md)** - Pruebas ejecutadas y pendientes
 
-### Informes Técnicos Completos
-
-- **[Frontend.md](Frontend.md)** - Arquitectura, componentes y especificaciones técnicas del frontend
-- **[Backend.md](Backend.md)** - Arquitectura, API REST y especificaciones técnicas del backend
-
-### Recursos Adicionales
-
-- [Servidor/src/database/schema.sql](Servidor/src/database/schema.sql) - Esquema de base de datos
-- Variables CSS definidas en `src/index.css`
+### 📖 Planificación y Diseño
+- **[HISTORIAS_DE_USUARIO.md](HISTORIAS_DE_USUARIO.md)** - Estado 85%, sprints completados
+- **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** - Sistema de diseño, colores y tipografía
 
 ---
 
