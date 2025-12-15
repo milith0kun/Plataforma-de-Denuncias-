@@ -1,10 +1,24 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
-import Header from '../../../components/common/Header/Header';
 import Button from '../../../components/common/Button/Button';
 import Loading from '../../../components/common/Loading/Loading';
 import styles from './RegisterAuthorityPage.module.css';
+
+// Iconos SVG para mostrar/ocultar contraseña
+const EyeIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
+
+const EyeOffIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+    <line x1="1" y1="1" x2="23" y2="23" />
+  </svg>
+);
 
 /**
  * Página de registro para autoridades
@@ -13,7 +27,7 @@ import styles from './RegisterAuthorityPage.module.css';
 const RegisterAuthorityPage = () => {
   const { registrarAutoridad, loading } = useAuth();
   const navigate = useNavigate();
-  
+
   const [formData, setFormData] = useState({
     nombres: '',
     apellidos: '',
@@ -27,7 +41,7 @@ const RegisterAuthorityPage = () => {
     codigo_autoridad: '',
     direccion: ''
   });
-  
+
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -125,7 +139,7 @@ const RegisterAuthorityPage = () => {
    */
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -147,21 +161,21 @@ const RegisterAuthorityPage = () => {
       };
 
       console.log('📤 Datos a enviar:', JSON.stringify(datosRegistro, null, 2));
-      
+
       await registrarAutoridad(datosRegistro);
-      
+
       // Redirigir a página de confirmación o login
-      navigate('/login', { 
-        state: { 
-          message: 'Registro de autoridad enviado. Espere la verificación de su cuenta.' 
-        } 
+      navigate('/login', {
+        state: {
+          message: 'Registro de autoridad enviado. Espere la verificación de su cuenta.'
+        }
       });
     } catch (error) {
       console.error('❌ Error en registro de autoridad:', error);
-      
+
       // Extraer mensaje específico del error
       let errorMessage = 'Error desconocido en el registro';
-      
+
       if (error.response?.data?.message) {
         errorMessage = error.response.data.message;
       } else if (error.response?.data?.errors) {
@@ -169,10 +183,10 @@ const RegisterAuthorityPage = () => {
       } else if (error.message) {
         errorMessage = error.message;
       }
-      
+
       console.error('📋 Mensaje de error específico:', errorMessage);
       console.error('📊 Datos de respuesta completos:', error.response?.data);
-      
+
       // Mostrar el error al usuario (puedes implementar un toast o modal aquí)
       alert(`Error en el registro: ${errorMessage}`);
     }
@@ -180,8 +194,6 @@ const RegisterAuthorityPage = () => {
 
   return (
     <div className={styles.registerAuthorityPage}>
-      <Header />
-      
       <main className={styles.main}>
         <div className={styles.container}>
           <div className={styles.registerCard}>
@@ -196,7 +208,7 @@ const RegisterAuthorityPage = () => {
               {/* Información Personal */}
               <div className={styles.section}>
                 <h3 className={styles.sectionTitle}>Información Personal</h3>
-                
+
                 <div className={styles.row}>
                   <div className={styles.inputGroup}>
                     <label htmlFor="nombres" className={styles.label}>
@@ -292,7 +304,7 @@ const RegisterAuthorityPage = () => {
               {/* Información Institucional */}
               <div className={styles.section}>
                 <h3 className={styles.sectionTitle}>Información Institucional</h3>
-                
+
                 <div className={styles.row}>
                   <div className={styles.inputGroup}>
                     <label htmlFor="cargo" className={styles.label}>
@@ -391,7 +403,7 @@ const RegisterAuthorityPage = () => {
               {/* Contraseña */}
               <div className={styles.section}>
                 <h3 className={styles.sectionTitle}>Contraseña</h3>
-                
+
                 <div className={styles.row}>
                   <div className={styles.inputGroup}>
                     <label htmlFor="password" className={styles.label}>
@@ -412,7 +424,7 @@ const RegisterAuthorityPage = () => {
                         className={styles.passwordToggle}
                         onClick={() => setShowPassword(!showPassword)}
                       >
-                        {showPassword ? '👁️' : '👁️‍🗨️'}
+                        {showPassword ? <EyeIcon /> : <EyeOffIcon />}
                       </button>
                     </div>
                     {errors.password && (
@@ -450,7 +462,7 @@ const RegisterAuthorityPage = () => {
                         className={styles.passwordToggle}
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                       >
-                        {showConfirmPassword ? '👁️' : '👁️‍🗨️'}
+                        {showConfirmPassword ? <EyeIcon /> : <EyeOffIcon />}
                       </button>
                     </div>
                     {errors.confirmPassword && (

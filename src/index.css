@@ -48,66 +48,67 @@
   --letter-spacing-wider: 0.05em;
   --letter-spacing-widest: 0.1em;
 
-  /* === PALETA DE COLORES UNIFICADA === */
+  /* === PALETA DE COLORES UNIFICADA - Sistema de Diseño Minimalista === */
 
   /* Colores Principales */
-  --color-primary: #153595;       /* Azul principal oscuro */
-  --color-primary-light: #A5C1EB; /* Azul claro */
-  --color-primary-dark: #03193B;  /* Azul muy oscuro/navy */
+  --color-primary: #3b82f6;       /* Azul principal (blue-500) */
+  --color-primary-light: #60a5fa; /* Azul claro (blue-400) */
+  --color-primary-dark: #2563eb;  /* Azul oscuro (blue-600) */
 
   /* Colores de Estado */
-  --color-success: #10b981;       /* Verde - Éxito/Completado */
-  --color-warning: #f59e0b;       /* Ámbar - Advertencia/Pendiente */
-  --color-danger: #ef4444;        /* Rojo - Error/Urgente */
-  --color-info: #3b82f6;          /* Azul - Información */
+  --color-success: #10b981;       /* Verde - Éxito/Completado (green-500) */
+  --color-warning: #f59e0b;       /* Ámbar - Advertencia/Pendiente (amber-500) */
+  --color-danger: #ef4444;        /* Rojo - Error/Urgente (red-500) */
+  --color-info: #3b82f6;          /* Azul - Información (blue-500) */
 
-  /* Colores Neutrales */
+  /* Colores Neutrales - Sistema Slate */
   --color-white: #ffffff;
   --color-black: #000000;
-  --color-gray-50: #f9fafb;
-  --color-gray-100: #f3f4f6;
-  --color-gray-200: #e5e7eb;
-  --color-gray-300: #d1d5db;
-  --color-gray-400: #9ca3af;
-  --color-gray-500: #6b7280;
-  --color-gray-600: #4b5563;
-  --color-gray-700: #374151;
-  --color-gray-800: #1f2937;
-  --color-gray-900: #111827;
+  --color-gray-50: #f8fafc;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;
+  --color-gray-300: #cbd5e1;
+  --color-gray-400: #94a3b8;
+  --color-gray-500: #64748b;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #1e293b;
+  --color-gray-900: #0f172a;
 
   /* Colores de Roles de Usuario */
-  --color-role-ciudadano: #10b981;  /* Verde */
-  --color-role-autoridad: #3b82f6;  /* Azul */
-  --color-role-admin: #8b5cf6;      /* Violeta */
+  --color-role-ciudadano: #10b981;  /* Verde (green-500) */
+  --color-role-autoridad: #3b82f6;  /* Azul (blue-500) */
+  --color-role-admin: #8b5cf6;      /* Violeta (violet-500) */
 
-  /* Estados de Denuncia */
-  --color-estado-registrada: #6b7280;   /* Gris */
-  --color-estado-pendiente: #f59e0b;    /* Ámbar */
-  --color-estado-en-proceso: #3b82f6;   /* Azul */
-  --color-estado-asignada: #8b5cf6;     /* Violeta */
-  --color-estado-resuelta: #10b981;     /* Verde */
-  --color-estado-cerrada: #4b5563;      /* Gris oscuro */
+  /* Estados de Denuncia - Unificados */
+  --color-estado-registrada: #64748b;   /* Gris (slate-500) */
+  --color-estado-pendiente: #f59e0b;    /* Ámbar (amber-500) */
+  --color-estado-en-proceso: #8b5cf6;   /* Violeta (violet-500) */
+  --color-estado-asignada: #3b82f6;     /* Azul (blue-500) */
+  --color-estado-resuelta: #10b981;     /* Verde (green-500) */
+  --color-estado-cerrada: #475569;      /* Gris oscuro (slate-600) */
 
   /* Prioridades de Denuncia */
-  --color-prioridad-baja: #10b981;      /* Verde */
-  --color-prioridad-media: #f59e0b;     /* Ámbar */
-  --color-prioridad-alta: #ef4444;      /* Rojo */
+  --color-prioridad-baja: #10b981;      /* Verde (green-500) */
+  --color-prioridad-media: #f59e0b;     /* Ámbar (amber-500) */
+  --color-prioridad-alta: #ef4444;      /* Rojo (red-500) */
 
   /* Colores Semánticos */
-  --color-text-primary: #111827;        /* Gray 900 */
-  --color-text-secondary: #6b7280;      /* Gray 500 */
-  --color-text-muted: #9ca3af;          /* Gray 400 */
+  --color-text-primary: #1e293b;        /* slate-800 */
+  --color-text-secondary: #64748b;      /* slate-500 */
+  --color-text-muted: #94a3b8;          /* slate-400 */
   --color-bg-primary: #ffffff;          /* White */
-  --color-bg-secondary: #f9fafb;        /* Gray 50 */
-  --color-bg-tertiary: #f3f4f6;         /* Gray 100 */
-  --color-border: #e5e7eb;              /* Gray 200 */
-  --color-border-light: #f3f4f6;        /* Gray 100 */
+  --color-bg-secondary: #f8fafc;        /* slate-50 */
+  --color-bg-tertiary: #f1f5f9;         /* slate-100 */
+  --color-border: #e2e8f0;              /* slate-200 */
+  --color-border-light: #f1f5f9;        /* slate-100 */
 
-  /* Gradientes */
-  --gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-  --gradient-primary-light: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
-  --gradient-success: linear-gradient(135deg, var(--color-success) 0%, #059669 100%);
-  --gradient-danger: linear-gradient(135deg, var(--color-danger) 0%, #dc2626 100%);
+  /* Gradientes - Actualizados */
+  --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  --gradient-primary-light: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+  --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  --gradient-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  --gradient-dark: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
 
   /* Tipografías */
   --font-headings: "DM Serif Text", serif;

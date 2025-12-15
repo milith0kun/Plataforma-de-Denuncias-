@@ -1,5 +1,5 @@
 import { useAuth } from '../../../hooks/useAuth';
-import Navigation from '../../common/Navigation/Navigation';
+import Header from '../../common/Header/Header';
 import styles from './Layout.module.css';
 
 const Layout = ({ children }) => {
@@ -17,7 +17,7 @@ const Layout = ({ children }) => {
   // Layout para usuarios autenticados
   return (
     <div className={styles.layout}>
-      <Navigation />
+      <Header />
       <main className={styles.mainContent}>
         {children}
       </main>
