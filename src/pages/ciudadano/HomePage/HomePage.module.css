@@ -1,0 +1,763 @@
+/* ==========================================
+   HomePage Styles - Clean Minimalist Design
+   ========================================== */
+
+/* Dashboard Container */
+.dashboardSection {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 2rem 1rem;
+}
+
+.dashboardContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Loading State */
+.loadingState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  font-size: 1.125rem;
+  color: #64748b;
+}
+
+/* Error State */
+.errorState {
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  color: #dc2626;
+}
+
+/* ==========================================
+   Hero Section
+   ========================================== */
+.heroSection {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.heroContent {
+  flex: 1;
+  max-width: 600px;
+}
+
+.heroTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.heroSubtitle {
+  font-size: 1.125rem;
+  color: #64748b;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.heroActions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.heroIllustration {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ==========================================
+   Buttons
+   ========================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.75rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.btnPrimary {
+  background: #3b82f6;
+  color: #ffffff;
+}
+
+.btnPrimary:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btnSecondary {
+  background: #f1f5f9;
+  color: #1e293b;
+}
+
+.btnSecondary:hover {
+  background: #e2e8f0;
+  transform: translateY(-2px);
+}
+
+/* ==========================================
+   Section Structure
+   ========================================== */
+.section {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.sectionSubtitle {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0.5rem 0 0 0;
+}
+
+/* ==========================================
+   Stats Section - Metric Cards
+   ========================================== */
+.statsSection {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.metricCard {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.2s ease;
+}
+
+.metricCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.metricIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.metricIcon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.metricCard[data-type="total"] .metricIcon {
+  background: #dbeafe;
+  color: #3b82f6;
+}
+
+.metricCard[data-type="pending"] .metricIcon {
+  background: #fef3c7;
+  color: #f59e0b;
+}
+
+.metricCard[data-type="progress"] .metricIcon {
+  background: #ddd6fe;
+  color: #8b5cf6;
+}
+
+.metricCard[data-type="resolved"] .metricIcon {
+  background: #d1fae5;
+  color: #10b981;
+}
+
+.metricContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.metricValue {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.metricLabel {
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* ==========================================
+   Quick Actions Section
+   ========================================== */
+.quickActionsSection {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.quickActionsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.actionCard {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.actionCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: #3b82f6;
+  transform: scaleY(0);
+  transition: transform 0.2s ease;
+}
+
+.actionCard:hover {
+  border-color: #3b82f6;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+}
+
+.actionCard:hover::before {
+  transform: scaleY(1);
+}
+
+.actionCardIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.actionCardIcon svg {
+  width: 24px;
+  height: 24px;
+  stroke-width: 2;
+}
+
+.actionCard.primary .actionCardIcon {
+  background: #dbeafe;
+  color: #3b82f6;
+}
+
+.actionCard.secondary .actionCardIcon {
+  background: #f3e8ff;
+  color: #8b5cf6;
+}
+
+.actionCard.tertiary .actionCardIcon {
+  background: #fef3c7;
+  color: #f59e0b;
+}
+
+.actionCard.quaternary .actionCardIcon {
+  background: #d1fae5;
+  color: #10b981;
+}
+
+.actionCardTitle {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.5rem 0;
+}
+
+.actionCardDesc {
+  font-size: 0.875rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0 0 1rem 0;
+}
+
+.actionCardArrow {
+  font-size: 1.25rem;
+  color: #3b82f6;
+  font-weight: 700;
+  transition: transform 0.2s ease;
+}
+
+.actionCard:hover .actionCardArrow {
+  transform: translateX(4px);
+}
+
+/* ==========================================
+   Recent Denuncias Section
+   ========================================== */
+.recentDenunciasSection {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.viewAllBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background: #f1f5f9;
+  color: #1e293b;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.viewAllBtn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.viewAllBtn:hover {
+  background: #e2e8f0;
+  transform: translateX(2px);
+}
+
+.denunciasList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.denunciaItem {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+}
+
+.denunciaItem:hover {
+  border-color: #3b82f6;
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.denunciaStatusIndicator {
+  width: 4px;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 12px 0 0 12px;
+}
+
+.denunciaStatusIndicator[data-status="pendiente"],
+.denunciaStatusIndicator[data-status="nueva"] {
+  background: #f59e0b;
+}
+
+.denunciaStatusIndicator[data-status="enprogreso"],
+.denunciaStatusIndicator[data-status="proceso"] {
+  background: #8b5cf6;
+}
+
+.denunciaStatusIndicator[data-status="resuelta"],
+.denunciaStatusIndicator[data-status="completada"] {
+  background: #10b981;
+}
+
+.denunciaStatusIndicator[data-status="rechazada"] {
+  background: #ef4444;
+}
+
+.denunciaContent {
+  flex: 1;
+  min-width: 0;
+  padding-left: 0.5rem;
+}
+
+.denunciaMain {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.denunciaTitulo {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.badge {
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badgePendiente,
+.badgeNueva {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badgeEnprogreso,
+.badgeProceso {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+.badgeResuelta,
+.badgeCompletada {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.badgeRechazada {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.denunciaMeta {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.metaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.metaItem svg {
+  width: 16px;
+  height: 16px;
+}
+
+.denunciaArrow {
+  flex-shrink: 0;
+  color: #94a3b8;
+  transition: all 0.2s ease;
+}
+
+.denunciaArrow svg {
+  width: 20px;
+  height: 20px;
+}
+
+.denunciaItem:hover .denunciaArrow {
+  color: #3b82f6;
+  transform: translateX(4px);
+}
+
+/* ==========================================
+   Empty State
+   ========================================== */
+.emptyStateModern {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  margin-top: 1.5rem;
+}
+
+.emptyIcon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  background: #f1f5f9;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+}
+
+.emptyIcon svg {
+  width: 40px;
+  height: 40px;
+}
+
+.emptyTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.5rem 0;
+}
+
+.emptyDescription {
+  font-size: 1rem;
+  color: #64748b;
+  margin: 0 0 2rem 0;
+}
+
+/* ==========================================
+   Tips Section
+   ========================================== */
+.tipsSection {
+  background: linear-gradient(135deg, #dbeafe 0%, #f0f9ff 100%);
+  border: 1px solid #93c5fd;
+}
+
+.tipsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.tipCard {
+  background: #ffffff;
+  border: 1px solid #e0f2fe;
+  border-radius: 10px;
+  padding: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.tipCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+  border-color: #3b82f6;
+}
+
+.tipIcon {
+  width: 40px;
+  height: 40px;
+  background: #dbeafe;
+  color: #3b82f6;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.tipIcon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.tipTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.5rem 0;
+}
+
+.tipDescription {
+  font-size: 0.875rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ==========================================
+   Responsive Design
+   ========================================== */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .heroSection {
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .heroContent {
+    max-width: 100%;
+  }
+
+  .heroActions {
+    justify-content: center;
+  }
+
+  .heroIllustration {
+    order: -1;
+  }
+
+  .metricsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .quickActionsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .dashboardSection {
+    padding: 1rem 0.5rem;
+  }
+
+  .dashboardContainer {
+    gap: 1.5rem;
+  }
+
+  .heroSection {
+    padding: 1.5rem;
+  }
+
+  .heroTitle {
+    font-size: 1.75rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1rem;
+  }
+
+  .heroActions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .section {
+    padding: 1.5rem;
+  }
+
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .metricsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .quickActionsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .denunciaMain {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .denunciaMeta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .tipsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .heroTitle {
+    font-size: 1.5rem;
+  }
+
+  .heroSubtitle {
+    font-size: 0.875rem;
+  }
+
+  .metricValue {
+    font-size: 1.75rem;
+  }
+
+  .actionCard {
+    padding: 1.25rem;
+  }
+
+  .denunciaItem {
+    padding: 1rem;
+  }
+
+  .tipCard {
+    padding: 1.25rem;
+  }
+}

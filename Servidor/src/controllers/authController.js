@@ -255,7 +255,7 @@ class AuthController {
         area_responsabilidad,
         numero_empleado,
         fecha_ingreso,
-        estado_verificacion: 'pendiente'
+        estado_verificacion: 'aprobado' // TODO: En producción cambiar a 'pendiente' para requerir aprobación de admin
       });
 
       // Obtener usuario creado

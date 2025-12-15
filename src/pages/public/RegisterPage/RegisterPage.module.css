@@ -3,66 +3,49 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
-  padding: 40px 20px;
-  position: relative;
-  overflow: hidden;
-}
-
-.register-container::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
-  animation: floatReverse 10s ease-in-out infinite;
-}
-
-@keyframes floatReverse {
-
-  0%,
-  100% {
-    transform: translateX(0px) rotate(0deg);
-  }
-
-  50% {
-    transform: translateX(30px) rotate(-180deg);
-  }
+  background: #f8fafc;
+  padding: 2rem 1rem;
 }
 
 .register-card {
-  background: var(--color-white);
-  border-radius: var(--border-radius-xl);
-  box-shadow: var(--shadow-xl);
-  padding: 48px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  padding: 3rem 2.5rem;
   width: 100%;
   max-width: 650px;
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  position: relative;
-  z-index: 1;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .register-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 2rem;
 }
 
 .register-title {
-  font-size: var(--font-size-h1);
-  font-weight: var(--font-weight-bold);
-  font-family: var(--font-headings);
-  color: var(--color-text-primary);
-  margin-bottom: 12px;
-  line-height: 1.2;
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
 }
 
 .register-subtitle {
-  font-size: var(--font-size-large);
-  color: var(--color-text-secondary);
-  font-weight: var(--font-weight-medium);
+  font-size: 0.9375rem;
+  color: #64748b;
+  font-weight: 400;
 }
 
 .register-form {

@@ -8,72 +8,72 @@
  */
 
 export const COLORS = {
-  // Colores Principales
-  primary: '#153595',       // Azul principal oscuro
-  primaryLight: '#A5C1EB',  // Azul claro
-  primaryDark: '#03193B',   // Azul muy oscuro/navy
+  // Colores Principales - Sistema de Diseño Unificado
+  primary: '#3b82f6',       // Azul principal (blue-500)
+  primaryLight: '#60a5fa',  // Azul claro (blue-400)
+  primaryDark: '#2563eb',   // Azul oscuro (blue-600)
 
   // Colores de Estado
-  success: '#10b981',       // Verde - Éxito/Completado
-  warning: '#f59e0b',       // Ámbar - Advertencia/Pendiente
-  danger: '#ef4444',        // Rojo - Error/Urgente
-  info: '#3b82f6',          // Azul - Información
+  success: '#10b981',       // Verde - Éxito/Completado (green-500)
+  warning: '#f59e0b',       // Ámbar - Advertencia/Pendiente (amber-500)
+  danger: '#ef4444',        // Rojo - Error/Urgente (red-500)
+  info: '#3b82f6',          // Azul - Información (blue-500)
 
-  // Colores Neutrales
+  // Colores Neutrales - Sistema de grises unificado
   white: '#ffffff',
   black: '#000000',
   gray: {
-    50: '#f9fafb',
-    100: '#f3f4f6',
-    200: '#e5e7eb',
-    300: '#d1d5db',
-    400: '#9ca3af',
-    500: '#6b7280',
-    600: '#4b5563',
-    700: '#374151',
-    800: '#1f2937',
-    900: '#111827',
+    50: '#f8fafc',          // slate-50
+    100: '#f1f5f9',         // slate-100
+    200: '#e2e8f0',         // slate-200
+    300: '#cbd5e1',         // slate-300
+    400: '#94a3b8',         // slate-400
+    500: '#64748b',         // slate-500
+    600: '#475569',         // slate-600
+    700: '#334155',         // slate-700
+    800: '#1e293b',         // slate-800
+    900: '#0f172a',         // slate-900
   },
 
   // Colores de Roles de Usuario
   roles: {
-    ciudadano: '#10b981',   // Verde
-    autoridad: '#3b82f6',   // Azul
-    admin: '#8b5cf6',       // Violeta
+    ciudadano: '#10b981',   // Verde (green-500)
+    autoridad: '#3b82f6',   // Azul (blue-500)
+    admin: '#8b5cf6',       // Violeta (violet-500)
   },
 
-  // Estados de Denuncia
+  // Estados de Denuncia - Unificados
   estados: {
-    registrada: '#6b7280',    // Gris
-    pendiente: '#f59e0b',     // Ámbar
-    enProceso: '#3b82f6',     // Azul
-    asignada: '#8b5cf6',      // Violeta
-    resuelta: '#10b981',      // Verde
-    cerrada: '#4b5563',       // Gris oscuro
+    registrada: '#64748b',    // Gris (slate-500)
+    pendiente: '#f59e0b',     // Ámbar (amber-500)
+    enProceso: '#8b5cf6',     // Violeta (violet-500)
+    asignada: '#3b82f6',      // Azul (blue-500)
+    resuelta: '#10b981',      // Verde (green-500)
+    cerrada: '#475569',       // Gris oscuro (slate-600)
   },
 
   // Prioridades de Denuncia
   prioridades: {
-    baja: '#10b981',          // Verde
-    media: '#f59e0b',         // Ámbar
-    alta: '#ef4444',          // Rojo
+    baja: '#10b981',          // Verde (green-500)
+    media: '#f59e0b',         // Ámbar (amber-500)
+    alta: '#ef4444',          // Rojo (red-500)
   },
 
   // Colores Semánticos (para textos y fondos)
   text: {
-    primary: '#111827',       // Gray 900
-    secondary: '#6b7280',     // Gray 500
-    muted: '#9ca3af',         // Gray 400
+    primary: '#1e293b',       // slate-800
+    secondary: '#64748b',     // slate-500
+    muted: '#94a3b8',         // slate-400
   },
 
   bg: {
     primary: '#ffffff',       // White
-    secondary: '#f9fafb',     // Gray 50
-    tertiary: '#f3f4f6',      // Gray 100
+    secondary: '#f8fafc',     // slate-50
+    tertiary: '#f1f5f9',      // slate-100
   },
 
-  border: '#e5e7eb',          // Gray 200
-  borderLight: '#f3f4f6',     // Gray 100
+  border: '#e2e8f0',          // slate-200
+  borderLight: '#f1f5f9',     // slate-100
 };
 
 /**
