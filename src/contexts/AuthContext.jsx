@@ -120,7 +120,7 @@ export const AuthProvider = ({ children }) => {
     limpiarError,
     estaAutenticado: !!usuario,
     esAdmin: usuario?.tipo_usuario === 'Administrador',
-    esAutoridad: usuario?.tipo_usuario === 'Autoridad_Municipal',
+    esAutoridad: usuario?.tipo_usuario === 'Autoridad' || usuario?.tipo_usuario === 'Autoridad_Municipal',
     esCiudadano: usuario?.tipo_usuario === 'Ciudadano'
   };
 

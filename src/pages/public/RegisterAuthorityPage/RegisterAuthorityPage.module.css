@@ -1,7 +1,7 @@
 /* Página de registro de autoridades */
 .registerAuthorityPage {
   min-height: 100vh;
-  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
+  background: #f8fafc;
   display: flex;
   flex-direction: column;
 }
@@ -21,11 +21,12 @@
 }
 
 .registerCard {
-  background: var(--color-white);
-  border-radius: var(--border-radius-xl);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-  animation: slideUp 0.6s ease-out;
+  animation: slideUp 0.4s ease-out;
 }
 
 @keyframes slideUp {
@@ -41,21 +42,23 @@
 }
 
 .header {
-  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
-  color: var(--color-white);
+  background: #ffffff;
   padding: 2rem;
   text-align: center;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .title {
-  font-size: 2rem;
+  font-size: 1.875rem;
   font-weight: 700;
   margin: 0 0 0.5rem 0;
+  color: #1e293b;
+  letter-spacing: -0.02em;
 }
 
 .subtitle {
-  font-size: 1.1rem;
-  opacity: 0.9;
+  font-size: 0.9375rem;
+  color: #64748b;
   margin: 0;
 }
 
