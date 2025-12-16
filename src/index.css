@@ -1,6 +1,37 @@
 /* Importar animaciones globales */
 @import './styles/animations.css';
 
+/* ===== SCROLLBAR PERSONALIZADO - Ancho y Rectangular ===== */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 #f1f5f9;
+}
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+*::-webkit-scrollbar {
+  width: 14px; /* Ancho scrollbar vertical */
+  height: 14px; /* Alto scrollbar horizontal */
+}
+
+*::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 0; /* Rectangular sin bordes redondeados */
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 0; /* Rectangular */
+  border: 3px solid #f1f5f9; /* Espacio alrededor */
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background: #475569;
+}
+
 :root {
   /* Tipografía mejorada */
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;

@@ -56,6 +56,14 @@ router.post(
   AuthController.login
 );
 
+// Ruta para login con Google OAuth
+router.post(
+  '/google',
+  body('credential').notEmpty().withMessage('Credential de Google es requerido'),
+  manejarErroresValidacion,
+  AuthController.loginConGoogle
+);
+
 router.get(
   '/verify-token',
   verificarToken,

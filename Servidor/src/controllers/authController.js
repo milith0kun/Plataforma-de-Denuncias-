@@ -421,6 +421,102 @@ class AuthController {
       });
     }
   }
+
+  // ==================== GOOGLE OAUTH ====================
+  static async loginConGoogle(req, res) {
+    try {
+      const { credential } = req.body;
+
+      if (!credential) {
+        return res.status(400).json({
+          success: false,
+          message: 'Credential de Google es requerido'
+        });
+      }
+
+      // Verificar el token con Google
+      const { OAuth2Client } = await import('google-auth-library');
+      const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+      
+      let payload;
+      try {
+        const ticket = await client.verifyIdToken({
+          idToken: credential,
+          audience: process.env.GOOGLE_CLIENT_ID,
+        });
+        payload = ticket.getPayload();
+      } catch (error) {
+        console.error('Error al verificar token de Google:', error);
+        return res.status(401).json({
+          success: false,
+          message: 'Token de Google inválido'
+        });
+      }
+
+      const { email, name, picture, sub: googleId } = payload;
+
+      // Buscar si el usuario ya existe
+      let usuario = await Usuario.buscarPorEmail(email);
+
+      if (!usuario) {
+        // Crear nuevo usuario desde Google
+        const [nombres, ...apellidosArr] = name.split(' ');
+        const apellidos = apellidosArr.join(' ') || 'Google';
+
+        const nuevoUsuario = {
+          nombres,
+          apellidos,
+          email,
+          documento_identidad: `GOOGLE_${googleId}`,
+          id_tipo_usuario: 1, // Ciudadano por defecto
+          google_id: googleId,
+          foto_perfil: picture,
+          verificado_email: true, // Ya verificado por Google
+          // No necesita password_hash porque tiene google_id
+        };
+
+        usuario = await Usuario.crear(nuevoUsuario);
+        
+        if (!usuario) {
+          return res.status(500).json({
+            success: false,
+            message: 'Error al crear usuario con Google'
+          });
+        }
+      } else {
+        // Actualizar google_id y foto si no existen
+        if (!usuario.google_id) {
+          await Usuario.actualizar(usuario.id_usuario, {
+            google_id: googleId,
+            foto_perfil: picture || usuario.foto_perfil,
+            verificado_email: true
+          });
+        }
+      }
+
+      // Obtener datos completos del usuario
+      const usuarioCompleto = await Usuario.buscarPorId(usuario.id_usuario);
+
+      // Generar token JWT
+      const token = AuthController._generarToken(usuarioCompleto);
+
+      res.json({
+        success: true,
+        message: 'Login con Google exitoso',
+        data: {
+          token,
+          usuario: AuthController._formatearUsuario(usuarioCompleto, usuarioCompleto.nombre_tipo !== 'Ciudadano')
+        }
+      });
+    } catch (error) {
+      console.error('Error en login con Google:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Error al procesar login con Google',
+        error: error.message
+      });
+    }
+  }
 }
 
 export default AuthController;

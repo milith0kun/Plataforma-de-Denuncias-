@@ -69,4 +69,11 @@ router.post('/:id/evidencias', upload.array('evidencias', 5), handleMulterError,
  */
 router.get('/:id/evidencias', DenunciaController.obtenerEvidencias);
 
+/**
+ * @route   GET /api/v1/denuncias/:id/historial
+ * @desc    Obtener historial de estados de una denuncia
+ * @access  Privado
+ */
+router.get('/:id/historial', DenunciaController.obtenerHistorial);
+
 export default router;

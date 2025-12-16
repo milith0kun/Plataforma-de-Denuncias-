@@ -258,6 +258,9 @@ denunciaSchema.statics.obtenerConFiltros = async function (filtros = {}, paginac
 
     // Procesar denuncias para compatibilidad
     denuncias = denuncias.map(denuncia => {
+      // Agregar id_denuncia (no se incluye con .lean())
+      denuncia.id_denuncia = denuncia._id;
+
       if (denuncia.es_anonima) {
         denuncia.id_ciudadano = {
           nombres: 'Anónimo',

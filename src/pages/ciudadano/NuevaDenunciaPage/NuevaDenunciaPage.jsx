@@ -113,7 +113,7 @@ const NuevaDenunciaPage = () => {
       const datosDenuncia = {
         titulo: formData.titulo.trim(),
         descripcion_detallada: formData.descripcion_detallada.trim(),
-        id_categoria: parseInt(formData.id_categoria),
+        id_categoria: formData.id_categoria, // Enviar como string (ObjectId de MongoDB)
         direccion_geolocalizada: formData.direccion_geolocalizada?.trim() || null,
         latitud: formData.latitud || null,
         longitud: formData.longitud || null,

@@ -1,21 +1,35 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
-import Layout from '../../../components/layout/Layout/Layout';
+import { 
+  BarChart, Bar, PieChart, Pie, Cell, LineChart, Line,
+  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer 
+} from 'recharts';
+import { 
+  LayoutDashboard, FileText, AlertCircle, CheckCircle2, 
+  Clock, TrendingUp, Users, MapPin, Filter, Calendar,
+  BarChart3, Download, Menu, X, Activity, ChevronRight, Eye
+} from 'lucide-react';
+import Header from '../../../components/common/Header/Header';
 import denunciaService from '../../../services/denunciaService';
-import { getEstadoColor, getPrioridadColor } from '../../../constants/colors';
-import styles from './DashboardAutoridadPage.module.css';
+import estadisticasService from '../../../services/estadisticasService';
+import styles from './DashboardAutoridadPageNew.module.css';
 
 const DashboardAutoridadPage = () => {
   const { usuario } = useAuth();
+  const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [metricas, setMetricas] = useState({
-    denunciasPendientes: 0,
-    denunciasAsignadas: 0,
-    denunciasResueltas: 0,
-    denunciasUrgentes: 0
+    total: 0,
+    pendientes: 0,
+    enProceso: 0,
+    resueltas: 0,
+    urgentes: 0
   });
+  const [estadisticas, setEstadisticas] = useState(null);
   const [denunciasRecientes, setDenunciasRecientes] = useState([]);
   const [cargando, setCargando] = useState(true);
-  const [error, setError] = useState(null);
+  const [filtroTiempo, setFiltroTiempo] = useState('mes');
 
   useEffect(() => {
     cargarDatos();
@@ -24,287 +38,331 @@ const DashboardAutoridadPage = () => {
   const cargarDatos = async () => {
     try {
       setCargando(true);
-      setError(null);
 
-      // Obtener todas las denuncias (autoridades ven todas)
-      const response = await denunciaService.obtenerDenuncias({
-        limite: 100,
-        orden: 'fecha_registro',
-        direccion: 'DESC'
-      });
+      const [denunciasRes, statsRes] = await Promise.all([
+        denunciaService.obtenerDenuncias({ limite: 100, orden: 'fecha_registro', direccion: 'DESC' }),
+        estadisticasService.obtenerEstadisticasGenerales().catch(() => null)
+      ]);
 
-      if (response.success) {
-        const denuncias = response.data.denuncias;
-
-        // Calcular métricas
-        const pendientes = denuncias.filter(d =>
-          d.id_estado_actual === 1 || d.id_estado_actual === 2
-        ).length;
-        const asignadas = denuncias.filter(d =>
-          d.id_estado_actual === 3
-        ).length;
-        const resueltas = denuncias.filter(d =>
-          d.id_estado_actual === 5
-        ).length;
-        // Para "urgentes" podríamos filtrar por fecha reciente o prioridad alta
+      if (denunciasRes.success) {
+        const denuncias = denunciasRes.data.denuncias;
+        
+        const pendientes = denuncias.filter(d => ['Registrada', 'En Revisión'].includes(d.estado_nombre)).length;
+        const enProceso = denuncias.filter(d => ['Asignada', 'En Proceso'].includes(d.estado_nombre)).length;
+        const resueltas = denuncias.filter(d => d.estado_nombre === 'Resuelta').length;
         const urgentes = denuncias.filter(d => {
-          const diasDesdeCreacion = Math.floor(
-            (new Date() - new Date(d.fecha_registro)) / (1000 * 60 * 60 * 24)
-          );
-          return d.id_estado_actual === 1 && diasDesdeCreacion > 7; // Pendientes de más de 7 días
+          const dias = Math.floor((new Date() - new Date(d.fecha_registro)) / (1000 * 60 * 60 * 24));
+          return ['Registrada', 'En Revisión'].includes(d.estado_nombre) && dias > 7;
         }).length;
 
         setMetricas({
-          denunciasPendientes: pendientes,
-          denunciasAsignadas: asignadas,
-          denunciasResueltas: resueltas,
-          denunciasUrgentes: urgentes
+          total: denuncias.length,
+          pendientes,
+          enProceso,
+          resueltas,
+          urgentes
         });
 
-        // Denuncias recientes (últimas 5)
-        setDenunciasRecientes(denuncias.slice(0, 5));
+        setDenunciasRecientes(denuncias.slice(0, 8));
+      }
+
+      if (statsRes?.success) {
+        setEstadisticas(statsRes.data);
       }
     } catch (err) {
       console.error('Error al cargar datos:', err);
-      setError(err.message || 'Error al cargar datos del dashboard');
     } finally {
       setCargando(false);
     }
   };
 
-  // Formatear fecha
   const formatearFecha = (fecha) => {
     if (!fecha) return '';
-    const date = new Date(fecha);
-    return date.toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
+    return new Date(fecha).toLocaleDateString('es-ES', { 
+      day: '2-digit', 
+      month: 'short', 
+      year: 'numeric' 
     });
   };
 
+  const obtenerColorEstado = (estado) => {
+    const colores = {
+      'Registrada': '#f59e0b',
+      'En Revisión': '#f59e0b',
+      'Asignada': '#8b5cf6',
+      'En Proceso': '#3b82f6',
+      'Resuelta': '#10b981',
+      'Cerrada': '#6b7280'
+    };
+    return colores[estado] || '#6b7280';
+  };
+
+  const datosEstados = estadisticas?.porEstado || [];
+  const datosCategorias = estadisticas?.porCategoria?.slice(0, 5) || [];
+  const datosTendencia = estadisticas?.tendenciaMensual || [];
+  const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
 
   if (cargando) {
     return (
-      <Layout>
-        <div className={styles.dashboardPage}>
-          <div className={styles.loadingContainer}>
-            <div className={styles.spinner}></div>
-            <p>Cargando dashboard...</p>
-          </div>
+      <>
+        <Header variant="private" />
+        <div className={styles.loading}>
+          <div className={styles.spinner}></div>
+          <p>Cargando dashboard...</p>
         </div>
-      </Layout>
-    );
-  }
-
-  if (error) {
-    return (
-      <Layout>
-        <div className={styles.dashboardPage}>
-          <div className={styles.errorContainer}>
-            <p className={styles.errorMessage}>⚠️ {error}</p>
-            <button onClick={cargarDatos} className={styles.retryButton}>
-              Reintentar
-            </button>
-          </div>
-        </div>
-      </Layout>
+      </>
     );
   }
 
   return (
-    <Layout>
-      <div className={`${styles.dashboardPage} animate-fade-in`}>
-      {/* Header */}
-      <div className={`${styles.header} animate-fade-in-down`}>
-        <div className={styles.headerContent}>
-          <div className={styles.welcomeSection}>
-            <h1 className={`${styles.title} animate-fade-in-left`}>Dashboard de Autoridad</h1>
-            <p className={`${styles.subtitle} animate-fade-in-left animate-delay-100`}>
-              Bienvenido, {usuario?.nombres} {usuario?.apellidos}
-            </p>
-            <div className={`${styles.userInfo} animate-fade-in-left animate-delay-200`}>
-              <span className={styles.cargo}>{usuario?.cargo}</span>
-              <span className={styles.area}>{usuario?.area_responsabilidad}</span>
-            </div>
-          </div>
-          <div className={`${styles.dateSection} animate-fade-in-right`}>
-            <p className={styles.currentDate}>
-              {new Date().toLocaleDateString('es-ES', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              })}
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Métricas principales */}
-      <div className={`${styles.metricsSection} animate-fade-in-up animate-delay-200`}>
-        <div className={styles.metricsGrid}>
-          <div className={`${styles.metricCard} ${styles.pendientes}`}>
-            <div className={styles.metricIcon}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <circle cx="12" cy="12" r="10"/>
-                <polyline points="12,6 12,12 16,14"/>
-              </svg>
-            </div>
-            <div className={styles.metricContent}>
-              <h3 className={styles.metricNumber}>{metricas.denunciasPendientes}</h3>
-              <p className={styles.metricLabel}>Denuncias Pendientes</p>
-            </div>
-          </div>
-
-          <div className={`${styles.metricCard} ${styles.asignadas}`}>
-            <div className={styles.metricIcon}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                <circle cx="8.5" cy="7" r="4"/>
-                <polyline points="17,11 19,13 23,9"/>
-              </svg>
-            </div>
-            <div className={styles.metricContent}>
-              <h3 className={styles.metricNumber}>{metricas.denunciasAsignadas}</h3>
-              <p className={styles.metricLabel}>Asignadas a Mí</p>
-            </div>
-          </div>
-
-          <div className={`${styles.metricCard} ${styles.resueltas}`}>
-            <div className={styles.metricIcon}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <polyline points="20,6 9,17 4,12"/>
-              </svg>
-            </div>
-            <div className={styles.metricContent}>
-              <h3 className={styles.metricNumber}>{metricas.denunciasResueltas}</h3>
-              <p className={styles.metricLabel}>Resueltas</p>
-            </div>
-          </div>
-
-          <div className={`${styles.metricCard} ${styles.urgentes}`}>
-            <div className={styles.metricIcon}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                <line x1="12" y1="9" x2="12" y2="13"/>
-                <line x1="12" y1="17" x2="12.01" y2="17"/>
-              </svg>
-            </div>
-            <div className={styles.metricContent}>
-              <h3 className={styles.metricNumber}>{metricas.denunciasUrgentes}</h3>
-              <p className={styles.metricLabel}>Urgentes</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Contenido principal */}
-      <div className={styles.mainContent}>
-        {/* Denuncias recientes */}
-        <div className={`${styles.recentSection} animate-fade-in-up animate-delay-400`}>
-          <div className={`${styles.sectionHeader} animate-fade-in-left animate-delay-500`}>
-            <h2 className={styles.sectionTitle}>Denuncias Recientes</h2>
-            <button className={`${styles.viewAllButton} transition-smooth hover-scale`}>
-              Ver todas
+    <>
+      <Header variant="private" />
+      <div className={styles.dashboardContainer}>
+        {/* Sidebar */}
+        <aside className={`${styles.sidebar} ${!sidebarOpen ? styles.collapsed : ''}`}>
+          <div className={styles.sidebarHeader}>
+            <button className={styles.toggleButton} onClick={() => setSidebarOpen(!sidebarOpen)}>
+              <Menu size={24} />
             </button>
           </div>
           
-          <div className={styles.denunciasGrid}>
-            {denunciasRecientes.length === 0 ? (
-              <div className={styles.emptyState}>
-                <p>No hay denuncias registradas en el sistema</p>
+          <nav className={styles.sidebarNav}>
+            <a href="#dashboard" className={styles.navItem}>
+              <LayoutDashboard size={20} />
+              {sidebarOpen && <span>Dashboard</span>}
+            </a>
+            <a href="/denuncias" className={styles.navItem}>
+              <FileText size={20} />
+              {sidebarOpen && <span>Denuncias</span>}
+            </a>
+            <a href="/mapa-denuncias" className={styles.navItem}>
+              <MapPin size={20} />
+              {sidebarOpen && <span>Mapa</span>}
+            </a>
+            <a href="/usuarios" className={styles.navItem}>
+              <Users size={20} />
+              {sidebarOpen && <span>Usuarios</span>}
+            </a>
+          </nav>
+        </aside>
+
+        {/* Main Content */}
+        <main className={styles.mainContent}>
+          {/* Dashboard Header */}
+          <div className={styles.dashboardHeader}>
+            <div className={styles.headerLeft}>
+              <h1 className={styles.dashboardTitle}>Dashboard de Autoridad</h1>
+              <p className={styles.dashboardSubtitle}>
+                Bienvenido, {usuario?.nombres} {usuario?.apellidos} - {usuario?.cargo}
+              </p>
+            </div>
+            <div className={styles.headerRight}>
+              <select 
+                className={styles.filterSelect}
+                value={filtroTiempo}
+                onChange={(e) => setFiltroTiempo(e.target.value)}
+              >
+                <option value="hoy">Hoy</option>
+                <option value="semana">Esta Semana</option>
+                <option value="mes">Este Mes</option>
+                <option value="año">Este Año</option>
+              </select>
+              <button className={styles.exportButton}>
+                <Download size={18} />
+                <span>Exportar</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Metrics Grid */}
+          <div className={styles.metricsGrid}>
+            <div className={styles.metricCard} data-type="primary">
+              <div className={styles.metricHeader}>
+                <Clock size={24} />
+                <span className={styles.metricLabel}>Total</span>
               </div>
-            ) : (
-              denunciasRecientes.map((denuncia) => (
-                <div key={denuncia.id_denuncia} className={styles.denunciaCard}>
-                  <div className={styles.denunciaHeader}>
-                    <h3 className={styles.denunciaTitulo}>{denuncia.titulo}</h3>
-                    <div className={styles.denunciaBadges}>
-                      <span
-                        className={styles.estadoBadge}
-                        style={{ backgroundColor: getEstadoColor(denuncia.estado_nombre) }}
-                      >
-                        {denuncia.estado_nombre}
-                      </span>
-                    </div>
-                  </div>
+              <p className={styles.metricValue}>{metricas.total}</p>
+              <p className={styles.metricChange}>Denuncias registradas</p>
+            </div>
 
-                  <div className={styles.denunciaInfo}>
-                    <p className={styles.categoria}>{denuncia.categoria_nombre}</p>
-                    <p className={styles.fecha}>{formatearFecha(denuncia.fecha_registro)}</p>
-                  </div>
+            <div className={styles.metricCard} data-type="warning">
+              <div className={styles.metricHeader}>
+                <AlertCircle size={24} />
+                <span className={styles.metricLabel}>Pendientes</span>
+              </div>
+              <p className={styles.metricValue}>{metricas.pendientes}</p>
+              <p className={styles.metricChange}>Requieren atención</p>
+            </div>
 
-                  <div className={styles.denunciaActions}>
-                    <button
-                      className={styles.actionButton}
-                      onClick={() => window.location.href = `/denuncias/${denuncia.id_denuncia}`}
+            <div className={styles.metricCard} data-type="info">
+              <div className={styles.metricHeader}>
+                <TrendingUp size={24} />
+                <span className={styles.metricLabel}>En Proceso</span>
+              </div>
+              <p className={styles.metricValue}>{metricas.enProceso}</p>
+              <p className={styles.metricChange}>En gestión activa</p>
+            </div>
+
+            <div className={styles.metricCard} data-type="success">
+              <div className={styles.metricHeader}>
+                <CheckCircle2 size={24} />
+                <span className={styles.metricLabel}>Resueltas</span>
+              </div>
+              <p className={styles.metricValue}>{metricas.resueltas}</p>
+              <p className={styles.metricChange}>Completadas</p>
+            </div>
+          </div>
+
+          {/* Charts Grid */}
+          {estadisticas && (
+            <div className={styles.chartsGrid}>
+              {/* Tendencia Mensual */}
+              <div className={styles.chartCard}>
+                <h3 className={styles.chartTitle}>
+                  <TrendingUp size={20} />
+                  Tendencia Mensual
+                </h3>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={datosTendencia}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                    <XAxis dataKey="mes" stroke="#64748b" />
+                    <YAxis stroke="#64748b" />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: '#fff', 
+                        border: '1px solid #e2e8f0',
+                        borderRadius: '8px' 
+                      }} 
+                    />
+                    <Legend />
+                    <Line type="monotone" dataKey="cantidad" stroke="#3b82f6" strokeWidth={2} name="Denuncias" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Distribución por Estado */}
+              <div className={styles.chartCard}>
+                <h3 className={styles.chartTitle}>
+                  <Activity size={20} />
+                  Distribución por Estado
+                </h3>
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      data={datosEstados}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={(entry) => `${entry.name}: ${entry.value}`}
+                      outerRadius={100}
+                      fill="#8884d8"
+                      dataKey="value"
                     >
-                      Ver detalles
-                    </button>
-                    <button className={styles.actionButton}>
-                      Gestionar
-                    </button>
-                  </div>
+                      {datosEstados.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Denuncias por Categoría */}
+              <div className={styles.chartCard} style={{ gridColumn: 'span 2' }}>
+                <h3 className={styles.chartTitle}>
+                  <BarChart3 size={20} />
+                  Denuncias por Categoría
+                </h3>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={datosCategorias}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                    <XAxis dataKey="name" stroke="#64748b" />
+                    <YAxis stroke="#64748b" />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: '#fff', 
+                        border: '1px solid #e2e8f0',
+                        borderRadius: '8px' 
+                      }} 
+                    />
+                    <Bar dataKey="value" fill="#3b82f6" radius={[8, 8, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          )}
+
+          {/* Recent Denuncias Table */}
+          <div className={styles.tableCard}>
+            <div className={styles.tableHeader}>
+              <h3 className={styles.tableTitle}>
+                <FileText size={20} />
+                Denuncias Recientes
+              </h3>
+              <a href="/denuncias" className={styles.viewAllLink}>
+                Ver todas
+                <ChevronRight size={16} />
+              </a>
+            </div>
+
+            <div className={styles.tableWrapper}>
+              {denunciasRecientes.length === 0 ? (
+                <div className={styles.emptyState}>
+                  <FileText size={48} />
+                  <p>No hay denuncias recientes</p>
                 </div>
-              ))
-            )}
+              ) : (
+                <table className={styles.table}>
+                  <thead>
+                    <tr>
+                      <th>Título</th>
+                      <th>Categoría</th>
+                      <th>Estado</th>
+                      <th>Fecha</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {denunciasRecientes.map((denuncia) => (
+                      <tr key={denuncia.id_denuncia}>
+                        <td>
+                          <div className={styles.cellContent}>
+                            <strong>{denuncia.titulo}</strong>
+                          </div>
+                        </td>
+                        <td>
+                          <span className={styles.categoryBadge}>
+                            {denuncia.categoria_nombre}
+                          </span>
+                        </td>
+                        <td>
+                          <span 
+                            className={styles.statusBadge}
+                            style={{ backgroundColor: obtenerColorEstado(denuncia.estado_nombre) }}
+                          >
+                            {denuncia.estado_nombre}
+                          </span>
+                        </td>
+                        <td>{formatearFecha(denuncia.fecha_registro)}</td>
+                        <td>
+                          <button
+                            className={styles.actionButton}
+                            onClick={() => window.location.href = `/denuncias/${denuncia.id_denuncia}`}
+                          >
+                            <Eye size={16} />
+                            Ver
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
           </div>
-        </div>
-
-        {/* Acciones rápidas */}
-        <div className={`${styles.quickActions} animate-fade-in-up animate-delay-300`}>
-          <h2 className={styles.sectionTitle}>Acciones Rápidas</h2>
-          <div className={styles.actionsGrid}>
-            <button className={styles.quickActionCard}>
-              <div className={styles.actionIcon}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                  <polyline points="14,2 14,8 20,8"/>
-                  <line x1="16" y1="13" x2="8" y2="13"/>
-                  <line x1="16" y1="17" x2="8" y2="17"/>
-                  <polyline points="10,9 9,9 8,9"/>
-                </svg>
-              </div>
-              <span>Gestionar Denuncias</span>
-            </button>
-
-            <button className={styles.quickActionCard}>
-              <div className={styles.actionIcon}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M9 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-4"/>
-                  <polyline points="9,11 12,14 15,11"/>
-                  <line x1="12" y1="2" x2="12" y2="14"/>
-                </svg>
-              </div>
-              <span>Generar Reportes</span>
-            </button>
-
-            <button className={styles.quickActionCard}>
-              <div className={styles.actionIcon}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                  <polyline points="3.27,6.96 12,12.01 20.73,6.96"/>
-                  <line x1="12" y1="22.08" x2="12" y2="12"/>
-                </svg>
-              </div>
-              <span>Mapa de Denuncias</span>
-            </button>
-
-            <button className={styles.quickActionCard}>
-              <div className={styles.actionIcon}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                  <circle cx="12" cy="7" r="4"/>
-                </svg>
-              </div>
-              <span>Mi Perfil</span>
-            </button>
-          </div>
-        </div>
+        </main>
       </div>
-      </div>
-    </Layout>
+    </>
   );
 };
 

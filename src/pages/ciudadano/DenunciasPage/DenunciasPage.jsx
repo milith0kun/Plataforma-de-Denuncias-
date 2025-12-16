@@ -200,17 +200,17 @@ const DenunciasPage = () => {
                 </div>
 
                 <div className={styles.denunciaDetails}>
-                  <div className={styles.detailItem}>
+                  <div className={styles.detailItem} key={`fecha-${denuncia.id_denuncia}`}>
                     <span className={styles.detailIcon}>📅</span>
                     <span className={styles.detailText}>{formatearFecha(denuncia.fecha_registro)}</span>
                   </div>
-                  <div className={styles.detailItem}>
+                  <div className={styles.detailItem} key={`dir-${denuncia.id_denuncia}`}>
                     <span className={styles.detailIcon}>📍</span>
                     <span className={styles.detailText}>
                       {denuncia.direccion_geolocalizada || 'Ubicación no especificada'}
                     </span>
                   </div>
-                  <div className={styles.detailItem}>
+                  <div className={styles.detailItem} key={`cat-${denuncia.id_denuncia}`}>
                     <span className={styles.detailIcon}>🏷️</span>
                     <span className={styles.detailText}>{denuncia.categoria_nombre}</span>
                   </div>

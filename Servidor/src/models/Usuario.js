@@ -40,7 +40,24 @@ const usuarioSchema = new mongoose.Schema({
   },
   password_hash: {
     type: String,
-    required: true
+    required: function() {
+      // Solo requerido si no hay google_id
+      return !this.google_id;
+    }
+  },
+  // Campos de autenticación externa
+  google_id: {
+    type: String,
+    sparse: true,
+    default: null
+  },
+  foto_perfil: {
+    type: String,
+    default: null
+  },
+  verificado_email: {
+    type: Boolean,
+    default: false
   },
   // Campos específicos de autoridad
   cargo: {
@@ -86,6 +103,7 @@ const usuarioSchema = new mongoose.Schema({
 usuarioSchema.index({ email: 1 }, { unique: true });
 usuarioSchema.index({ documento_identidad: 1 }, { unique: true });
 usuarioSchema.index({ numero_empleado: 1 }, { unique: true, sparse: true });
+usuarioSchema.index({ google_id: 1 }, { unique: true, sparse: true });
 
 // Virtual para nombre completo
 usuarioSchema.virtual('nombreCompleto').get(function() {
