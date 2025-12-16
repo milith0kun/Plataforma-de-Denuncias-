@@ -543,16 +543,19 @@
 /* ===== BOTÓN MENÚ MÓVIL ===== */
 .mobileMenuBtn {
   display: none;
-  background: transparent;
-  border: none;
-  color: #64748b;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  color: #3b82f6;
   cursor: pointer;
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  z-index: 1001;
 }
 
 .mobileMenuBtn svg {
@@ -560,32 +563,39 @@
   height: 24px;
 }
 
-.mobileMenuBtn:hover {
-  background: #f1f5f9;
-  color: #1e293b;
+.mobileMenuBtn:hover,
+.mobileMenuBtn:active {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 /* ===== MENÚ MÓVIL ===== */
 .mobileMenu {
-  position: absolute;
-  top: 100%;
+  position: fixed;
+  top: 90px;
   left: 0;
   right: 0;
   background: #ffffff;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  z-index: 1000;
+  gap: 0.875rem;
+  z-index: 999;
   border-top: 1px solid #e2e8f0;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  animation: mobileMenuSlide 0.2s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  animation: mobileMenuSlide 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  max-height: calc(100vh - 90px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 @keyframes mobileMenuSlide {
   from {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-20px);
   }
   to {
     opacity: 1;
@@ -594,36 +604,99 @@
 }
 
 .mobileNavLink {
-  color: #64748b;
+  color: #3b82f6;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 1rem;
-  padding: 0.875rem 1rem;
-  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
   transition: all 0.2s ease;
   text-align: center;
+  border: 2px solid transparent;
+  display: block;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.mobileNavLink:hover {
-  background: #f1f5f9;
-  color: #1e293b;
+.mobileNavLink:hover,
+.mobileNavLink:active {
+  background: #eff6ff;
+  color: #2563eb;
+  border-color: #3b82f6;
+  transform: translateY(-1px);
 }
 
 .mobileNavButton {
-  background: #3b82f6;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: #ffffff;
   text-decoration: none;
   font-weight: 600;
   font-size: 1rem;
-  padding: 0.875rem 1rem;
-  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
   transition: all 0.2s ease;
   text-align: center;
+  border: none;
+  display: block;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+  -webkit-tap-highlight-color: transparent;
 }
 
-.mobileNavButton:hover {
-  background: #2563eb;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+.mobileNavButton:hover,
+.mobileNavButton:active {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+  transform: translateY(-2px);
+}
+
+.mobileMenuDivider {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 0.75rem 0;
+}
+
+.mobileNavLinkDanger {
+  color: #ef4444;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  text-align: center;
+  border: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: none;
+  width: 100%;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobileNavLinkDanger:hover,
+.mobileNavLinkDanger:active {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #ef4444;
+  transform: translateY(-1px);
+}
+
+.mobileNavLink,
+.mobileNavButton,
+.mobileNavLinkDanger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.mobileNavLink .navIcon,
+.mobileNavButton .navIcon,
+.mobileNavLinkDanger .navIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 /* ===== OVERLAY ===== */
@@ -633,10 +706,13 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 999;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
   backdrop-filter: blur(4px);
   animation: overlayFade 0.2s ease;
+  display: block;
 }
 
 @keyframes overlayFade {

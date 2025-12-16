@@ -144,13 +144,21 @@ const Header = ({ variant }) => {
   const getNavItems = () => {
     if (esAutoridad) {
       return [
-        { path: '/gestionar-denuncias', label: 'Gestionar Denuncias', icon: 'manage', primary: true }
+        { path: '/dashboard-autoridad', label: 'Dashboard', icon: 'dashboard' },
+        { path: '/gestionar-denuncias', label: 'Gestionar Denuncias', icon: 'manage', primary: true },
+        { path: '/denuncias', label: 'Todas las Denuncias', icon: 'list' },
+        { path: '/mapa-denuncias', label: 'Mapa', icon: 'map' },
+        { path: '/estadisticas', label: 'Estadísticas', icon: 'reports' }
       ];
     }
 
     if (esCiudadano) {
       return [
-        { path: '/nueva-denuncia', label: 'Nueva Denuncia', icon: 'plus', primary: true }
+        { path: '/home', label: 'Dashboard', icon: 'dashboard' },
+        { path: '/nueva-denuncia', label: 'Nueva Denuncia', icon: 'plus', primary: true },
+        { path: '/denuncias', label: 'Mis Denuncias', icon: 'list' },
+        { path: '/seguimiento', label: 'Seguimiento', icon: 'track' },
+        { path: '/mapa-denuncias', label: 'Mapa', icon: 'map' }
       ];
     }
 
@@ -350,6 +358,34 @@ const Header = ({ variant }) => {
           </button>
         </div>
       </div>
+
+      {/* Menú móvil para usuarios autenticados */}
+      {menuAbierto && (
+        <>
+          <div className={styles.mobileMenu}>
+            {navItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={item.primary ? styles.mobileNavButton : styles.mobileNavLink}
+                onClick={cerrarMenus}
+              >
+                <span className={styles.navIcon}>{Icons[item.icon]}</span>
+                <span>{item.label}</span>
+              </Link>
+            ))}
+            <div className={styles.mobileMenuDivider} />
+            <Link to="/perfil" className={styles.mobileNavLink} onClick={cerrarMenus}>
+              <span className={styles.navIcon}>{Icons.user}</span>
+              <span>Mi Perfil</span>
+            </Link>
+            <button className={styles.mobileNavLinkDanger} onClick={manejarLogout}>
+              <span className={styles.navIcon}>{Icons.logout}</span>
+              <span>Cerrar Sesión</span>
+            </button>
+          </div>
+        </>
+      )}
 
       {(menuAbierto || perfilMenuAbierto) && (
         <div className={styles.overlay} onClick={cerrarMenus} />

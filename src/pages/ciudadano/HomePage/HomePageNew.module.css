@@ -510,27 +510,61 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1200px) {
+  .metricsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .quickActionsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 1024px) {
   .sidebar {
     transform: translateX(-260px);
   }
   
-  .sidebar.open {
+  .sidebar:not(.collapsed) {
     transform: translateX(0);
   }
   
   .mainContent {
     margin-left: 0;
+    padding: 1.5rem;
   }
   
-  .metricsGrid {
-    grid-template-columns: repeat(2, 1fr);
+  .heroSection {
+    padding: 1.5rem;
+  }
+  
+  .heroLeft h1 {
+    font-size: 1.75rem;
   }
 }
 
 @media (max-width: 768px) {
+  .dashboardContainer {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    position: fixed;
+    z-index: 1000;
+    height: 100vh;
+    top: 0;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.3);
+  }
+  
   .mainContent {
     padding: 1rem;
+    margin-top: 0;
+    min-height: 100vh;
+  }
+  
+  .heroSection {
+    padding: 1.5rem 1rem;
+    margin-bottom: 1.5rem;
   }
   
   .heroContent {
@@ -538,9 +572,18 @@
     text-align: center;
   }
   
+  .heroLeft h1 {
+    font-size: 1.5rem;
+  }
+  
+  .heroLeft p {
+    font-size: 0.9375rem;
+  }
+  
   .heroActions {
     flex-direction: column;
     width: 100%;
+    gap: 0.75rem;
   }
   
   .heroActions button {
@@ -548,15 +591,127 @@
     justify-content: center;
   }
   
+  .btnPrimary,
+  .btnSecondary {
+    padding: 1rem 1.5rem;
+    font-size: 0.875rem;
+  }
+  
   .metricsGrid {
     grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .metricCard {
+    padding: 1.25rem;
   }
   
   .quickActionsGrid {
     grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .actionCard {
+    padding: 1.5rem;
+  }
+  
+  .tableCard {
+    padding: 1rem;
   }
   
   .tableWrapper {
-    overflow-x: scroll;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .table {
+    min-width: 600px;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.8125rem;
+  }
+  
+  .actionButton {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .mainContent {
+    padding: 0.75rem;
+  }
+  
+  .heroSection {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .heroLeft h1 {
+    font-size: 1.25rem;
+  }
+  
+  .heroLeft p {
+    font-size: 0.875rem;
+  }
+  
+  .btnPrimary,
+  .btnSecondary {
+    padding: 0.875rem 1.25rem;
+    font-size: 0.8125rem;
+  }
+  
+  .metricCard {
+    padding: 1rem;
+  }
+  
+  .metricValue {
+    font-size: 1.75rem;
+  }
+  
+  .metricHeader svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .actionCard {
+    padding: 1.25rem;
+  }
+  
+  .actionCardTitle {
+    font-size: 1rem;
+  }
+  
+  .actionCardDesc {
+    font-size: 0.8125rem;
+  }
+  
+  .tableCard {
+    padding: 0.75rem;
+  }
+  
+  .tableTitle {
+    font-size: 1rem;
+  }
+  
+  .toggleButton {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1001;
+    background: #1e293b;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .emptyState {
+    padding: 2rem 1rem;
+  }
+  
+  .emptyState svg {
+    width: 48px;
+    height: 48px;
   }
 }

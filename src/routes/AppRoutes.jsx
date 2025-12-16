@@ -47,12 +47,16 @@ const AppRoutes = () => {
         
         {/* Rutas privadas para ciudadanos */}
         <Route 
-          path="/inicio" 
+          path="/home" 
           element={
               <PrivateRoute requireRole="ciudadano">
                 <HomePage />
               </PrivateRoute>
             } 
+        />
+        <Route 
+          path="/inicio" 
+          element={<Navigate to="/home" replace />} 
         />
         <Route 
           path="/perfil" 
@@ -65,7 +69,7 @@ const AppRoutes = () => {
         <Route 
           path="/denuncias" 
           element={
-              <PrivateRoute requireRole="ciudadano">
+              <PrivateRoute>
                 <DenunciasPage />
               </PrivateRoute>
             } 
@@ -102,6 +106,14 @@ const AppRoutes = () => {
               </PrivateRoute>
             }
         />
+        <Route
+          path="/mapa-denuncias"
+          element={
+              <PrivateRoute>
+                <SeguimientoDenunciaPage />
+              </PrivateRoute>
+            }
+        />
 
         {/* Rutas privadas para autoridades */}
         <Route
@@ -113,10 +125,22 @@ const AppRoutes = () => {
             }
         />
         <Route
-          path="/autoridad/gestion-denuncias"
+          path="/gestionar-denuncias"
           element={
               <PrivateRoute requireRole="autoridad">
                 <GestionDenunciasPage />
+              </PrivateRoute>
+            }
+        />
+        <Route
+          path="/autoridad/gestion-denuncias"
+          element={<Navigate to="/gestionar-denuncias" replace />}
+        />
+        <Route
+          path="/estadisticas"
+          element={
+              <PrivateRoute requireRole="autoridad">
+                <DashboardAutoridadPage />
               </PrivateRoute>
             }
         />
@@ -127,7 +151,7 @@ const AppRoutes = () => {
           element={
             estaAutenticado ? (
               esAutoridad ? <Navigate to="/dashboard-autoridad" replace /> :
-              esCiudadano ? <Navigate to="/inicio" replace /> :
+              esCiudadano ? <Navigate to="/home" replace /> :
               <Navigate to="/login" replace />
             ) : <Navigate to="/login" replace />
           } 
@@ -139,7 +163,7 @@ const AppRoutes = () => {
           element={
             estaAutenticado ? (
               esAutoridad ? <Navigate to="/dashboard-autoridad" replace /> :
-              esCiudadano ? <Navigate to="/inicio" replace /> :
+              esCiudadano ? <Navigate to="/home" replace /> :
               <Navigate to="/" replace />
             ) : <Navigate to="/" replace />
           } 
