@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useIsMobile } from '../../../hooks/useIsMobile';
 import Header from '../../../components/common/Header/Header';
+import BottomNavigation from '../../../components/common/BottomNavigation/BottomNavigation';
 import MetricCard from '../../../components/common/MetricCard/MetricCard';
 import { TableSkeleton } from '../../../components/common/LoadingSkeleton/LoadingSkeleton';
 import { useToast } from '../../../components/common/ToastContainer/ToastContainer';
@@ -10,6 +12,7 @@ import styles from './GestionDenunciasPage.module.css';
 const GestionDenunciasPage = () => {
   const navigate = useNavigate();
   const toast = useToast();
+  const isMobile = useIsMobile();
 
   const [denuncias, setDenuncias] = useState([]);
   const [estados, setEstados] = useState([]);
@@ -526,6 +529,7 @@ const GestionDenunciasPage = () => {
           </div>
         </div>
       )}
+      {isMobile && <BottomNavigation userType="autoridad" />}
     </div>
   );
 };

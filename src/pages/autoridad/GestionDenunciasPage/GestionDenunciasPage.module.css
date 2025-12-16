@@ -9,6 +9,12 @@
   padding: var(--spacing-2xl) var(--spacing-lg);
 }
 
+@media (max-width: 1024px) {
+  .container {
+    padding-bottom: calc(75px + 2rem) !important;
+  }
+}
+
 /* Header */
 .header {
   margin-bottom: var(--spacing-2xl);

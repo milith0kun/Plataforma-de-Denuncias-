@@ -406,6 +406,7 @@
   border: 1px solid #e2e8f0;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   min-width: 280px;
+  max-width: calc(100vw - 2rem);
   overflow: hidden;
   z-index: 1001;
   animation: dropdownSlide 0.2s ease;
@@ -799,5 +800,49 @@
     width: 32px;
     height: 32px;
     font-size: 0.8125rem;
+  }
+
+  /* Dropdown en móviles */
+  .profileDropdown {
+    right: 0;
+    left: auto;
+    min-width: 260px;
+    max-width: calc(100vw - 2rem);
+    margin-right: 0;
+  }
+
+  .dropdownHeader {
+    padding: 1rem;
+  }
+
+  .dropdownAvatar {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .dropdownName {
+    font-size: 0.875rem;
+  }
+
+  .dropdownEmail {
+    font-size: 0.75rem;
+  }
+
+  .dropdownItem {
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .profileDropdown {
+    position: fixed;
+    top: 90px;
+    right: 1rem;
+    left: 1rem;
+    min-width: auto;
+    max-width: none;
+    width: calc(100% - 2rem);
   }
 }

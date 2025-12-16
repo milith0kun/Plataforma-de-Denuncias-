@@ -107,6 +107,14 @@ const AppRoutes = () => {
             }
         />
         <Route
+          path="/seguimiento/:id"
+          element={
+              <PrivateRoute>
+                <SeguimientoDenunciaPage />
+              </PrivateRoute>
+            }
+        />
+        <Route
           path="/mapa-denuncias"
           element={
               <PrivateRoute>

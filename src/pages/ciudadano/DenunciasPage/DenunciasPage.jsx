@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../../components/common/Header/Header';
+import BottomNavigation from '../../../components/common/BottomNavigation/BottomNavigation';
+import { useIsMobile } from '../../../hooks/useIsMobile';
 import denunciaService from '../../../services/denunciaService';
 import styles from './DenunciasPage.module.css';
 
 const DenunciasPage = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [filtroEstado, setFiltroEstado] = useState('todas');
   const [denuncias, setDenuncias] = useState([]);
   const [cargando, setCargando] = useState(true);
@@ -246,6 +249,7 @@ const DenunciasPage = () => {
           )}
         </div>
       </div>
+      {isMobile && <BottomNavigation userType="ciudadano" />}
     </div>
   );
 };

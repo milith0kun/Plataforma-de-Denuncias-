@@ -1,23 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useIsMobile } from '../../hooks/useIsMobile';
 import Header from '../../components/common/Header/Header';
+import BottomNavigation from '../../components/common/BottomNavigation/BottomNavigation';
 import denunciaService from '../../services/denunciaService';
 import styles from './SeguimientoDenunciaPage.module.css';
 
 const SeguimientoDenunciaPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   const [denuncia, setDenuncia] = useState(null);
+  const [denuncias, setDenuncias] = useState([]);
   const [historial, setHistorial] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
+  const [mostrarLista, setMostrarLista] = useState(!id);
 
   useEffect(() => {
-    cargarDatos();
+    if (id) {
+      cargarDatosDenuncia();
+    } else {
+      cargarListaDenuncias();
+    }
   }, [id]);
 
-  const cargarDatos = async () => {
+  const cargarListaDenuncias = async () => {
+    try {
+      setCargando(true);
+      setError(null);
+
+      const response = await denunciaService.obtenerDenuncias();
+
+      if (response.success) {
+        setDenuncias(response.data.denuncias);
+        setMostrarLista(true);
+      } else {
+        setError(response.message || 'Error al cargar denuncias');
+      }
+    } catch (err) {
+      console.error('Error al cargar denuncias:', err);
+      setError(err.message || 'Error al cargar denuncias');
+    } finally {
+      setCargando(false);
+    }
+  };
+
+  const cargarDatosDenuncia = async () => {
     try {
       setCargando(true);
       setError(null);
@@ -27,6 +57,7 @@ const SeguimientoDenunciaPage = () => {
       if (response.success) {
         setDenuncia(response.data.denuncia);
         setHistorial(response.data.historial || []);
+        setMostrarLista(false);
       } else {
         setError(response.message || 'Error al cargar el seguimiento');
       }
@@ -97,13 +128,75 @@ const SeguimientoDenunciaPage = () => {
         <div className={styles.container}>
           <div className={styles.errorContainer}>
             <p className={styles.errorMessage}>⚠️ {error}</p>
-            <button onClick={cargarDatos} className={styles.retryButton}>
+            <button onClick={() => id ? cargarDatosDenuncia() : cargarListaDenuncias()} className={styles.retryButton}>
               Reintentar
             </button>
             <button onClick={() => navigate(-1)} className={styles.backButton}>
               Volver
             </button>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Si estamos en modo lista y no hay ID
+  if (mostrarLista && !id) {
+    const obtenerColorEstado = (estado) => {
+      const colores = {
+        'Pendiente': '#f59e0b',
+        'En Proceso': '#3b82f6',
+        'Resuelto': '#10b981',
+        'Rechazado': '#ef4444',
+        'Cerrado': '#6b7280'
+      };
+      return colores[estado] || '#94a3b8';
+    };
+
+    return (
+      <div className={styles.pageContainer}>
+        <Header />
+        <div className={styles.container}>
+          <div className={styles.header}>
+            <h1 className={styles.title}>Seguimiento de Denuncias</h1>
+            <p className={styles.subtitle}>Selecciona una denuncia para ver su seguimiento detallado</p>
+          </div>
+
+          {denuncias.length === 0 ? (
+            <div className={styles.emptyState}>
+              <p>No tienes denuncias registradas</p>
+              <button onClick={() => navigate('/nueva-denuncia')} className={styles.btnPrimary}>
+                Crear nueva denuncia
+              </button>
+            </div>
+          ) : (
+            <div className={styles.denunciasList}>
+              {denuncias.map((den) => (
+                <div 
+                  key={den.id_denuncia} 
+                  className={styles.denunciaCard}
+                  onClick={() => navigate(`/seguimiento/${den.id_denuncia}`)}
+                >
+                  <div className={styles.denunciaCardHeader}>
+                    <h3 className={styles.denunciaCardTitle}>{den.titulo}</h3>
+                    <span 
+                      className={styles.denunciaCardEstado}
+                      style={{ backgroundColor: obtenerColorEstado(den.estado_nombre) }}
+                    >
+                      {den.estado_nombre}
+                    </span>
+                  </div>
+                  <p className={styles.denunciaCardCategoria}>{den.categoria_nombre}</p>
+                  <p className={styles.denunciaCardFecha}>
+                    Registrada el {new Date(den.fecha_registro).toLocaleDateString('es-ES')}
+                  </p>
+                  <button className={styles.denunciaCardButton}>
+                    Ver seguimiento →
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     );
@@ -116,8 +209,8 @@ const SeguimientoDenunciaPage = () => {
         <div className={styles.container}>
           <div className={styles.errorContainer}>
             <p className={styles.errorMessage}>Denuncia no encontrada</p>
-            <button onClick={() => navigate(-1)} className={styles.backButton}>
-              Volver
+            <button onClick={() => navigate('/seguimiento')} className={styles.backButton}>
+              Ver todas las denuncias
             </button>
           </div>
         </div>
@@ -299,6 +392,7 @@ const SeguimientoDenunciaPage = () => {
           </button>
         </div>
       </div>
+      {isMobile && <BottomNavigation userType="ciudadano" />}
     </div>
   );
 };
