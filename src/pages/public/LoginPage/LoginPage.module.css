@@ -1,50 +1,29 @@
-/* LoginPage.module.css - Estilos consistentes con el sistema principal */
+/* LoginPage - Diseño Limpio y Minimalista */
 
 .login-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
-  padding: var(--spacing-lg);
-  position: relative;
-  overflow: hidden;
-}
-
-.login-container::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-  animation: float 8s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-30px) rotate(180deg); }
+  background: #f8fafc;
+  padding: 1rem;
 }
 
 .login-card {
-  background: var(--color-white);
-  border-radius: var(--border-radius-xl);
-  box-shadow: var(--shadow-xl);
-  padding: var(--spacing-3xl);
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  padding: 3rem 2.5rem;
   width: 100%;
-  max-width: 480px;
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  position: relative;
-  z-index: 1;
-  animation: fadeInUp 0.6s ease-out;
+  max-width: 440px;
+  animation: fadeIn 0.4s ease;
 }
 
-@keyframes fadeInUp {
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -52,135 +31,172 @@
   }
 }
 
+/* Header */
 .login-header {
   text-align: center;
-  margin-bottom: var(--spacing-2xl);
+  margin-bottom: 2rem;
+}
+
+.logo {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 1.5rem;
+  display: block;
 }
 
 .login-title {
-  font-size: var(--font-size-h1);
-  font-weight: var(--font-weight-bold);
-  font-family: var(--font-headings);
-  color: var(--color-text-primary);
-  margin-bottom: var(--spacing-md);
-  line-height: 1.2;
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
 }
 
 .login-subtitle {
-  font-size: var(--font-size-large);
-  color: var(--color-text-primary);
-  font-weight: var(--font-weight-medium);
-  opacity: 0.7;
+  font-size: 0.9375rem;
+  color: #64748b;
+  font-weight: 400;
 }
 
+/* Botón de Google */
+.google-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #1e293b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 1.5rem;
+}
+
+.google-button:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.google-button:active {
+  transform: translateY(0);
+}
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.5rem 0;
+  color: #94a3b8;
+  font-size: 0.875rem;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.divider span {
+  padding: 0 1rem;
+  background: #ffffff;
+}
+
+/* Formulario */
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-lg);
+  gap: 1.25rem;
 }
 
 .forgot-password {
   text-align: right;
-  margin-bottom: var(--spacing-lg);
+  margin-top: -0.5rem;
+  margin-bottom: 0.5rem;
 }
 
-.forgot-password-link {
-  font-size: var(--font-size-small);
-  color: var(--color-primary);
+.forgot-link {
+  font-size: 0.875rem;
+  color: #3b82f6;
   text-decoration: none;
-  transition: all 0.3s ease;
-  font-weight: var(--font-weight-medium);
+  font-weight: 500;
+  transition: color 0.2s ease;
 }
 
-.forgot-password-link:hover {
-  color: var(--color-primary-dark);
+.forgot-link:hover {
+  color: #2563eb;
+}
+
+/* Footer Links */
+.footer-links {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.register-text,
+.authority-text {
+  font-size: 0.9375rem;
+  color: #64748b;
+  margin: 0.75rem 0;
+}
+
+.link {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: #2563eb;
   text-decoration: underline;
-  transform: translateY(-1px);
 }
 
-.register-link {
-  text-align: center;
-  margin-top: var(--spacing-xl);
-  font-size: var(--font-size-base);
-  color: var(--color-text-primary);
-  opacity: 0.7;
-}
-
-.register-link a {
-  color: var(--color-primary);
-  text-decoration: none;
-  font-weight: var(--font-weight-semibold);
-  transition: all 0.3s ease;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border-radius: var(--border-radius-sm);
-}
-
-.register-link a:hover {
-  color: var(--color-primary-dark);
-  background: rgba(21, 53, 149, 0.1);
-  transform: translateY(-1px);
-}
-
-.authority-link {
-  text-align: center;
-  margin-top: var(--spacing-md);
-  font-size: var(--font-size-sm);
-  color: var(--color-text-primary);
-  opacity: 0.6;
-}
-
-.authority-link a {
-  color: var(--color-primary-light);
-  text-decoration: none;
-  font-weight: var(--font-weight-medium);
-  transition: all 0.3s ease;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border-radius: var(--border-radius-sm);
-}
-
-.authority-link a:hover {
-  color: var(--color-primary-dark);
-  background: rgba(139, 69, 19, 0.1);
-  transform: translateY(-1px);
-}
-
-/* Estilos responsive */
-@media (max-width: 768px) {
-  .login-container {
-    padding: var(--spacing-md);
-  }
-  
+/* Responsive */
+@media (max-width: 640px) {
   .login-card {
-    padding: var(--spacing-xl) var(--spacing-lg);
-    margin: var(--spacing-md);
-    max-width: 100%;
+    padding: 2rem 1.5rem;
+    border-radius: 12px;
   }
   
   .login-title {
-    font-size: var(--font-size-h2);
+    font-size: 1.625rem;
   }
   
-  .login-subtitle {
-    font-size: var(--font-size-base);
-  }
-  
-  .login-header {
-    margin-bottom: var(--spacing-xl);
+  .logo {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1.25rem;
   }
 }
 
 @media (max-width: 480px) {
+  .login-container {
+    padding: 1rem 0.75rem;
+  }
+  
   .login-card {
-    padding: var(--spacing-lg) var(--spacing-md);
-    margin: var(--spacing-sm);
-    border-radius: var(--border-radius-lg);
+    padding: 1.75rem 1.25rem;
   }
   
   .login-title {
-    font-size: var(--font-size-h3);
+    font-size: 1.5rem;
   }
   
-  .forgot-password {
-    text-align: center;
+  .login-subtitle {
+    font-size: 0.875rem;
+  }
+  
+  .google-button {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
   }
 }
