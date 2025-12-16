@@ -35,8 +35,11 @@ class DenunciaController {
         es_anonima
       } = req.body;
 
+      // Asegurar que id_categoria sea string (ObjectId válido)
+      const categoriaId = typeof id_categoria === 'number' ? id_categoria.toString() : id_categoria;
+
       // Validar que la categoría existe
-      const categoria = await Categoria.obtenerPorId(id_categoria);
+      const categoria = await Categoria.obtenerPorId(categoriaId);
       if (!categoria) {
         return res.status(404).json({
           success: false,
@@ -47,7 +50,7 @@ class DenunciaController {
       // Crear la denuncia
       const id_denuncia = await Denuncia.crear({
         id_ciudadano: id_usuario,
-        id_categoria,
+        id_categoria: categoriaId,
         titulo,
         descripcion_detallada,
         latitud,
@@ -485,6 +488,42 @@ class DenunciaController {
       res.status(500).json({
         success: false,
         message: MENSAJES_ERROR.ERROR_SERVIDOR || 'Error al obtener evidencias'
+      });
+    }
+  }
+
+  /**
+   * Obtener historial de estados de una denuncia
+   * GET /api/v1/denuncias/:id/historial
+   */
+  static async obtenerHistorial(req, res) {
+    try {
+      const { id } = req.params;
+
+      // Verificar que la denuncia existe
+      const denuncia = await Denuncia.obtenerPorId(id);
+      if (!denuncia) {
+        return res.status(404).json({
+          success: false,
+          message: 'Denuncia no encontrada'
+        });
+      }
+
+      // Obtener historial desde el modelo HistorialEstado
+      const HistorialEstado = (await import('../models/HistorialEstado.js')).default;
+      const historial = await HistorialEstado.obtenerPorDenuncia(id);
+
+      res.status(200).json({
+        success: true,
+        data: {
+          historial
+        }
+      });
+    } catch (error) {
+      console.error('Error en obtenerHistorial:', error);
+      res.status(500).json({
+        success: false,
+        message: MENSAJES_ERROR.ERROR_SERVIDOR || 'Error al obtener historial'
       });
     }
   }

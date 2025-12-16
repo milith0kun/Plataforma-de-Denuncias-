@@ -1,18 +1,58 @@
 /* ===== HEADER MINIMALISTA Y LIMPIO ===== */
 
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
 /* Base del header */
 .header {
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
   z-index: 1000;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border-bottom: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
+  animation: slideDown 0.5s ease-out forwards;
 }
 
 .header:hover {
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
 }
 
 /* Contenedor principal */
@@ -23,9 +63,30 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 80px;
+  height: 90px; /* Altura intermedia ideal */
   position: relative;
 }
+
+/* Barra de navegación secundaria (Robustez) */
+.subNavBar {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-left: 2rem;
+  padding-left: 2rem;
+  border-left: 1px solid #e2e8f0;
+  height: 40px;
+}
+
+.pageTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 
 /* ===== LOGO MINIMALISTA ===== */
 .logo {
@@ -34,6 +95,7 @@
   gap: 0.875rem;
   text-decoration: none;
   transition: all 0.3s ease;
+  animation: float 3s ease-in-out infinite;
 }
 
 .logo:hover {
@@ -81,36 +143,42 @@
 }
 
 .navLinkPublic {
-  color: #64748b;
+  color: #3b82f6;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 0.9375rem;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
   transition: all 0.2s ease;
+  border: 2px solid #eff6ff;
+  background: #eff6ff;
 }
 
 .navLinkPublic:hover {
-  color: #1e293b;
-  background: #f1f5f9;
+  color: #2563eb;
+  background: #dbeafe;
+  border-color: #3b82f6;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
 }
 
 .navButtonPrimary {
-  background: #3b82f6;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: #ffffff;
   text-decoration: none;
   font-weight: 600;
   font-size: 0.9375rem;
-  padding: 0.625rem 1.5rem;
-  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
   transition: all 0.2s ease;
   border: none;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .navButtonPrimary:hover {
-  background: #2563eb;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
 }
 
 /* ===== NAVEGACIÓN AUTENTICADA ===== */
@@ -137,6 +205,32 @@
   white-space: nowrap;
 }
 
+.navLinkPrimary {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.navLinkPrimary:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.navLinkPrimary .navIcon {
+  color: #ffffff;
+}
+
 .navLink:hover {
   color: #1e293b;
   background: #f1f5f9;
@@ -146,6 +240,14 @@
   color: #3b82f6 !important;
   background: #eff6ff !important;
   font-weight: 600 !important;
+}
+
+/* Si el item es primary y está activo, mantiene estilo de botón */
+.navLinkPrimary.navLinkActive {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  color: #ffffff;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  transform: translateY(1px);
 }
 
 .navIcon {
@@ -558,7 +660,7 @@
 }
 
 @media (max-width: 1023px) {
-  .logoTextContainer {
+  .subNavBar {
     display: none;
   }
 }
@@ -580,11 +682,22 @@
 @media (max-width: 768px) {
   .container {
     padding: 0 1rem;
-    height: 64px;
+    height: 90px; /* Consistente con desktop */
   }
 
   .mobileMenuBtn {
     display: flex;
+  }
+
+  .logoTextContainer {
+    display: flex; /* Mostrar texto en móvil */
+    transform: scale(0.8); /* Un poco más pequeño */
+    margin-left: -0.5rem;
+  }
+  
+  .logoTextTop, 
+  .logoTextBottom {
+    font-size: 1rem; /* Ajustar tamaño de fuente */
   }
 
   .publicNav,

@@ -1,0 +1,314 @@
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../hooks/useAuth';
+import { 
+  BarChart, Bar, PieChart, Pie, Cell, LineChart, Line,
+  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer 
+} from 'recharts';
+import { 
+  LayoutDashboard, FileText, AlertCircle, CheckCircle2, 
+  Clock, TrendingUp, Users, MapPin, Filter, Calendar,
+  BarChart3, Download, Menu, X
+} from 'lucide-react';
+import Header from '../../../components/common/Header/Header';
+import denunciaService from '../../../services/denunciaService';
+import estadisticasService from '../../../services/estadisticasService';
+import styles from './DashboardAutoridadPageNew.module.css';
+
+const DashboardAutoridadPage = () => {
+  const { usuario } = useAuth();
+  const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [metricas, setMetricas] = useState({
+    total: 0,
+    pendientes: 0,
+    enProceso: 0,
+    resueltas: 0,
+    urgentes: 0
+  });
+  const [estadisticas, setEstadisticas] = useState(null);
+  const [denunciasRecientes, setDenunciasRecientes] = useState([]);
+  const [cargando, setCargando] = useState(true);
+  const [filtroTiempo, setFiltroTiempo] = useState('mes');
+
+  useEffect(() => {
+    cargarDatos();
+  }, []);
+
+  const cargarDatos = async () => {
+    try {
+      setCargando(true);
+
+      const [denunciasRes, statsRes] = await Promise.all([
+        denunciaService.obtenerDenuncias({ limite: 100, orden: 'fecha_registro', direccion: 'DESC' }),
+        estadisticasService.obtenerEstadisticasGenerales().catch(() => null)
+      ]);
+
+      if (denunciasRes.success) {
+        const denuncias = denunciasRes.data.denuncias;
+        
+        const pendientes = denuncias.filter(d => ['Registrada', 'En Revisión'].includes(d.estado_nombre)).length;
+        const enProceso = denuncias.filter(d => ['Asignada', 'En Proceso'].includes(d.estado_nombre)).length;
+        const resueltas = denuncias.filter(d => d.estado_nombre === 'Resuelta').length;
+        const urgentes = denuncias.filter(d => {
+          const dias = Math.floor((new Date() - new Date(d.fecha_registro)) / (1000 * 60 * 60 * 24));
+          return ['Registrada', 'En Revisión'].includes(d.estado_nombre) && dias > 7;
+        }).length;
+
+        setMetricas({
+          total: denuncias.length,
+          pendientes,
+          enProceso,
+          resueltas,
+          urgentes
+        });
+
+        setDenunciasRecientes(denuncias.slice(0, 8));
+      }
+
+      if (statsRes?.success) {
+        setEstadisticas(statsRes.data);
+      }
+    } catch (err) {
+      console.error('Error al cargar datos:', err);
+    } finally {
+      setCargando(false);
+    }
+  };
+
+  const formatearFecha = (fecha) => {
+    if (!fecha) return '';
+    return new Date(fecha).toLocaleDateString('es-ES', { 
+      day: '2-digit', 
+      month: 'short', 
+      year: 'numeric' 
+    });
+  };
+
+  const obtenerColorEstado = (estado) => {
+    const colores = {
+      'Registrada': '#f59e0b',
+      'En Revisión': '#f59e0b',
+      'Asignada': '#8b5cf6',
+      'En Proceso': '#3b82f6',
+      'Resuelta': '#10b981',
+      'Cerrada': '#6b7280'
+    };
+    return colores[estado] || '#6b7280';
+  };
+
+  const datosEstados = estadisticas?.porEstado || [];
+  const datosCategorias = estadisticas?.porCategoria?.slice(0, 5) || [];
+  const datosTendencia = estadisticas?.tendenciaMensual || [];
+  const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
+
+  if (cargando) {
+    return (
+      <>
+        <Header variant="private" />
+        <div className={styles.loading}>
+          <div className={styles.spinner}></div>
+          <p>Cargando dashboard...</p>
+        </div>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Header variant="private" />
+      <div className={styles.dashboardContainer}>
+      {/* Header */}
+      <div className={`${styles.header} animate-fade-in-down`}>
+        <div className={styles.headerContent}>
+          <div className={styles.welcomeSection}>
+            <h1 className={`${styles.title} animate-fade-in-left`}>Dashboard de Autoridad</h1>
+            <p className={`${styles.subtitle} animate-fade-in-left animate-delay-100`}>
+              Bienvenido, {usuario?.nombres} {usuario?.apellidos}
+            </p>
+            <div className={`${styles.userInfo} animate-fade-in-left animate-delay-200`}>
+              <span className={styles.cargo}>{usuario?.cargo}</span>
+              <span className={styles.area}>{usuario?.area_responsabilidad}</span>
+            </div>
+          </div>
+          <div className={`${styles.dateSection} animate-fade-in-right`}>
+            <p className={styles.currentDate}>
+              {new Date().toLocaleDateString('es-ES', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Métricas principales */}
+      <div className={`${styles.metricsSection} animate-fade-in-up animate-delay-200`}>
+        <div className={styles.metricsGrid}>
+          <div className={`${styles.metricCard} ${styles.pendientes}`}>
+            <div className={styles.metricIcon}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12,6 12,12 16,14"/>
+              </svg>
+            </div>
+            <div className={styles.metricContent}>
+              <h3 className={styles.metricNumber}>{metricas.denunciasPendientes}</h3>
+              <p className={styles.metricLabel}>Denuncias Pendientes</p>
+            </div>
+          </div>
+
+          <div className={`${styles.metricCard} ${styles.asignadas}`}>
+            <div className={styles.metricIcon}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="8.5" cy="7" r="4"/>
+                <polyline points="17,11 19,13 23,9"/>
+              </svg>
+            </div>
+            <div className={styles.metricContent}>
+              <h3 className={styles.metricNumber}>{metricas.denunciasAsignadas}</h3>
+              <p className={styles.metricLabel}>Asignadas a Mí</p>
+            </div>
+          </div>
+
+          <div className={`${styles.metricCard} ${styles.resueltas}`}>
+            <div className={styles.metricIcon}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <polyline points="20,6 9,17 4,12"/>
+              </svg>
+            </div>
+            <div className={styles.metricContent}>
+              <h3 className={styles.metricNumber}>{metricas.denunciasResueltas}</h3>
+              <p className={styles.metricLabel}>Resueltas</p>
+            </div>
+          </div>
+
+          <div className={`${styles.metricCard} ${styles.urgentes}`}>
+            <div className={styles.metricIcon}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+            </div>
+            <div className={styles.metricContent}>
+              <h3 className={styles.metricNumber}>{metricas.denunciasUrgentes}</h3>
+              <p className={styles.metricLabel}>Urgentes</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Contenido principal */}
+      <div className={styles.mainContent}>
+        {/* Denuncias recientes */}
+        <div className={`${styles.recentSection} animate-fade-in-up animate-delay-400`}>
+          <div className={`${styles.sectionHeader} animate-fade-in-left animate-delay-500`}>
+            <h2 className={styles.sectionTitle}>Denuncias Recientes</h2>
+            <button className={`${styles.viewAllButton} transition-smooth hover-scale`}>
+              Ver todas
+            </button>
+          </div>
+          
+          <div className={styles.denunciasGrid}>
+            {denunciasRecientes.length === 0 ? (
+              <div className={styles.emptyState}>
+                <p>No hay denuncias registradas en el sistema</p>
+              </div>
+            ) : (
+              denunciasRecientes.map((denuncia) => (
+                <div key={denuncia.id_denuncia} className={styles.denunciaCard}>
+                  <div className={styles.denunciaHeader}>
+                    <h3 className={styles.denunciaTitulo}>{denuncia.titulo}</h3>
+                    <div className={styles.denunciaBadges}>
+                      <span
+                        className={styles.estadoBadge}
+                        style={{ backgroundColor: getEstadoColor(denuncia.estado_nombre) }}
+                      >
+                        {denuncia.estado_nombre}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className={styles.denunciaInfo}>
+                    <p className={styles.categoria}>{denuncia.categoria_nombre}</p>
+                    <p className={styles.fecha}>{formatearFecha(denuncia.fecha_registro)}</p>
+                  </div>
+
+                  <div className={styles.denunciaActions}>
+                    <button
+                      className={styles.actionButton}
+                      onClick={() => window.location.href = `/denuncias/${denuncia.id_denuncia}`}
+                    >
+                      Ver detalles
+                    </button>
+                    <button className={styles.actionButton}>
+                      Gestionar
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+
+        {/* Acciones rápidas */}
+        <div className={`${styles.quickActions} animate-fade-in-up animate-delay-300`}>
+          <h2 className={styles.sectionTitle}>Acciones Rápidas</h2>
+          <div className={styles.actionsGrid}>
+            <button className={styles.quickActionCard}>
+              <div className={styles.actionIcon}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14,2 14,8 20,8"/>
+                  <line x1="16" y1="13" x2="8" y2="13"/>
+                  <line x1="16" y1="17" x2="8" y2="17"/>
+                  <polyline points="10,9 9,9 8,9"/>
+                </svg>
+              </div>
+              <span>Gestionar Denuncias</span>
+            </button>
+
+            <button className={styles.quickActionCard}>
+              <div className={styles.actionIcon}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M9 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-4"/>
+                  <polyline points="9,11 12,14 15,11"/>
+                  <line x1="12" y1="2" x2="12" y2="14"/>
+                </svg>
+              </div>
+              <span>Generar Reportes</span>
+            </button>
+
+            <button className={styles.quickActionCard}>
+              <div className={styles.actionIcon}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                  <polyline points="3.27,6.96 12,12.01 20.73,6.96"/>
+                  <line x1="12" y1="22.08" x2="12" y2="12"/>
+                </svg>
+              </div>
+              <span>Mapa de Denuncias</span>
+            </button>
+
+            <button className={styles.quickActionCard}>
+              <div className={styles.actionIcon}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </div>
+              <span>Mi Perfil</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      </div>
+    </Layout>
+  );
+};
+
+export default DashboardAutoridadPage;

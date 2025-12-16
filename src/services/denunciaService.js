@@ -204,6 +204,20 @@ const denunciaService = {
     } catch (error) {
       throw error.response?.data || error;
     }
+  },
+
+  /**
+   * Obtener historial de estados de una denuncia
+   * @param {number} id - ID de la denuncia
+   * @returns {Promise} Historial de estados
+   */
+  async obtenerHistorialEstados(id) {
+    try {
+      const response = await api.get(`/denuncias/${id}/historial`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
   }
 };
 

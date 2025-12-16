@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
+import { useGoogleAuth } from '../../../hooks/useGoogleAuth';
 import Input from '../../../components/common/Input/Input';
 import Button from '../../../components/common/Button/Button';
 import Alert from '../../../components/common/Alert/Alert';
@@ -19,17 +20,80 @@ const GoogleIcon = () => (
 const LoginPage = () => {
   const navigate = useNavigate();
   const { login, error } = useAuth();
+  const { loginWithGoogle, isConfigured, isGoogleLoaded } = useGoogleAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
   const [errores, setErrores] = useState({});
   const [cargando, setCargando] = useState(false);
+  const [googleError, setGoogleError] = useState('');
 
-  const handleGoogleLogin = () => {
-    // TODO: Implementar autenticación con Google OAuth
-    console.log('Google login clicked');
-    alert('La autenticación con Google se implementará próximamente');
+  const handleGoogleLogin = async () => {
+    console.log('Botón de Google clickeado');
+    console.log('isConfigured:', isConfigured);
+    console.log('isGoogleLoaded:', isGoogleLoaded);
+    console.log('window.google:', !!window.google);
+    console.log('Origen actual:', window.location.origin);
+    
+    if (!isConfigured) {
+      const mensaje = 'Google OAuth no está configurado. Por favor, configura VITE_GOOGLE_CLIENT_ID en el archivo .env\n\nConsulta OAUTH_SETUP.md para instrucciones detalladas.';
+      console.error(mensaje);
+      alert(mensaje);
+      return;
+    }
+
+    if (!isGoogleLoaded) {
+      const mensaje = 'El SDK de Google aún no se ha cargado. Por favor, espera un momento e intenta nuevamente.';
+      console.warn(mensaje);
+      setGoogleError(mensaje);
+      return;
+    }
+
+    setGoogleError('');
+    setCargando(true);
+    console.log('Iniciando login con Google...');
+    console.log('Si aparece error de "unregistered_origin", asegúrate de acceder desde http://localhost:3000');
+    
+    loginWithGoogle(
+      async (credential) => {
+        console.log('✅ Credential recibido de Google');
+        try {
+          console.log('Enviando credential al backend...');
+          const api = (await import('../../../services/api.js')).default;
+          const response = await api.post('/auth/google', { credential });
+          
+          console.log('Respuesta del backend:', response.data);
+          
+          if (response.data.success) {
+            console.log('✅ Login exitoso');
+            // Guardar token y usuario en localStorage
+            localStorage.setItem('token', response.data.data.token);
+            localStorage.setItem('usuario', JSON.stringify(response.data.data.usuario));
+            
+            // Redirigir según el tipo de usuario
+            const tipoUsuario = response.data.data.usuario.tipo_usuario;
+            console.log('Redirigiendo usuario tipo:', tipoUsuario);
+            if (tipoUsuario === 'Autoridad' || tipoUsuario === 'Autoridad_Municipal') {
+              navigate('/dashboard-autoridad');
+            } else {
+              navigate('/inicio');
+            }
+          }
+        } catch (error) {
+          console.error('❌ Error al procesar login de Google:', error);
+          console.error('Detalles del error:', error.response?.data);
+          setGoogleError(error.response?.data?.message || 'Error al iniciar sesión con Google');
+        } finally {
+          setCargando(false);
+        }
+      },
+      (error) => {
+        console.error('❌ Error en Google login:', error);
+        setGoogleError(error);
+        setCargando(false);
+      }
+    );
   };
 
   const handleChange = (e) => {
@@ -91,78 +155,161 @@ const LoginPage = () => {
   return (
     <div className={styles['login-container']}>
       <div className={styles['login-card']}>
-        <div className={styles['login-header']}>
-          <img src="/Establish.svg" alt="Logo" className={styles['logo']} />
-          <h1 className={styles['login-title']}>Bienvenido</h1>
-          <p className={styles['login-subtitle']}>
-            Ingresa a tu cuenta para continuar
-          </p>
-        </div>
+        {/* Lado Izquierdo - Información */}
+        <div className={styles['info-section']}>
+          <div className={styles['info-content']}>
+            <img src="/Establish.svg" alt="Logo" className={styles['logo-large']} />
+            <h2 className={styles['info-title']}>Plataforma de Denuncias Urbanas</h2>
+            <p className={styles['info-description']}>
+              Reporta problemas en tu comunidad y contribuye a mejorar tu ciudad
+            </p>
+            
+            <div className={styles['features']}>
+              <div className={styles['feature-item']}>
+                <div className={styles['feature-icon']}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className={styles['feature-title']}>Reportes Rápidos</h3>
+                  <p className={styles['feature-text']}>Crea denuncias en minutos con fotos y ubicación</p>
+                </div>
+              </div>
 
-        {error && <Alert type="error" message={error} />}
+              <div className={styles['feature-item']}>
+                <div className={styles['feature-icon']}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className={styles['feature-title']}>Seguimiento en Tiempo Real</h3>
+                  <p className={styles['feature-text']}>Monitorea el progreso de tus denuncias</p>
+                </div>
+              </div>
 
-        {/* Botón de Google */}
-        <button 
-          type="button" 
-          onClick={handleGoogleLogin}
-          className={styles['google-button']}
-        >
-          <GoogleIcon />
-          <span>Continuar con Google</span>
-        </button>
+              <div className={styles['feature-item']}>
+                <div className={styles['feature-icon']}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className={styles['feature-title']}>Comunidad Activa</h3>
+                  <p className={styles['feature-text']}>Colabora con otros ciudadanos y autoridades</p>
+                </div>
+              </div>
+            </div>
 
-        <div className={styles['divider']}>
-          <span>o</span>
-        </div>
-
-        <form onSubmit={handleSubmit} className={styles['login-form']}>
-          <Input
-            label="Correo Electrónico"
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            error={errores.email}
-            placeholder="tu@email.com"
-            required
-          />
-
-          <Input
-            label="Contraseña"
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            error={errores.password}
-            placeholder="••••••••"
-            required
-          />
-
-          <div className={styles['forgot-password']}>
-            <Link to="/forgot-password" className={styles['forgot-link']}>
-              ¿Olvidaste tu contraseña?
-            </Link>
+            <div className={styles['stats']}>
+              <div className={styles['stat-item']}>
+                <span className={styles['stat-number']}>1,234+</span>
+                <span className={styles['stat-label']}>Denuncias Resueltas</span>
+              </div>
+              <div className={styles['stat-item']}>
+                <span className={styles['stat-number']}>850+</span>
+                <span className={styles['stat-label']}>Ciudadanos Activos</span>
+              </div>
+              <div className={styles['stat-item']}>
+                <span className={styles['stat-number']}>98%</span>
+                <span className={styles['stat-label']}>Satisfacción</span>
+              </div>
+            </div>
           </div>
+        </div>
 
-          <Button
-            type="submit"
-            variant="primary"
-            fullWidth
-            disabled={cargando}
-          >
-            {cargando ? 'Iniciando sesión...' : 'Iniciar Sesión'}
-          </Button>
-        </form>
+        {/* Lado Derecho - Formulario */}
+        <div className={styles['form-section']}>
+          <div className={styles['form-content']}>
+            <div className={styles['login-header']}>
+              <h1 className={styles['login-title']}>Iniciar Sesión</h1>
+              <p className={styles['login-subtitle']}>
+                Ingresa a tu cuenta para continuar
+              </p>
+            </div>
 
-        <div className={styles['footer-links']}>
-          <p className={styles['register-text']}>
-            ¿No tienes cuenta?{' '}
-            <Link to="/register" className={styles['link']}>Regístrate aquí</Link>
-          </p>
-          <p className={styles['authority-text']}>
-            ¿Eres una autoridad?{' '}
-            <Link to="/register-authority" className={styles['link']}>Regístrate como autoridad</Link>
-          </p>
+            {error && <Alert type="error" message={error} />}
+            {googleError && <Alert type="error" message={googleError} />}
+
+            {/* Botón de Google */}
+            <button 
+              type="button" 
+              onClick={handleGoogleLogin}
+              disabled={cargando || !isGoogleLoaded}
+              className={styles['google-button']}
+              title={!isGoogleLoaded ? 'Cargando Google SDK...' : 'Iniciar sesión con Google'}
+            >
+              <GoogleIcon />
+              <span>
+                {cargando ? 'Cargando...' : !isGoogleLoaded ? 'Cargando Google...' : 'Continuar con Google'}
+              </span>
+            </button>
+            
+            {!isConfigured && (
+              <div style={{ fontSize: '0.875rem', color: '#ef4444', marginTop: '0.5rem', textAlign: 'center' }}>
+                ⚠️ Google OAuth no configurado. Verifica el archivo .env
+              </div>
+            )}
+
+            <div className={styles['divider']}>
+              <span>o</span>
+            </div>
+
+            <form onSubmit={handleSubmit} className={styles['login-form']}>
+              <Input
+                label="Correo Electrónico"
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                error={errores.email}
+                placeholder="tu@email.com"
+                required
+              />
+
+              <Input
+                label="Contraseña"
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                error={errores.password}
+                placeholder="••••••••"
+                required
+              />
+
+              <div className={styles['forgot-password']}>
+                <Link to="/forgot-password" className={styles['forgot-link']}>
+                  ¿Olvidaste tu contraseña?
+                </Link>
+              </div>
+
+              <Button
+                type="submit"
+                variant="primary"
+                fullWidth
+                disabled={cargando}
+              >
+                {cargando ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+              </Button>
+            </form>
+
+            <div className={styles['footer-links']}>
+              <p className={styles['register-text']}>
+                ¿No tienes cuenta?{' '}
+                <Link to="/register" className={styles['link']}>Regístrate aquí</Link>
+              </p>
+              <p className={styles['authority-text']}>
+                ¿Eres una autoridad?{' '}
+                <Link to="/register-authority" className={styles['link']}>Regístrate como autoridad</Link>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

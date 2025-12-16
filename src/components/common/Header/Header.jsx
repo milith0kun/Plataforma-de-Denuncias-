@@ -144,19 +144,13 @@ const Header = ({ variant }) => {
   const getNavItems = () => {
     if (esAutoridad) {
       return [
-        { path: '/dashboard-autoridad', label: 'Dashboard', icon: 'dashboard' },
-        { path: '/gestionar-denuncias', label: 'Gestionar', icon: 'manage' },
-        { path: '/reportes', label: 'Reportes', icon: 'reports' },
-        { path: '/mapa-denuncias', label: 'Mapa', icon: 'map' }
+        { path: '/gestionar-denuncias', label: 'Gestionar Denuncias', icon: 'manage', primary: true }
       ];
     }
 
     if (esCiudadano) {
       return [
-        { path: '/inicio', label: 'Inicio', icon: 'home' },
-        { path: '/denuncias', label: 'Mis Denuncias', icon: 'list' },
-        { path: '/nueva-denuncia', label: 'Nueva', icon: 'plus' },
-        { path: '/seguimiento', label: 'Seguimiento', icon: 'track' }
+        { path: '/nueva-denuncia', label: 'Nueva Denuncia', icon: 'plus', primary: true }
       ];
     }
 
@@ -272,13 +266,23 @@ const Header = ({ variant }) => {
           </div>
         </Link>
 
+        {/* Sub Nav Bar para robustez */}
+        <div className={styles.subNavBar}>
+          <div className={styles.pageTitle}>
+            {navItems.find(item => esRutaActiva(item.path))?.label || (
+              location.pathname.includes('/denuncias/') ? 'Detalle de Denuncia' : 
+              location.pathname === '/perfil' ? 'Mi Perfil' : 'Dashboard'
+            )}
+          </div>
+        </div>
+
         {/* Navegación principal */}
         <nav className={`${styles.navMenu} ${menuAbierto ? styles.navMenuOpen : ''}`}>
           {navItems.map((item) => (
             <Link
               key={item.path}
               to={item.path}
-              className={`${styles.navLink} ${esRutaActiva(item.path) ? styles.navLinkActive : ''}`}
+              className={item.primary ? styles.navLinkPrimary : `${styles.navLink} ${esRutaActiva(item.path) ? styles.navLinkActive : ''}`}
               onClick={cerrarMenus}
             >
               <span className={styles.navIcon}>{Icons[item.icon]}</span>

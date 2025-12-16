@@ -10,6 +10,7 @@ import RegisterAuthorityPage from '../pages/public/RegisterAuthorityPage/Registe
 // Páginas de autenticación
 import ForgotPasswordPage from '../pages/auth/ForgotPasswordPage/ForgotPasswordPage';
 import ResetPasswordPage from '../pages/auth/ResetPasswordPage/ResetPasswordPage';
+import GoogleCallback from '../pages/auth/GoogleCallback';
 
 // Páginas privadas (ciudadanos)
 import HomePage from '../pages/ciudadano/HomePage/HomePage';
@@ -18,6 +19,7 @@ import DenunciasPage from '../pages/ciudadano/DenunciasPage/DenunciasPage';
 import NuevaDenunciaPage from '../pages/ciudadano/NuevaDenunciaPage/NuevaDenunciaPage';
 import DetalleDenunciaPage from '../pages/ciudadano/DetalleDenunciaPage/DetalleDenunciaPage';
 import ReportesPage from '../pages/ciudadano/ReportesPage/ReportesPage';
+import SeguimientoDenunciaPage from '../pages/SeguimientoDenunciaPage/SeguimientoDenunciaPage';
 
 // Páginas privadas (autoridades)
 import DashboardAutoridadPage from '../pages/autoridad/DashboardAutoridadPage/DashboardAutoridadPage';
@@ -41,6 +43,7 @@ const AppRoutes = () => {
         {/* Rutas de autenticación */}
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/auth/google/callback" element={<GoogleCallback />} />
         
         {/* Rutas privadas para ciudadanos */}
         <Route 
@@ -88,6 +91,14 @@ const AppRoutes = () => {
           element={
               <PrivateRoute>
                 <ReportesPage />
+              </PrivateRoute>
+            }
+        />
+        <Route
+          path="/seguimiento"
+          element={
+              <PrivateRoute>
+                <SeguimientoDenunciaPage />
               </PrivateRoute>
             }
         />
