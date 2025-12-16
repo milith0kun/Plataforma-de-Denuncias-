@@ -11,12 +11,14 @@
     "init-db": "cd Servidor && npm run init-db",
     "verify-db": "node verify-db.js",
     "build": "vite build",
+    "build:prod": "vite build --mode production",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
-    "test:backend": "cd Servidor && npm test"
+    "test:backend": "cd Servidor && npm test",
+    "setup:production": "npm install && npm run build:prod && cd Servidor && npm install --production"
   },
   "dependencies": {
     "axios": "^1.12.2",

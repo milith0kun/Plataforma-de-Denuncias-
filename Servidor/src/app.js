@@ -9,13 +9,33 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+// Configuración de CORS
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? (process.env.CORS_ORIGINS || 'https://plataformadenuncias.myvnc.com').split(',')
+    : ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:5174'],
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
 // Middlewares globales
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Servir archivos estáticos (uploads)
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    success: true,
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
+    version: '1.0.0'
+  });
+});
 
 // Rutas
 app.use('/api/v1', routes);

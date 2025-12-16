@@ -2,7 +2,15 @@
 
 > Sistema integral para la gestión de denuncias ciudadanas con geolocalización, evidencia fotográfica y seguimiento en tiempo real.
 
-📚 **[Inicio Rápido](INICIO_RAPIDO.md)** | 🧪 **[Verificación Final](VERIFICACION_FINAL.md)** | 🎨 **[Sistema de Diseño](DESIGN_SYSTEM.md)** | 📖 **[Historias de Usuario](HISTORIAS_DE_USUARIO.md)**
+� **[Guía de Despliegue](QUICKSTART.md)** | 📚 **[Inicio Rápido](INICIO_RAPIDO.md)** | 📋 **[Checklist Despliegue](DEPLOYMENT-CHECKLIST.md)** | 🎨 **[Sistema de Diseño](DESIGN_SYSTEM.md)**
+
+---
+
+## 🌐 Producción
+
+**URL:** https://plataformadenuncias.myvnc.com  
+**API:** https://plataformadenuncias.myvnc.com/api/v1  
+**Estado:** [![Status](https://img.shields.io/badge/status-ready-brightgreen)]()
 
 ---
 
