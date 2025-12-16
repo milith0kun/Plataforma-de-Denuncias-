@@ -11,6 +11,7 @@ import {
   BarChart3, Download, Menu, X, Activity, ChevronRight, Eye
 } from 'lucide-react';
 import Header from '../../../components/common/Header/Header';
+import BottomNavigation from '../../../components/common/BottomNavigation/BottomNavigation';
 import denunciaService from '../../../services/denunciaService';
 import estadisticasService from '../../../services/estadisticasService';
 import styles from './DashboardAutoridadPageNew.module.css';
@@ -18,7 +19,12 @@ import styles from './DashboardAutoridadPageNew.module.css';
 const DashboardAutoridadPage = () => {
   const { usuario } = useAuth();
   const navigate = useNavigate();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 1024);
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
+    if (window.innerWidth <= 1024) return false;
+    const savedState = localStorage.getItem('autoridadSidebarOpen');
+    return savedState !== null ? JSON.parse(savedState) : true;
+  });
   const [metricas, setMetricas] = useState({
     total: 0,
     pendientes: 0,
@@ -33,7 +39,27 @@ const DashboardAutoridadPage = () => {
 
   useEffect(() => {
     cargarDatos();
+    
+    const handleResize = () => {
+      const mobile = window.innerWidth <= 1024;
+      setIsMobile(mobile);
+      if (mobile) {
+        setSidebarOpen(false);
+      } else {
+        const savedState = localStorage.getItem('autoridadSidebarOpen');
+        setSidebarOpen(savedState !== null ? JSON.parse(savedState) : true);
+      }
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
+  
+  useEffect(() => {
+    if (!isMobile) {
+      localStorage.setItem('autoridadSidebarOpen', JSON.stringify(sidebarOpen));
+    }
+  }, [sidebarOpen, isMobile]);
 
   const cargarDatos = async () => {
     try {
@@ -118,33 +144,35 @@ const DashboardAutoridadPage = () => {
     <>
       <Header variant="private" />
       <div className={styles.dashboardContainer}>
-        {/* Sidebar */}
-        <aside className={`${styles.sidebar} ${!sidebarOpen ? styles.collapsed : ''}`}>
-          <div className={styles.sidebarHeader}>
-            <button className={styles.toggleButton} onClick={() => setSidebarOpen(!sidebarOpen)}>
-              <Menu size={24} />
-            </button>
-          </div>
-          
-          <nav className={styles.sidebarNav}>
-            <a href="#dashboard" className={styles.navItem}>
-              <LayoutDashboard size={20} />
-              {sidebarOpen && <span>Dashboard</span>}
-            </a>
-            <a href="/denuncias" className={styles.navItem}>
-              <FileText size={20} />
-              {sidebarOpen && <span>Denuncias</span>}
-            </a>
-            <a href="/mapa-denuncias" className={styles.navItem}>
-              <MapPin size={20} />
-              {sidebarOpen && <span>Mapa</span>}
-            </a>
-            <a href="/usuarios" className={styles.navItem}>
-              <Users size={20} />
-              {sidebarOpen && <span>Usuarios</span>}
-            </a>
-          </nav>
-        </aside>
+        {/* Sidebar solo para desktop */}
+        {!isMobile && (
+          <aside className={`${styles.sidebar} ${!sidebarOpen ? styles.collapsed : ''}`}>
+            <div className={styles.sidebarHeader}>
+              <button className={styles.toggleButton} onClick={() => setSidebarOpen(!sidebarOpen)}>
+                <Menu size={24} />
+              </button>
+            </div>
+            
+            <nav className={styles.sidebarNav}>
+              <a href="/dashboard-autoridad" className={styles.navItem}>
+                <LayoutDashboard size={20} />
+                {sidebarOpen && <span>Dashboard</span>}
+              </a>
+              <a href="/gestionar-denuncias" className={styles.navItem}>
+                <Activity size={20} />
+                {sidebarOpen && <span>Gestionar</span>}
+              </a>
+              <a href="/denuncias" className={styles.navItem}>
+                <FileText size={20} />
+                {sidebarOpen && <span>Denuncias</span>}
+              </a>
+              <a href="/mapa-denuncias" className={styles.navItem}>
+                <MapPin size={20} />
+                {sidebarOpen && <span>Mapa</span>}
+              </a>
+            </nav>
+          </aside>
+        )}
 
         {/* Main Content */}
         <main className={styles.mainContent}>
@@ -362,6 +390,9 @@ const DashboardAutoridadPage = () => {
           </div>
         </main>
       </div>
+      
+      {/* Navegación inferior para móviles */}
+      {isMobile && <BottomNavigation userType="autoridad" />}
     </>
   );
 };

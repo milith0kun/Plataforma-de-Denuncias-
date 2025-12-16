@@ -21,6 +21,54 @@
   border-right: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+/* Backdrop para móviles */
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.backdrop.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Botón flotante para abrir menú en móviles */
+.floatingMenuButton {
+  position: fixed;
+  bottom: 2rem;
+  left: 1.5rem;
+  width: 56px;
+  height: 56px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  z-index: 98;
+  transition: all 0.3s ease;
+}
+
+.floatingMenuButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.5);
+}
+
+.floatingMenuButton:active {
+  transform: scale(0.95);
+}
+
 .sidebar.collapsed {
   transform: translateX(-180px);
 }
@@ -521,17 +569,23 @@
 }
 
 @media (max-width: 1024px) {
+  /* Ocultar sidebar completamente en móviles */
   .sidebar {
-    transform: translateX(-260px);
+    display: none;
   }
   
-  .sidebar:not(.collapsed) {
-    transform: translateX(0);
+  /* Backdrop no necesario en móviles sin sidebar */
+  .backdrop,
+  .floatingMenuButton {
+    display: none !important;
   }
   
   .mainContent {
     margin-left: 0;
-    padding: 1.5rem;
+    padding: 1.5rem 1rem;
+    margin-top: 90px;
+    padding-bottom: calc(75px + 1.5rem); /* Espacio para bottom navigation */
+    min-height: calc(100vh - 90px);
   }
   
   .heroSection {

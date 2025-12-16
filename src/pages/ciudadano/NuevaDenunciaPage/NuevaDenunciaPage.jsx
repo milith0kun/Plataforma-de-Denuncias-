@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../../components/common/Header/Header';
+import BottomNavigation from '../../../components/common/BottomNavigation/BottomNavigation';
+import { useIsMobile } from '../../../hooks/useIsMobile';
 import UploadFotos from '../../../components/denuncias/UploadFotos';
 import MapaPicker from '../../../components/denuncias/MapaPicker';
 import denunciaService from '../../../services/denunciaService';
@@ -8,6 +10,7 @@ import styles from './NuevaDenunciaPage.module.css';
 
 const NuevaDenunciaPage = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   // Estado del formulario
   const [formData, setFormData] = useState({
@@ -322,6 +325,7 @@ const NuevaDenunciaPage = () => {
           </div>
         </form>
       </div>
+      {isMobile && <BottomNavigation userType="ciudadano" />}
     </div>
   );
 };

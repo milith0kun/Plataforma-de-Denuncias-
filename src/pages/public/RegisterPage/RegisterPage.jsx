@@ -85,7 +85,7 @@ const RegisterPage = () => {
       // Enviar solo los campos necesarios (sin confirmarPassword)
       const { confirmarPassword, ...datosRegistro } = formData;
       await registrarCiudadano(datosRegistro);
-      navigate('/inicio'); // Redirigir a la página de inicio del usuario autenticado
+      navigate('/home'); // Redirigir a la página de inicio del usuario autenticado
     } catch (error) {
       console.error('Error en registro:', error);
     } finally {

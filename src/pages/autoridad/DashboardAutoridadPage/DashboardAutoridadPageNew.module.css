@@ -736,17 +736,19 @@
 }
 
 @media (max-width: 1024px) {
+  /* Ocultar sidebar completamente en móviles */
   .sidebar {
-    width: 80px;
+    display: none !important;
   }
   
-  .sidebar .navItem span,
-  .sidebarHeader h3 {
-    display: none;
+  .dashboardContainer {
+    flex-direction: column;
   }
   
   .mainContent {
-    padding: 1.5rem;
+    padding: 1.5rem 1rem;
+    padding-bottom: calc(75px + 1.5rem); /* Espacio para bottom navigation */
+    margin-left: 0;
   }
   
   .metricsGrid {
@@ -760,27 +762,9 @@
 }
 
 @media (max-width: 768px) {
-  .dashboardContainer {
-    flex-direction: column;
-  }
-  
-  .sidebar {
-    position: fixed;
-    z-index: 1000;
-    transform: translateX(-100%);
-    width: 260px;
-    height: 100vh;
-    top: 0;
-    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.3);
-  }
-  
-  .sidebar:not(.collapsed) {
-    transform: translateX(0);
-  }
-  
   .mainContent {
     padding: 1rem;
-    margin-left: 0 !important;
+    padding-bottom: calc(75px + 1rem);
   }
   
   .metricsGrid {

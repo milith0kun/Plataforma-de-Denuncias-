@@ -69,6 +69,19 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Login con Google
+  const loginConGoogle = async (userData) => {
+    try {
+      setError(null);
+      setUsuario(userData);
+      return { success: true };
+    } catch (error) {
+      const mensajeError = error.response?.data?.message || 'Error al iniciar sesión con Google';
+      setError(mensajeError);
+      throw error;
+    }
+  };
+
   // Logout
   const logout = () => {
     authService.logout();
@@ -114,6 +127,7 @@ export const AuthProvider = ({ children }) => {
     registrarCiudadano,
     registrarAutoridad,
     login,
+    loginConGoogle,
     logout,
     solicitarRecuperacion,
     restablecerPassword,

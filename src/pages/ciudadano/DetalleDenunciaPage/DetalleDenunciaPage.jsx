@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useIsMobile } from '../../../hooks/useIsMobile';
 import Header from '../../../components/common/Header/Header';
+import BottomNavigation from '../../../components/common/BottomNavigation/BottomNavigation';
 import Comentarios from '../../../components/denuncias/Comentarios';
 import Timeline from '../../../components/denuncias/Timeline/Timeline';
 import Lightbox from '../../../components/common/Lightbox/Lightbox';
@@ -13,6 +15,7 @@ const DetalleDenunciaPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const toast = useToast();
+  const isMobile = useIsMobile();
 
   const [denuncia, setDenuncia] = useState(null);
   const [historialEstados, setHistorialEstados] = useState([]);
@@ -301,6 +304,7 @@ const DetalleDenunciaPage = () => {
           onClose={() => setLightboxOpen(false)}
         />
       )}
+      {isMobile && <BottomNavigation userType="ciudadano" />}
     </div>
   );
 };

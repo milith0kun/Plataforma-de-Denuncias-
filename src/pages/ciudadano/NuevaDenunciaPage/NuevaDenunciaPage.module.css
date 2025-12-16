@@ -481,3 +481,10 @@
     background: #9ca3af;
   }
 }
+
+/* Padding para navegación móvil inferior */
+@media (max-width: 1024px) {
+  .container {
+    padding-bottom: calc(75px + 2rem) !important;
+  }
+}

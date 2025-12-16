@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { useIsMobile } from '../../../hooks/useIsMobile';
 import UsuarioService from '../../../services/usuarioService';
 import Header from '../../../components/common/Header/Header';
+import BottomNavigation from '../../../components/common/BottomNavigation/BottomNavigation';
 import FormularioEdicionPerfil from '../../../components/perfil/FormularioEdicionPerfil';
 import CambioPasswordModal from '../../../components/perfil/CambioPasswordModal';
 import HistorialActividad from '../../../components/perfil/HistorialActividad';
@@ -14,6 +16,7 @@ import styles from './PerfilPage.module.css';
  */
 const PerfilPage = () => {
   const { usuario, actualizarUsuario } = useAuth();
+  const isMobile = useIsMobile();
   const [perfilData, setPerfilData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -265,6 +268,7 @@ const PerfilPage = () => {
         />
       )}
       </div>
+      {isMobile && <BottomNavigation userType="ciudadano" />}
     </>
   );
 };

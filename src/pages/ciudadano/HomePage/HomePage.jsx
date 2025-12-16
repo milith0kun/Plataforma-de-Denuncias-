@@ -1,20 +1,29 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
+import { useIsMobile } from '../../../hooks/useIsMobile';
 import { 
   LayoutDashboard, FileText, MapPin, User, Clock, AlertCircle, 
   CheckCircle2, TrendingUp, Plus, Eye, ChevronRight, Menu,
   Camera, Shield, MessageSquare, Info
 } from 'lucide-react';
 import Header from '../../../components/common/Header/Header';
+import BottomNavigation from '../../../components/common/BottomNavigation/BottomNavigation';
 import denunciaService from '../../../services/denunciaService';
 import styles from './HomePageNew.module.css';
 
 const HomePage = () => {
   const navigate = useNavigate();
   const { usuario } = useAuth();
+  const isMobile = useIsMobile();
   
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  // Inicializar el sidebar solo para desktop
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
+    if (typeof window === 'undefined') return true;
+    const savedState = localStorage.getItem('sidebarOpen');
+    return savedState !== null ? JSON.parse(savedState) : true;
+  });
+  
   const [estadisticas, setEstadisticas] = useState({
     denunciasRealizadas: 0,
     denunciasPendientes: 0,
@@ -27,6 +36,13 @@ const HomePage = () => {
   useEffect(() => {
     cargarDatos();
   }, []);
+
+  // Persistir el estado del sidebar solo en desktop
+  useEffect(() => {
+    if (!isMobile) {
+      localStorage.setItem('sidebarOpen', JSON.stringify(sidebarOpen));
+    }
+  }, [sidebarOpen, isMobile]);
 
   const cargarDatos = async () => {
     try {
@@ -88,41 +104,53 @@ const HomePage = () => {
     );
   }
 
+  const toggleSidebar = () => {
+    if (!isMobile) {
+      setSidebarOpen(prev => !prev);
+    }
+  };
+
   return (
     <>
       <Header />
       <div className={styles.dashboardContainer}>
-        {/* Sidebar */}
-        <aside className={`${styles.sidebar} ${!sidebarOpen ? styles.collapsed : ''}`}>
-          <div className={styles.sidebarHeader}>
-            <button className={styles.toggleButton} onClick={() => setSidebarOpen(!sidebarOpen)}>
-              <Menu size={24} />
-            </button>
-          </div>
-          
-          <nav className={styles.sidebarNav}>
-            <a href="/home" className={`${styles.navItem} ${styles.active}`}>
-              <LayoutDashboard size={20} />
-              {sidebarOpen && <span>Dashboard</span>}
-            </a>
-            <a href="/nueva-denuncia" className={styles.navItem}>
-              <Plus size={20} />
-              {sidebarOpen && <span>Nueva Denuncia</span>}
-            </a>
-            <a href="/denuncias" className={styles.navItem}>
-              <FileText size={20} />
-              {sidebarOpen && <span>Mis Denuncias</span>}
-            </a>
-            <a href="/seguimiento" className={styles.navItem}>
-              <MapPin size={20} />
-              {sidebarOpen && <span>Seguimiento</span>}
-            </a>
-            <a href="/perfil" className={styles.navItem}>
-              <User size={20} />
-              {sidebarOpen && <span>Mi Perfil</span>}
-            </a>
-          </nav>
-        </aside>
+        {/* Sidebar solo para desktop */}
+        {!isMobile && (
+          <aside className={`${styles.sidebar} ${sidebarOpen ? styles.open : ''}`}>
+            <div className={styles.sidebarHeader}>
+              <button 
+                className={styles.toggleButton} 
+                onClick={toggleSidebar}
+                aria-label={sidebarOpen ? 'Cerrar menú' : 'Abrir menú'}
+              >
+                <Menu size={24} />
+              </button>
+            </div>
+            
+            <nav className={styles.sidebarNav}>
+              <a href="/home" className={`${styles.navItem} ${styles.active}`}>
+                <LayoutDashboard size={20} />
+                <span>Dashboard</span>
+              </a>
+              <a href="/nueva-denuncia" className={styles.navItem}>
+                <Plus size={20} />
+                <span>Nueva Denuncia</span>
+              </a>
+              <a href="/denuncias" className={styles.navItem}>
+                <FileText size={20} />
+                <span>Mis Denuncias</span>
+              </a>
+              <a href="/seguimiento" className={styles.navItem}>
+                <MapPin size={20} />
+                <span>Seguimiento</span>
+              </a>
+              <a href="/perfil" className={styles.navItem}>
+                <User size={20} />
+                <span>Mi Perfil</span>
+              </a>
+            </nav>
+          </aside>
+        )}
 
         {/* Main Content */}
         <main className={styles.mainContent}>
@@ -341,6 +369,9 @@ const HomePage = () => {
           </div>
         </main>
       </div>
+      
+      {/* Navegación inferior para móviles */}
+      {isMobile && <BottomNavigation userType="ciudadano" />}
     </>
   );
 };

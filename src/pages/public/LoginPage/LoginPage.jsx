@@ -77,8 +77,10 @@ const LoginPage = () => {
             if (tipoUsuario === 'Autoridad' || tipoUsuario === 'Autoridad_Municipal') {
               navigate('/dashboard-autoridad');
             } else {
-              navigate('/inicio');
+              navigate('/home');
             }
+            // Recargar la página para actualizar el estado de autenticación
+            window.location.reload();
           }
         } catch (error) {
           console.error('❌ Error al procesar login de Google:', error);
@@ -143,7 +145,7 @@ const LoginPage = () => {
       if (tipoUsuario === 'Autoridad' || tipoUsuario === 'Autoridad_Municipal') {
         navigate('/dashboard-autoridad');
       } else {
-        navigate('/inicio');
+        navigate('/home');
       }
     } catch (error) {
       console.error('Error en login:', error);

@@ -335,9 +335,17 @@
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+  .container {
+    padding: 24px 16px;
+    padding-bottom: calc(75px + 24px); /* Espacio para bottom navigation */
+  }
+}
+
 @media (max-width: 768px) {
   .container {
-    padding: 20px 16px;
+    padding: 24px 16px;
+    padding-bottom: calc(75px + 24px);
   }
 
   .title {

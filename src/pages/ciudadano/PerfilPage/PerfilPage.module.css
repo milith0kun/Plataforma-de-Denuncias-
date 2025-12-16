@@ -230,6 +230,13 @@
   cursor: not-allowed;
 }
 
+/* Padding para navegación móvil */
+@media (max-width: 1024px) {
+  .pageContainer {
+    padding-bottom: calc(75px + 2rem) !important;
+  }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .container {
