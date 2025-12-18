@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(nul)",
+      "Bash(dir:*)",
+      "Bash(del \"CONFIGURACION_COMPLETADA.md\")",
+      "Bash(del \"Servidor\\MONGODB_SETUP.md\")",
+      "Bash(rm:*)",
+      "Bash(node verify-db.js:*)",
+      "Bash(node fix-indexes.js:*)",
+      "Bash(node:*)",
+      "Bash(move fix-css-variables.js fix-css-variables.cjs)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

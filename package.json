@@ -1,0 +1,56 @@
+{
+  "name": "pack",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:full": "node start-dev.js",
+    "dev:backend": "cd Servidor && npm run dev",
+    "dev:frontend": "vite",
+    "init-db": "cd Servidor && npm run init-db",
+    "verify-db": "node verify-db.js",
+    "build": "vite build",
+    "build:prod": "vite build --mode production",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "test:backend": "cd Servidor && npm test",
+    "setup:production": "npm install && npm run build:prod && cd Servidor && npm install --production"
+  },
+  "dependencies": {
+    "axios": "^1.12.2",
+    "dotenv": "^17.2.3",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.561.0",
+    "mongoose": "^9.0.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-leaflet": "^5.0.0",
+    "react-lottie-player": "^2.1.0",
+    "react-router-dom": "^7.9.3",
+    "recharts": "^3.4.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.36.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.1",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/react": "^19.1.16",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react-swc": "^4.1.0",
+    "@vitest/ui": "^4.0.15",
+    "eslint": "^9.36.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.22",
+    "globals": "^16.4.0",
+    "jsdom": "^27.3.0",
+    "vite": "npm:rolldown-vite@7.1.14",
+    "vitest": "^4.0.15"
+  },
+  "overrides": {
+    "vite": "npm:rolldown-vite@7.1.14"
+  }
+}

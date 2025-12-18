@@ -1,0 +1,381 @@
+/* Importar animaciones globales */
+@import './styles/animations.css';
+
+/* ===== SCROLLBAR PERSONALIZADO - Ancho y Rectangular ===== */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 #f1f5f9;
+}
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+*::-webkit-scrollbar {
+  width: 14px; /* Ancho scrollbar vertical */
+  height: 14px; /* Alto scrollbar horizontal */
+}
+
+*::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 0; /* Rectangular sin bordes redondeados */
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 0; /* Rectangular */
+  border: 3px solid #f1f5f9; /* Espacio alrededor */
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background: #475569;
+}
+
+:root {
+  /* Tipografía mejorada */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  
+  /* Mejores propiedades de renderizado de texto */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  
+  /* Variables de tipografía */
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-lg: 1.125rem;   /* 18px */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
+  --font-size-3xl: 1.875rem;  /* 30px */
+  --font-size-4xl: 2.25rem;   /* 36px */
+  --font-size-5xl: 3rem;      /* 48px */
+  
+  /* Variables de peso de fuente */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  
+  /* Variables de altura de línea */
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 2;
+  
+  /* Variables de espaciado de letras */
+  --letter-spacing-tighter: -0.05em;
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.025em;
+  --letter-spacing-wider: 0.05em;
+  --letter-spacing-widest: 0.1em;
+
+  /* === PALETA DE COLORES UNIFICADA - Sistema de Diseño Minimalista === */
+
+  /* Colores Principales */
+  --color-primary: #3b82f6;       /* Azul principal (blue-500) */
+  --color-primary-light: #60a5fa; /* Azul claro (blue-400) */
+  --color-primary-dark: #2563eb;  /* Azul oscuro (blue-600) */
+
+  /* Colores de Estado */
+  --color-success: #10b981;       /* Verde - Éxito/Completado (green-500) */
+  --color-warning: #f59e0b;       /* Ámbar - Advertencia/Pendiente (amber-500) */
+  --color-danger: #ef4444;        /* Rojo - Error/Urgente (red-500) */
+  --color-info: #3b82f6;          /* Azul - Información (blue-500) */
+
+  /* Colores Neutrales - Sistema Slate */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-gray-50: #f8fafc;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;
+  --color-gray-300: #cbd5e1;
+  --color-gray-400: #94a3b8;
+  --color-gray-500: #64748b;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #1e293b;
+  --color-gray-900: #0f172a;
+
+  /* Colores de Roles de Usuario */
+  --color-role-ciudadano: #10b981;  /* Verde (green-500) */
+  --color-role-autoridad: #3b82f6;  /* Azul (blue-500) */
+  --color-role-admin: #8b5cf6;      /* Violeta (violet-500) */
+
+  /* Estados de Denuncia - Unificados */
+  --color-estado-registrada: #64748b;   /* Gris (slate-500) */
+  --color-estado-pendiente: #f59e0b;    /* Ámbar (amber-500) */
+  --color-estado-en-proceso: #8b5cf6;   /* Violeta (violet-500) */
+  --color-estado-asignada: #3b82f6;     /* Azul (blue-500) */
+  --color-estado-resuelta: #10b981;     /* Verde (green-500) */
+  --color-estado-cerrada: #475569;      /* Gris oscuro (slate-600) */
+
+  /* Prioridades de Denuncia */
+  --color-prioridad-baja: #10b981;      /* Verde (green-500) */
+  --color-prioridad-media: #f59e0b;     /* Ámbar (amber-500) */
+  --color-prioridad-alta: #ef4444;      /* Rojo (red-500) */
+
+  /* Colores Semánticos */
+  --color-text-primary: #1e293b;        /* slate-800 */
+  --color-text-secondary: #64748b;      /* slate-500 */
+  --color-text-muted: #94a3b8;          /* slate-400 */
+  --color-bg-primary: #ffffff;          /* White */
+  --color-bg-secondary: #f8fafc;        /* slate-50 */
+  --color-bg-tertiary: #f1f5f9;         /* slate-100 */
+  --color-border: #e2e8f0;              /* slate-200 */
+  --color-border-light: #f1f5f9;        /* slate-100 */
+
+  /* Gradientes - Actualizados */
+  --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  --gradient-primary-light: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+  --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  --gradient-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  --gradient-dark: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+
+  /* Tipografías */
+  --font-headings: "DM Serif Text", serif;
+  --font-body: "Montserrat", sans-serif;
+
+  /* Tamaños de fuente */
+  --font-size-h1: 2.5rem;
+  --font-size-h2: 2rem;
+  --font-size-h3: 1.75rem;
+  --font-size-h4: 1.5rem;
+  --font-size-h5: 1.25rem;
+  --font-size-h6: 1rem;
+  --font-size-large: 1.125rem;
+  --font-size-base: 1rem;
+  --font-size-small: 0.875rem;
+
+  /* Pesos de fuente */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Espaciado basado en múltiplos de 8px */
+  --spacing-xs: 0.25rem; /* 4px */
+  --spacing-sm: 0.5rem;  /* 8px */
+  --spacing-md: 1rem;    /* 16px */
+  --spacing-lg: 1.5rem;  /* 24px */
+  --spacing-xl: 2rem;    /* 32px */
+  --spacing-2xl: 3rem;   /* 48px */
+  --spacing-3xl: 4rem;   /* 64px */
+
+  /* Breakpoints responsive */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+
+  /* Bordes y sombras */
+  --border-radius-sm: 0.25rem;
+  --border-radius-md: 0.5rem;
+  --border-radius-lg: 0.75rem;
+  --border-radius-xl: 1rem;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: 1.6;
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-headings);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+}
+
+h3 {
+  font-size: var(--font-size-h3);
+}
+
+h4 {
+  font-size: var(--font-size-h4);
+}
+
+h5 {
+  font-size: var(--font-size-h5);
+}
+
+h6 {
+  font-size: var(--font-size-h6);
+}
+
+/* Utilidades de espaciado */
+.spacing-xs { margin: var(--spacing-xs); }
+.spacing-sm { margin: var(--spacing-sm); }
+.spacing-md { margin: var(--spacing-md); }
+.spacing-lg { margin: var(--spacing-lg); }
+.spacing-xl { margin: var(--spacing-xl); }
+
+/* Utilidades de texto */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.font-light { font-weight: var(--font-weight-light); }
+.font-normal { font-weight: var(--font-weight-normal); }
+.font-medium { font-weight: var(--font-weight-medium); }
+.font-semibold { font-weight: var(--font-weight-semibold); }
+.font-bold { font-weight: var(--font-weight-bold); }
+
+/* Utilidades de color */
+.text-primary { color: var(--color-primary); }
+.text-success { color: var(--color-success); }
+.text-danger { color: var(--color-danger); }
+.text-warning { color: var(--color-warning); }
+.text-info { color: var(--color-info); }
+.text-dark { color: var(--color-text-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-muted { color: var(--color-text-muted); }
+
+.bg-primary { background-color: var(--color-primary); }
+.bg-success { background-color: var(--color-success); }
+.bg-danger { background-color: var(--color-danger); }
+.bg-warning { background-color: var(--color-warning); }
+.bg-info { background-color: var(--color-info); }
+
+/* Utilidades de flexbox */
+.flex { display: flex; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.flex-start { display: flex; align-items: center; justify-content: flex-start; }
+.flex-end { display: flex; align-items: center; justify-content: flex-end; }
+.flex-col { display: flex; flex-direction: column; }
+.flex-col-center { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+/* Utilidades de layout */
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+.min-h-screen { min-height: 100vh; }
+
+/* Utilidades de gradiente */
+.bg-gradient-primary { background: var(--gradient-primary); }
+.bg-gradient-primary-45 { background: var(--gradient-primary-45); }
+.bg-gradient-primary-simple { background: var(--gradient-primary-simple); }
+
+/* Responsive utilities */
+@media (max-width: 640px) {
+  h1 { font-size: calc(var(--font-size-h1) * 0.8); }
+  h2 { font-size: calc(var(--font-size-h2) * 0.8); }
+  h3 { font-size: calc(var(--font-size-h3) * 0.8); }
+}
+
+/* ===== ESTILOS PERSONALIZADOS PARA BARRA DE SCROLL ===== */
+
+/* Estilos para navegadores WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 14px; /* Ancho ligeramente mayor para mejor visibilidad */
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-primary-dark); /* Mismo color del header */
+  border-radius: 0; /* Sin bordes redondeados para look más integrado */
+  border: none;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, 
+    rgba(255, 255, 255, 0.3) 0%, 
+    rgba(255, 255, 255, 0.15) 50%, 
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  border-radius: 0;
+  border: none;
+  transition: all 0.3s ease;
+  min-height: 40px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, 
+    rgba(255, 255, 255, 0.5) 0%, 
+    rgba(255, 255, 255, 0.3) 50%, 
+    rgba(255, 255, 255, 0.2) 100%
+  );
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(180deg, 
+    rgba(255, 255, 255, 0.6) 0%, 
+    rgba(255, 255, 255, 0.4) 50%, 
+    rgba(255, 255, 255, 0.3) 100%
+  );
+}
+
+/* Esquinas de la barra de scroll */
+::-webkit-scrollbar-corner {
+  background: var(--color-primary-dark);
+}
+
+/* Estilos para Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) var(--color-primary-dark);
+}
+
+/* Estilos adicionales para mejorar la experiencia */
+body {
+  /* Suavizar el scroll */
+  scroll-behavior: smooth;
+}
+
+/* Estilos para barras de scroll en contenedores específicos */
+.scrollable-container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.scrollable-container::-webkit-scrollbar-track {
+  background: rgba(3, 25, 59, 0.1); /* Color del header con transparencia */
+  border-radius: var(--border-radius-sm);
+}
+
+.scrollable-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg,
+    var(--color-primary-dark) 0%,
+    rgba(3, 25, 59, 0.8) 100%
+  );
+  border-radius: var(--border-radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.scrollable-container::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-dark);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}

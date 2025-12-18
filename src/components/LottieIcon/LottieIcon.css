@@ -1,0 +1,60 @@
+/* Estilos generales para el componente LottieIcon */
+.lottie-icon {
+  display: inline-block;
+  animation: fadeInIcon 0.5s ease-in-out;
+}
+
+.lottie-player {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Estados de carga y error */
+.lottie-loading,
+.lottie-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  background-color: var(--color-gray-100);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--color-gray-300);
+}
+
+.lottie-error {
+  color: var(--color-danger);
+  background-color: rgba(239, 68, 68, 0.05);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+/* Estilos específicos para diferentes contextos */
+.lottie-icon.benefit-icon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 1rem;
+}
+
+.lottie-icon.category-icon {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 0.75rem;
+}
+
+/* Animación suave al cargar */
+.lottie-icon {
+  opacity: 0;
+  animation: fadeInIcon 0.6s ease-in-out forwards;
+}
+
+@keyframes fadeInIcon {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
