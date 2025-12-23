@@ -40,7 +40,12 @@ const DetalleDenunciaPage = () => {
       ]);
 
       if (denunciaResponse.success) {
-        setDenuncia(denunciaResponse.data.denuncia);
+        const denunciaData = denunciaResponse.data.denuncia;
+        // Combinar la denuncia con sus evidencias para que el resto del componente las use
+        setDenuncia({
+          ...denunciaData,
+          evidencias: denunciaResponse.data.evidencias || []
+        });
       }
 
       if (historialResponse.success && historialResponse.data.historial) {
