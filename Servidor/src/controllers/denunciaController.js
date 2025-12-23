@@ -431,6 +431,8 @@ class DenunciaController {
         });
       }
 
+      console.log('Archivos subidos:', req.files.map(f => ({ path: f.path, mimetype: f.mimetype })));
+
       // Preparar datos de evidencias para guardar en BD
       const evidencias = req.files.map(file => ({
         url_archivo: `/uploads/${file.path.split('uploads/')[1].replace(/\\/g, '/')}`,
