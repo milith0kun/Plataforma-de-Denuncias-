@@ -146,6 +146,11 @@ denunciaSchema.statics.crear = async function (datosDenuncia) {
 
 denunciaSchema.statics.obtenerPorId = async function (id_denuncia) {
   try {
+    // Validar si el ID es un ObjectId válido de MongoDB
+    if (!mongoose.Types.ObjectId.isValid(id_denuncia)) {
+      return null;
+    }
+
     const denuncia = await this.findById(id_denuncia)
       .populate('id_categoria', 'nombre')
       .populate('id_estado_actual', 'nombre')
