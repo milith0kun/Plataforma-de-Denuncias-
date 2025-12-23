@@ -417,7 +417,10 @@ class DenunciaController {
       }
 
       // Verificar permisos: solo el ciudadano que creó la denuncia puede subir evidencias
-      if (id_tipo_usuario === 1 && denuncia.id_ciudadano && denuncia.id_ciudadano.toString() !== id_usuario.toString()) {
+      // Usamos id_ciudadano_original ya que id_ciudadano está populado
+      const idPropietario = denuncia.id_ciudadano_original || (denuncia.id_ciudadano?._id || denuncia.id_ciudadano);
+
+      if (id_tipo_usuario === 1 && idPropietario && idPropietario.toString() !== id_usuario.toString()) {
         return res.status(403).json({
           success: false,
           message: 'No tienes permiso para subir evidencias a esta denuncia'
