@@ -434,12 +434,18 @@ class DenunciaController {
       console.log('Archivos subidos:', req.files.map(f => ({ path: f.path, mimetype: f.mimetype })));
 
       // Preparar datos de evidencias para guardar en BD
-      const evidencias = req.files.map(file => ({
-        url_archivo: `/uploads/${file.path.split('uploads/')[1].replace(/\\/g, '/')}`,
-        nombre_archivo: file.originalname,
-        tipo_archivo: file.mimetype,
-        tamano_bytes: file.size
-      }));
+      const evidencias = req.files.map(file => {
+        // Obtener la parte de la ruta después de 'uploads' de forma robusta
+        const pathParts = file.path.split(/[\\/]uploads[\\/]/);
+        const relativePath = pathParts.length > 1 ? pathParts[1] : file.filename;
+
+        return {
+          url_archivo: `/uploads/${relativePath.replace(/\\/g, '/')}`,
+          nombre_archivo: file.originalname,
+          tipo_archivo: file.mimetype,
+          tamano_bytes: file.size
+        };
+      });
 
       // Guardar evidencias en la base de datos
       const evidenciasCreadas = await EvidenciaFoto.crearMultiples(id, evidencias);
