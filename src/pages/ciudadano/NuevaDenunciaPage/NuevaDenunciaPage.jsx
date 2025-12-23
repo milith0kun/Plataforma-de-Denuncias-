@@ -127,11 +127,12 @@ const NuevaDenunciaPage = () => {
       const response = await denunciaService.crearDenuncia(datosDenuncia);
 
       if (response.success) {
-        const id_denuncia = response.data.denuncia.id_denuncia;
+        // Intentar obtener el ID de la denuncia de varios lugares posibles en la respuesta
+        const id_denuncia = response.id_denuncia || response.data?.id_denuncia || response.data?.denuncia?.id_denuncia || response.data?.denuncia?._id;
         console.log('Denuncia creada con ID:', id_denuncia);
 
-        // Subir fotos si hay
-        if (fotos.length > 0) {
+        // Subir fotos si hay y tenemos un ID válido
+        if (fotos.length > 0 && id_denuncia) {
           try {
             console.log('Subiendo evidencias para denuncia:', id_denuncia);
             const archivosFiles = fotos.map(f => f.file);
@@ -141,6 +142,9 @@ const NuevaDenunciaPage = () => {
             // La denuncia ya fue creada, solo mostramos advertencia
             alert('⚠️ Denuncia creada, pero hubo un error al subir las fotos');
           }
+        } else if (fotos.length > 0 && !id_denuncia) {
+          console.error('No se pudo obtener el ID de la denuncia para subir las fotos.');
+          alert('⚠️ Denuncia creada, pero no se pudo obtener el ID para las fotos.');
         }
 
         alert('✅ Denuncia creada exitosamente');
