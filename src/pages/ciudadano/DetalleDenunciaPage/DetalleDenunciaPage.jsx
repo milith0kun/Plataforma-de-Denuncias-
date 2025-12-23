@@ -9,6 +9,7 @@ import Lightbox from '../../../components/common/Lightbox/Lightbox';
 import { CardSkeleton } from '../../../components/common/LoadingSkeleton/LoadingSkeleton';
 import { useToast } from '../../../components/common/ToastContainer/ToastContainer';
 import denunciaService from '../../../services/denunciaService';
+import { BASE_URL } from '../../../services/api';
 import styles from './DetalleDenunciaPage.module.css';
 
 const DetalleDenunciaPage = () => {
@@ -39,7 +40,12 @@ const DetalleDenunciaPage = () => {
       ]);
 
       if (denunciaResponse.success) {
-        setDenuncia(denunciaResponse.data.denuncia);
+        const denunciaData = denunciaResponse.data.denuncia;
+        // Combinar la denuncia con sus evidencias para que el resto del componente las use
+        setDenuncia({
+          ...denunciaData,
+          evidencias: denunciaResponse.data.evidencias || []
+        });
       }
 
       if (historialResponse.success && historialResponse.data.historial) {
@@ -81,6 +87,14 @@ const DetalleDenunciaPage = () => {
     return '';
   };
 
+  const obtenerUrlImagen = (ruta) => {
+    if (!ruta) return '';
+    if (ruta.startsWith('http')) return ruta;
+    // Asegurar que la ruta comience con /
+    const path = ruta.startsWith('/') ? ruta : `/${ruta}`;
+    return `${BASE_URL}${path}`;
+  };
+
   const abrirLightbox = (index) => {
     setLightboxIndex(index);
     setLightboxOpen(true);
@@ -98,6 +112,7 @@ const DetalleDenunciaPage = () => {
           </div>
           <CardSkeleton count={3} />
         </div>
+        {isMobile && <BottomNavigation userType="ciudadano" />}
       </div>
     );
   }
@@ -116,6 +131,7 @@ const DetalleDenunciaPage = () => {
             </button>
           </div>
         </div>
+        {isMobile && <BottomNavigation userType="ciudadano" />}
       </div>
     );
   }
@@ -197,7 +213,7 @@ const DetalleDenunciaPage = () => {
                       onClick={() => abrirLightbox(index)}
                     >
                       <img
-                        src={evidencia.url || evidencia.ruta}
+                        src={obtenerUrlImagen(evidencia.url || evidencia.ruta)}
                         alt={`Evidencia ${index + 1}`}
                         className={styles.evidenciaImg}
                       />
@@ -299,7 +315,7 @@ const DetalleDenunciaPage = () => {
       {/* Lightbox para evidencias */}
       {lightboxOpen && denuncia.evidencias && denuncia.evidencias.length > 0 && (
         <Lightbox
-          images={denuncia.evidencias.map(e => ({ url: e.url || e.ruta }))}
+          images={denuncia.evidencias.map(e => ({ url: obtenerUrlImagen(e.url || e.ruta) }))}
           initialIndex={lightboxIndex}
           onClose={() => setLightboxOpen(false)}
         />

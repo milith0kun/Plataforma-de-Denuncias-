@@ -27,8 +27,13 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Header */
@@ -74,7 +79,8 @@
   flex-wrap: wrap;
 }
 
-.cargo, .area {
+.cargo,
+.area {
   background: rgba(255, 255, 255, 0.2);
   color: white;
   padding: 0.5rem 1rem;
@@ -267,7 +273,8 @@
   flex-shrink: 0;
 }
 
-.estadoBadge, .prioridadBadge {
+.estadoBadge,
+.prioridadBadge {
   color: white;
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
@@ -376,48 +383,56 @@
   .mainContent {
     grid-template-columns: 1fr;
   }
+
+  .dashboardPage {
+    padding-bottom: calc(150px + 2rem);
+    /* Espacio amplio para bottom navigation */
+  }
 }
 
 @media (max-width: 768px) {
   .dashboardPage {
     padding: 1rem;
+    padding-bottom: calc(150px + 2rem);
+    /* Espacio amplio para bottom navigation */
   }
-  
+
   .header {
     padding: 1.5rem;
   }
-  
+
   .headerContent {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .title {
     font-size: 2rem;
   }
-  
+
   .metricsGrid {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1rem;
   }
-  
+
   .metricCard {
     padding: 1.5rem;
   }
-  
+
   .metricNumber {
     font-size: 2rem;
   }
-  
-  .recentSection, .quickActions {
+
+  .recentSection,
+  .quickActions {
     padding: 1.5rem;
   }
-  
+
   .denunciaHeader {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .denunciaBadges {
     align-self: flex-end;
   }
@@ -426,21 +441,105 @@
 @media (max-width: 480px) {
   .dashboardPage {
     padding: 0.5rem;
+    padding-bottom: calc(150px + 2rem);
+    /* Espacio amplio para bottom navigation */
   }
-  
+
   .metricsGrid {
     grid-template-columns: 1fr;
   }
-  
+
   .userInfo {
     justify-content: center;
   }
-  
+
   .denunciaActions {
     flex-direction: column;
   }
-  
+
   .actionButton {
     text-align: center;
+  }
+
+  .title {
+    font-size: 1.5rem;
+    line-height: 1.3;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .header {
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+  }
+
+  .cargo,
+  .area {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .metricCard {
+    padding: 1rem;
+    gap: 1rem;
+    border-radius: 12px;
+  }
+
+  .metricIcon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .metricNumber {
+    font-size: 1.75rem;
+  }
+
+  .metricLabel {
+    font-size: 0.875rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.125rem;
+  }
+
+  .recentSection,
+  .quickActions {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  .denunciaCard {
+    padding: 1rem;
+  }
+
+  .denunciaTitulo {
+    font-size: 1rem;
+  }
+
+  .estadoBadge,
+  .prioridadBadge {
+    font-size: 0.688rem;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .viewAllButton {
+    padding: 0.6rem 1rem;
+    font-size: 0.813rem;
+  }
+
+  .quickActionCard {
+    padding: 1rem;
+  }
+
+  .actionIcon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .quickActionCard span {
+    font-size: 0.875rem;
   }
 }

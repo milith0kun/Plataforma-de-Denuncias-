@@ -374,6 +374,8 @@
 @media (max-width: 480px) {
   .container {
     padding: 16px 12px;
+    padding-bottom: 150px;
+    /* Espacio amplio para bottom navigation */
   }
 
   .title {
@@ -402,6 +404,7 @@
 
 /* Accesibilidad */
 @media (prefers-reduced-motion: reduce) {
+
   .input,
   .select,
   .textarea,
@@ -418,33 +421,33 @@
   .pageContainer {
     background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
   }
-  
+
   .form {
     background: #374151;
     border-color: #4b5563;
   }
-  
+
   .section {
     border-color: #4b5563;
   }
-  
+
   .title,
   .sectionTitle {
     color: #f9fafb;
   }
-  
+
   .subtitle,
   .sectionDescription,
   .privacyNote {
     color: #d1d5db;
   }
-  
+
   .label,
   .fileName,
   .checkboxLabel {
     color: #d1d5db;
   }
-  
+
   .input,
   .select,
   .textarea {
@@ -452,31 +455,31 @@
     border-color: #6b7280;
     color: #f9fafb;
   }
-  
+
   .input:focus,
   .select:focus,
   .textarea:focus {
     border-color: #667eea;
   }
-  
+
   .fileList {
     background: #4b5563;
   }
-  
+
   .fileItem {
     border-color: #6b7280;
   }
-  
+
   .actions {
     background: #4b5563;
   }
-  
+
   .cancelBtn {
     background: #6b7280;
     color: #f9fafb;
     border-color: #9ca3af;
   }
-  
+
   .cancelBtn:hover:not(:disabled) {
     background: #9ca3af;
   }
@@ -485,6 +488,6 @@
 /* Padding para navegación móvil inferior */
 @media (max-width: 1024px) {
   .container {
-    padding-bottom: calc(75px + 2rem) !important;
+    padding-bottom: calc(150px + 2rem) !important;
   }
 }

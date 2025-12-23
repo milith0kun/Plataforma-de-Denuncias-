@@ -10,11 +10,9 @@
   top: 16px;
   bottom: 16px;
   width: 2px;
-  background: linear-gradient(
-    to bottom,
-    var(--color-primary),
-    var(--color-primary-light)
-  );
+  background: linear-gradient(to bottom,
+      var(--color-primary),
+      var(--color-primary-light));
 }
 
 .timelineItem {
@@ -208,6 +206,53 @@
   }
 
   .timelineDate {
+    font-size: 0.75rem;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .timeline {
+    padding-left: 0;
+  }
+
+  .timeline::before {
+    left: 14px;
+  }
+
+  .timelineItem {
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .timelineMarker {
+    width: 30px;
+    height: 30px;
+    border-width: 2px;
+  }
+
+  .icon {
+    font-size: 0.875rem;
+  }
+
+  .timelineContent {
+    padding: var(--spacing-md);
+  }
+
+  .timelineTitle {
+    font-size: 0.875rem;
+  }
+
+  .timelineDate {
+    font-size: 0.688rem;
+  }
+
+  .timelineComment {
+    padding: var(--spacing-sm);
+    font-size: 0.813rem;
+  }
+
+  .timelineUser {
     font-size: 0.75rem;
   }
 }

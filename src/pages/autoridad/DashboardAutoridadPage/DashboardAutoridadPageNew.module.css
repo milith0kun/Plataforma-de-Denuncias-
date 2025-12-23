@@ -721,7 +721,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Responsive */
@@ -729,33 +731,35 @@
   .chartsGrid {
     grid-template-columns: 1fr;
   }
-  
+
   .chartCard[style*="grid-column: span 2"] {
     grid-column: span 1 !important;
   }
 }
 
 @media (max-width: 1024px) {
+
   /* Ocultar sidebar completamente en móviles */
   .sidebar {
     display: none !important;
   }
-  
+
   .dashboardContainer {
     flex-direction: column;
   }
-  
+
   .mainContent {
     padding: 1.5rem 1rem;
-    padding-bottom: calc(75px + 1.5rem); /* Espacio para bottom navigation */
+    padding-bottom: calc(150px + 1.5rem);
+    /* Espacio para bottom navigation */
     margin-left: 0;
   }
-  
+
   .metricsGrid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
-  
+
   .dashboardTitle {
     font-size: 1.5rem;
   }
@@ -764,67 +768,67 @@
 @media (max-width: 768px) {
   .mainContent {
     padding: 1rem;
-    padding-bottom: calc(75px + 1rem);
+    padding-bottom: calc(150px + 1rem);
   }
-  
+
   .metricsGrid {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   .metricCard {
     padding: 1.25rem;
   }
-  
+
   .dashboardHeader {
     flex-direction: column;
     align-items: stretch;
     gap: 1rem;
   }
-  
+
   .headerRight {
     flex-direction: column;
     width: 100%;
   }
-  
+
   .filterSelect,
   .exportButton {
     width: 100%;
     justify-content: center;
   }
-  
+
   .dashboardTitle {
     font-size: 1.25rem;
   }
-  
+
   .dashboardSubtitle {
     font-size: 0.875rem;
   }
-  
+
   .tableWrapper {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
-  
+
   .table {
     min-width: 600px;
   }
-  
+
   .table th,
   .table td {
     padding: 0.75rem 0.5rem;
     font-size: 0.8125rem;
   }
-  
+
   .actionButton {
     padding: 0.5rem 0.75rem;
     font-size: 0.8125rem;
   }
-  
+
   .chartCard {
     padding: 1rem;
   }
-  
+
   .chartTitle {
     font-size: 1rem;
   }
@@ -833,29 +837,31 @@
 @media (max-width: 480px) {
   .mainContent {
     padding: 0.75rem;
+    padding-bottom: 150px;
+    /* Espacio amplio para bottom navigation */
   }
-  
+
   .dashboardTitle {
     font-size: 1.125rem;
   }
-  
+
   .metricCard {
     padding: 1rem;
   }
-  
+
   .metricValue {
     font-size: 2rem;
   }
-  
+
   .metricHeader svg {
     width: 20px;
     height: 20px;
   }
-  
+
   .tableCard {
     padding: 1rem;
   }
-  
+
   .toggleButton {
     position: fixed;
     top: 1rem;

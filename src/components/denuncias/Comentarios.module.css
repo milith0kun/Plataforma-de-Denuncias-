@@ -240,3 +240,60 @@
     font-size: var(--font-size-small);
   }
 }
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .container {
+    margin-top: var(--spacing-md);
+  }
+
+  .title {
+    font-size: 1rem;
+  }
+
+  .form {
+    padding: var(--spacing-sm);
+  }
+
+  .textarea {
+    min-height: 60px;
+    font-size: 0.875rem;
+    padding: var(--spacing-sm);
+  }
+
+  .submitBtn {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.875rem;
+  }
+
+  .comentario {
+    padding: var(--spacing-md);
+  }
+
+  .comentarioHeader {
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+  }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 0.75rem;
+  }
+
+  .comentarioAutor {
+    font-size: 0.875rem;
+  }
+
+  .comentarioFecha {
+    font-size: 0.688rem;
+  }
+
+  .comentarioContenido {
+    font-size: 0.875rem;
+  }
+
+  .empty {
+    padding: var(--spacing-lg);
+  }
+}

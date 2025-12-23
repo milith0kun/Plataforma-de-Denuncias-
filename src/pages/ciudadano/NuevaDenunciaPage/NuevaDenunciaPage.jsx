@@ -127,16 +127,24 @@ const NuevaDenunciaPage = () => {
       const response = await denunciaService.crearDenuncia(datosDenuncia);
 
       if (response.success) {
-        // Subir fotos si hay
-        if (fotos.length > 0) {
+        // Intentar obtener el ID de la denuncia de varios lugares posibles en la respuesta
+        const id_denuncia = response.id_denuncia || response.data?.id_denuncia || response.data?.denuncia?.id_denuncia || response.data?.denuncia?._id;
+        console.log('Denuncia creada con ID:', id_denuncia);
+
+        // Subir fotos si hay y tenemos un ID válido
+        if (fotos.length > 0 && id_denuncia) {
           try {
+            console.log('Subiendo evidencias para denuncia:', id_denuncia);
             const archivosFiles = fotos.map(f => f.file);
-            await denunciaService.subirEvidencias(response.data.denuncia.id_denuncia, archivosFiles);
+            await denunciaService.subirEvidencias(id_denuncia, archivosFiles);
           } catch (errorFotos) {
             console.error('Error al subir fotos:', errorFotos);
             // La denuncia ya fue creada, solo mostramos advertencia
             alert('⚠️ Denuncia creada, pero hubo un error al subir las fotos');
           }
+        } else if (fotos.length > 0 && !id_denuncia) {
+          console.error('No se pudo obtener el ID de la denuncia para subir las fotos.');
+          alert('⚠️ Denuncia creada, pero no se pudo obtener el ID para las fotos.');
         }
 
         alert('✅ Denuncia creada exitosamente');
@@ -154,7 +162,7 @@ const NuevaDenunciaPage = () => {
   return (
     <div className={styles.pageContainer}>
       <Header />
-      
+
       <div className={styles.container}>
         <div className={styles.header}>
           <h1 className={styles.title}>Nueva Denuncia</h1>
@@ -167,7 +175,7 @@ const NuevaDenunciaPage = () => {
           {/* Información básica */}
           <div className={styles.section}>
             <h2 className={styles.sectionTitle}>Información Básica</h2>
-            
+
             <div className={styles.formGroup}>
               <label htmlFor="titulo" className={styles.label}>
                 Título de la Denuncia *

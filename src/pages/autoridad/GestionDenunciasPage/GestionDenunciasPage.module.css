@@ -11,7 +11,7 @@
 
 @media (max-width: 1024px) {
   .container {
-    padding-bottom: calc(75px + 2rem) !important;
+    padding-bottom: calc(150px + 2rem) !important;
   }
 }
 
@@ -50,20 +50,23 @@
 
 .metricSkeleton {
   height: 120px;
-  background: linear-gradient(
-    90deg,
-    var(--color-gray-200) 25%,
-    var(--color-gray-300) 50%,
-    var(--color-gray-200) 75%
-  );
+  background: linear-gradient(90deg,
+      var(--color-gray-200) 25%,
+      var(--color-gray-300) 50%,
+      var(--color-gray-200) 75%);
   background-size: 200% 100%;
   animation: loading 1.5s ease-in-out infinite;
   border-radius: var(--border-radius);
 }
 
 @keyframes loading {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 /* Filtros y Búsqueda */
@@ -279,6 +282,7 @@
   line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -576,6 +580,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -597,6 +602,7 @@
     transform: translateY(20px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -802,6 +808,8 @@
 @media (max-width: 768px) {
   .container {
     padding: var(--spacing-lg) var(--spacing-md);
+    padding-bottom: calc(150px + var(--spacing-lg));
+    /* Espacio para bottom navigation */
   }
 
   .title {
@@ -868,5 +876,169 @@
   .modalContent {
     max-width: 100%;
     border-radius: 12px 12px 0 0;
+  }
+}
+
+/* Extra small screens - Better mobile experience */
+@media (max-width: 480px) {
+  .container {
+    padding: var(--spacing-md) var(--spacing-sm);
+    padding-bottom: calc(150px + var(--spacing-md));
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 0.875rem;
+  }
+
+  .metricsGrid {
+    gap: var(--spacing-sm);
+  }
+
+  .filtrosContainer {
+    padding: var(--spacing-md);
+    gap: var(--spacing-sm);
+  }
+
+  .filtroLabel {
+    font-size: 0.75rem;
+  }
+
+  .searchInput,
+  .filtroSelect {
+    padding: 10px 12px;
+    font-size: 0.813rem;
+  }
+
+  /* Transform table to cards on very small screens */
+  .tableWrapper {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .tableContainer {
+    overflow: visible;
+  }
+
+  .table {
+    display: block;
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  .table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .table tbody tr {
+    display: block;
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-md);
+    border: 1px solid var(--color-gray-200);
+  }
+
+  .table tbody tr:hover {
+    transform: none;
+  }
+
+  .table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-xs) 0;
+    border-bottom: 1px solid var(--color-gray-100);
+  }
+
+  .table td:last-child {
+    border-bottom: none;
+    padding-top: var(--spacing-sm);
+  }
+
+  .table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--color-gray-600);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    flex-shrink: 0;
+    margin-right: var(--spacing-sm);
+  }
+
+  .idBadge {
+    font-size: 0.75rem;
+  }
+
+  .tituloCell {
+    max-width: none;
+  }
+
+  .titleText {
+    font-size: 0.875rem;
+  }
+
+  .estadoBadge {
+    font-size: 0.688rem;
+    padding: 4px 10px;
+  }
+
+  .actionButtons {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .btnVer,
+  .btnEstado {
+    flex: 1;
+    padding: 10px 12px;
+    font-size: 0.75rem;
+  }
+
+  .pagination {
+    padding: var(--spacing-md);
+    gap: var(--spacing-xs);
+  }
+
+  .paginationButton {
+    padding: 8px 12px;
+    font-size: 0.75rem;
+  }
+
+  .paginationNumber {
+    min-width: 32px;
+    height: 32px;
+    font-size: 0.75rem;
+  }
+
+  .modalHeader {
+    padding: var(--spacing-md);
+  }
+
+  .modalTitle {
+    font-size: 1.25rem;
+  }
+
+  .modalBody {
+    padding: var(--spacing-md);
+  }
+
+  .modalFooter {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .btnCancelar,
+  .btnGuardar {
+    width: 100%;
+    justify-content: center;
   }
 }
