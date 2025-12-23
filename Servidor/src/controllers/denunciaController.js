@@ -71,6 +71,7 @@ class DenunciaController {
         success: true,
         message: MENSAJES_EXITO.DENUNCIA_CREADA || 'Denuncia registrada exitosamente',
         data: {
+          id_denuncia: id_denuncia,
           denuncia: denunciaCreada
         }
       });
