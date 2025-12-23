@@ -11,7 +11,7 @@
 
 @media (max-width: 1024px) {
   .container {
-    padding-bottom: calc(75px + 2rem);
+    padding-bottom: calc(150px + 2rem);
   }
 }
 
@@ -236,6 +236,7 @@
   0% {
     transform: translateX(-100%);
   }
+
   100% {
     transform: translateX(100%);
   }
@@ -301,9 +302,12 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
   }
+
   50% {
     box-shadow: 0 0 0 8px rgba(59, 130, 246, 0.15);
   }
@@ -604,6 +608,8 @@
 @media (max-width: 768px) {
   .container {
     padding: 1rem;
+    padding-bottom: 150px;
+    /* Espacio amplio para bottom navigation */
   }
 
   .title {

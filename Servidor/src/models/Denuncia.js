@@ -156,6 +156,9 @@ denunciaSchema.statics.obtenerPorId = async function (id_denuncia) {
       return null;
     }
 
+    // Guardar el ID original del ciudadano antes de cualquier transformación
+    denuncia.id_ciudadano_original = denuncia.id_ciudadano?._id;
+
     // Si es anónima, ocultar datos del ciudadano
     if (denuncia.es_anonima) {
       denuncia.id_ciudadano = {

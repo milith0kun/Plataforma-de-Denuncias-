@@ -117,6 +117,7 @@ const SeguimientoDenunciaPage = () => {
             <p>Cargando seguimiento...</p>
           </div>
         </div>
+        {isMobile && <BottomNavigation userType="ciudadano" />}
       </div>
     );
   }
@@ -136,6 +137,7 @@ const SeguimientoDenunciaPage = () => {
             </button>
           </div>
         </div>
+        {isMobile && <BottomNavigation userType="ciudadano" />}
       </div>
     );
   }
@@ -172,14 +174,14 @@ const SeguimientoDenunciaPage = () => {
           ) : (
             <div className={styles.denunciasList}>
               {denuncias.map((den) => (
-                <div 
-                  key={den.id_denuncia} 
+                <div
+                  key={den.id_denuncia}
                   className={styles.denunciaCard}
                   onClick={() => navigate(`/seguimiento/${den.id_denuncia}`)}
                 >
                   <div className={styles.denunciaCardHeader}>
                     <h3 className={styles.denunciaCardTitle}>{den.titulo}</h3>
-                    <span 
+                    <span
                       className={styles.denunciaCardEstado}
                       style={{ backgroundColor: obtenerColorEstado(den.estado_nombre) }}
                     >
@@ -198,6 +200,7 @@ const SeguimientoDenunciaPage = () => {
             </div>
           )}
         </div>
+        {isMobile && <BottomNavigation userType="ciudadano" />}
       </div>
     );
   }
@@ -214,6 +217,7 @@ const SeguimientoDenunciaPage = () => {
             </button>
           </div>
         </div>
+        {isMobile && <BottomNavigation userType="ciudadano" />}
       </div>
     );
   }

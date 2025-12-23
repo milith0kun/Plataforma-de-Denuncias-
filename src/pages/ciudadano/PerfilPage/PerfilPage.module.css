@@ -49,8 +49,13 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Alertas */
@@ -159,6 +164,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -233,7 +239,7 @@
 /* Padding para navegación móvil */
 @media (max-width: 1024px) {
   .pageContainer {
-    padding-bottom: calc(75px + 2rem) !important;
+    padding-bottom: calc(150px + 2rem) !important;
   }
 }
 
@@ -242,31 +248,31 @@
   .container {
     padding: 1rem;
   }
-  
+
   .title {
     font-size: 2rem;
   }
-  
+
   .tabs {
     flex-direction: column;
     gap: 0.25rem;
   }
-  
+
   .tab {
     justify-content: center;
     padding: 1rem;
   }
-  
+
   .tabContent {
     padding: 1.5rem;
   }
-  
+
   .securityItem {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
   }
-  
+
   .securityItem .btnSecondary {
     align-self: stretch;
     text-align: center;
@@ -275,26 +281,98 @@
 
 @media (max-width: 480px) {
   .container {
-    padding: 0.5rem;
+    padding: 0.75rem;
+    padding-bottom: calc(150px + 1rem);
+    /* Espacio para bottom navigation */
   }
-  
+
   .header {
     padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
   }
-  
+
   .title {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
-  
+
   .subtitle {
-    font-size: 1rem;
+    font-size: 0.875rem;
   }
-  
+
+  .tabs {
+    padding: 0.375rem;
+    margin-bottom: 1.5rem;
+    border-radius: 10px;
+  }
+
+  .tab {
+    padding: 0.75rem;
+    font-size: 0.875rem;
+    border-radius: 6px;
+  }
+
+  .tabIcon {
+    font-size: 1rem;
+    margin-right: 0.375rem;
+  }
+
   .tabContent {
     padding: 1rem;
+    border-radius: 10px;
   }
-  
+
+  .sectionTitle {
+    font-size: 1.25rem;
+  }
+
+  .sectionDescription {
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+  }
+
   .alert {
     padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    border-radius: 8px;
+  }
+
+  .alertIcon {
+    font-size: 1rem;
+  }
+
+  .alertClose {
+    font-size: 1.25rem;
+    right: 0.75rem;
+  }
+
+  .securitySection {
+    gap: 1rem;
+  }
+
+  .securityItem {
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .securityInfo h3 {
+    font-size: 1rem;
+  }
+
+  .securityInfo p {
+    font-size: 0.813rem;
+  }
+
+  .btnSecondary {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.875rem;
+  }
+
+  .loading {
+    padding: 3rem 1rem;
+  }
+
+  .spinner {
+    width: 32px;
+    height: 32px;
   }
 }

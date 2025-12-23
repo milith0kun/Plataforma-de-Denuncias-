@@ -98,6 +98,7 @@ const DetalleDenunciaPage = () => {
           </div>
           <CardSkeleton count={3} />
         </div>
+        {isMobile && <BottomNavigation userType="ciudadano" />}
       </div>
     );
   }
@@ -116,6 +117,7 @@ const DetalleDenunciaPage = () => {
             </button>
           </div>
         </div>
+        {isMobile && <BottomNavigation userType="ciudadano" />}
       </div>
     );
   }

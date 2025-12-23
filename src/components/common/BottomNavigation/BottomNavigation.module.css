@@ -9,7 +9,8 @@
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   padding-bottom: env(safe-area-inset-bottom);
-  display: none; /* Oculto por defecto, se muestra en móviles */
+  display: none;
+  /* Oculto por defecto, se muestra en móviles */
 }
 
 .navContainer {
@@ -31,7 +32,8 @@
   flex: 1;
   background: none;
   border: none;
-  color: #64748b;
+  color: #475569;
+  /* Color más oscuro para mejor contraste */
   cursor: pointer;
   transition: all 0.3s ease;
   padding: 0.5rem;
@@ -55,13 +57,15 @@
 }
 
 .navLabel {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
+  /* 12px - Más legible */
   font-weight: 600;
   transition: all 0.3s ease;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
+  line-height: 1.2;
 }
 
 /* Estado activo */
@@ -146,7 +150,10 @@
   }
 
   .navLabel {
-    font-size: 0.625rem;
+    font-size: 0.688rem;
+    /* 11px - Mínimo legible */
+    font-weight: 700;
+    /* Más bold para mejor legibilidad */
   }
 
   .navItem {

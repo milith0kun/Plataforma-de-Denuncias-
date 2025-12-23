@@ -338,14 +338,16 @@
 @media (max-width: 1024px) {
   .container {
     padding: 24px 16px;
-    padding-bottom: calc(75px + 24px); /* Espacio para bottom navigation */
+    padding-bottom: calc(150px + 2rem);
+    /* Espacio amplio para bottom navigation */
   }
 }
 
 @media (max-width: 768px) {
   .container {
-    padding: 24px 16px;
-    padding-bottom: calc(75px + 24px);
+    padding: 20px 12px;
+    padding-bottom: calc(150px + 2rem);
+    /* Espacio amplio para bottom navigation */
   }
 
   .title {
@@ -389,6 +391,8 @@
 @media (max-width: 480px) {
   .container {
     padding: 16px 12px;
+    padding-bottom: 150px;
+    /* Espacio amplio para bottom navigation */
   }
 
   .title {

@@ -221,6 +221,11 @@
 
 /* Responsive */
 @media (max-width: 1024px) {
+  .container {
+    padding-bottom: calc(150px + var(--spacing-lg));
+    /* Espacio para bottom navigation */
+  }
+
   .chartsGrid {
     grid-template-columns: 1fr;
   }
@@ -233,6 +238,8 @@
 @media (max-width: 768px) {
   .container {
     padding: var(--spacing-lg) var(--spacing-md);
+    padding-bottom: calc(150px + var(--spacing-lg));
+    /* Espacio para bottom navigation */
   }
 
   .resumenGrid {
@@ -261,11 +268,42 @@
 }
 
 @media (max-width: 480px) {
+  .container {
+    padding: var(--spacing-md) var(--spacing-sm);
+    padding-bottom: calc(150px + var(--spacing-md));
+    /* Espacio para bottom navigation */
+  }
+
   .resumenGrid {
     grid-template-columns: 1fr;
   }
 
   .chartsGrid {
     gap: var(--spacing-md);
+  }
+
+  .title {
+    font-size: var(--font-size-h3);
+  }
+
+  .statCard {
+    padding: var(--spacing-sm);
+    gap: var(--spacing-md);
+  }
+
+  .statIcon {
+    font-size: 1.5rem;
+  }
+
+  .statValue {
+    font-size: var(--font-size-h4);
+  }
+
+  .chartCard {
+    padding: var(--spacing-sm);
+  }
+
+  .chartTitle {
+    font-size: var(--font-size-base);
   }
 }

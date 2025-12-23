@@ -26,15 +26,18 @@ const HistorialActividad = () => {
     try {
       setLoading(true);
       setError('');
-      
-      const response = await UsuarioService.obtenerHistorialActividad(pagina, limite);
-      
-      setActividades(response.actividades || []);
+
+      const response = await UsuarioService.obtenerHistorialActividad({ pagina, limite });
+
+      // El backend devuelve { success: true, data: [...actividades...] }
+      const actividadesData = response.data || response.actividades || [];
+
+      setActividades(actividadesData);
       setPaginacion({
-        pagina: response.pagina || 1,
-        limite: response.limite || 10,
-        total: response.total || 0,
-        totalPaginas: response.totalPaginas || 0
+        pagina: response.pagina || pagina,
+        limite: response.limite || limite,
+        total: actividadesData.length,
+        totalPaginas: Math.ceil(actividadesData.length / limite) || 1
       });
     } catch (err) {
       console.error('Error al cargar historial:', err);
@@ -106,7 +109,7 @@ const HistorialActividad = () => {
       'configuracion_cambiada': '⚙️',
       'default': '📋'
     };
-    
+
     return iconos[tipo] || iconos.default;
   };
 
@@ -126,7 +129,7 @@ const HistorialActividad = () => {
       'documento_subido': styles.actividadDocumento,
       'configuracion_cambiada': styles.actividadConfiguracion
     };
-    
+
     return clases[tipo] || styles.actividadDefault;
   };
 
@@ -177,7 +180,7 @@ const HistorialActividad = () => {
           <div className={styles.info}>
             Mostrando {((paginacion.pagina - 1) * paginacion.limite) + 1} - {Math.min(paginacion.pagina * paginacion.limite, paginacion.total)} de {paginacion.total} actividades
           </div>
-          
+
           <div className={styles.limitePorPagina}>
             <label htmlFor="limite">Mostrar:</label>
             <select
@@ -208,31 +211,31 @@ const HistorialActividad = () => {
           {actividades.map((actividad, index) => (
             <div key={index} className={`${styles.itemActividad} ${obtenerClaseActividad(actividad.tipo)}`}>
               <div className={styles.iconoActividad}>
-                {obtenerIconoActividad(actividad.tipo)}
+                {actividad.icono || obtenerIconoActividad(actividad.tipo)}
               </div>
-              
+
               <div className={styles.contenidoActividad}>
                 <div className={styles.descripcionActividad}>
                   {actividad.descripcion || 'Actividad sin descripción'}
                 </div>
-                
+
                 {actividad.detalles && (
                   <div className={styles.detallesActividad}>
                     {actividad.detalles}
                   </div>
                 )}
-                
+
                 <div className={styles.metadatosActividad}>
                   <span className={styles.fechaActividad}>
-                    {formatearFecha(actividad.fecha_actividad)}
+                    {formatearFecha(actividad.fecha || actividad.fecha_actividad)}
                   </span>
-                  
+
                   {actividad.ip_address && (
                     <span className={styles.ipActividad}>
                       IP: {actividad.ip_address}
                     </span>
                   )}
-                  
+
                   {actividad.user_agent && (
                     <span className={styles.dispositivoActividad} title={actividad.user_agent}>
                       {actividad.user_agent.includes('Mobile') ? '📱' : '💻'}
@@ -243,59 +246,61 @@ const HistorialActividad = () => {
             </div>
           ))}
         </div>
-      )}
+      )
+      }
 
       {/* Controles de paginación inferior */}
-      {paginacion.totalPaginas > 1 && (
-        <div className={styles.paginacion}>
-          <button
-            onClick={() => handleCambioPagina(paginacion.pagina - 1)}
-            disabled={paginacion.pagina <= 1}
-            className={styles.btnPaginacion}
-            aria-label="Página anterior"
-          >
-            ← Anterior
-          </button>
-          
-          <div className={styles.numerosPagina}>
-            {/* Mostrar páginas cercanas a la actual */}
-            {Array.from({ length: Math.min(5, paginacion.totalPaginas) }, (_, i) => {
-              let numeroPagina;
-              
-              if (paginacion.totalPaginas <= 5) {
-                numeroPagina = i + 1;
-              } else if (paginacion.pagina <= 3) {
-                numeroPagina = i + 1;
-              } else if (paginacion.pagina >= paginacion.totalPaginas - 2) {
-                numeroPagina = paginacion.totalPaginas - 4 + i;
-              } else {
-                numeroPagina = paginacion.pagina - 2 + i;
-              }
-              
-              return (
-                <button
-                  key={numeroPagina}
-                  onClick={() => handleCambioPagina(numeroPagina)}
-                  className={`${styles.btnPaginacion} ${
-                    numeroPagina === paginacion.pagina ? styles.paginaActiva : ''
-                  }`}
-                >
-                  {numeroPagina}
-                </button>
-              );
-            })}
+      {
+        paginacion.totalPaginas > 1 && (
+          <div className={styles.paginacion}>
+            <button
+              onClick={() => handleCambioPagina(paginacion.pagina - 1)}
+              disabled={paginacion.pagina <= 1}
+              className={styles.btnPaginacion}
+              aria-label="Página anterior"
+            >
+              ← Anterior
+            </button>
+
+            <div className={styles.numerosPagina}>
+              {/* Mostrar páginas cercanas a la actual */}
+              {Array.from({ length: Math.min(5, paginacion.totalPaginas) }, (_, i) => {
+                let numeroPagina;
+
+                if (paginacion.totalPaginas <= 5) {
+                  numeroPagina = i + 1;
+                } else if (paginacion.pagina <= 3) {
+                  numeroPagina = i + 1;
+                } else if (paginacion.pagina >= paginacion.totalPaginas - 2) {
+                  numeroPagina = paginacion.totalPaginas - 4 + i;
+                } else {
+                  numeroPagina = paginacion.pagina - 2 + i;
+                }
+
+                return (
+                  <button
+                    key={numeroPagina}
+                    onClick={() => handleCambioPagina(numeroPagina)}
+                    className={`${styles.btnPaginacion} ${numeroPagina === paginacion.pagina ? styles.paginaActiva : ''
+                      }`}
+                  >
+                    {numeroPagina}
+                  </button>
+                );
+              })}
+            </div>
+
+            <button
+              onClick={() => handleCambioPagina(paginacion.pagina + 1)}
+              disabled={paginacion.pagina >= paginacion.totalPaginas}
+              className={styles.btnPaginacion}
+              aria-label="Página siguiente"
+            >
+              Siguiente →
+            </button>
           </div>
-          
-          <button
-            onClick={() => handleCambioPagina(paginacion.pagina + 1)}
-            disabled={paginacion.pagina >= paginacion.totalPaginas}
-            className={styles.btnPaginacion}
-            aria-label="Página siguiente"
-          >
-            Siguiente →
-          </button>
-        </div>
-      )}
+        )
+      }
     </div>
   );
 };

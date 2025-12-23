@@ -1,0 +1,3085 @@
+\documentclass[12pt,a4paper]{report}
+
+% Paquetes básicos
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc} % Soporte para caracteres especiales
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{titlesec}
+\usepackage{amsmath} % Para fórmulas matemáticas
+\usepackage{listings} % Para incluir código
+\usepackage{longtable} % Para tablas que ocupan varias páginas
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{xcolor} % Para definir colores para el código
+\usepackage{booktabs} % Mejoras estéticas para tablas
+
+% Configuración del listado de código
+\lstset{
+    language=bash, % Lenguaje por defecto (se cambia por JavaScript, SQL, etc.)
+    basicstyle=\ttfamily\small,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    frame=tb,
+    showstringspaces=false,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!50!black},
+    stringstyle=\color{red!90!black},
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=2
+}
+
+% Márgenes
+\geometry{left=3cm,right=2.5cm,top=3cm,bottom=2.5cm}
+
+% Formato de capítulos y secciones
+\titleformat{\chapter}[hang]{\bfseries\huge}{\thechapter.}{1em}{}
+\titleformat{\section}[hang]{\bfseries\Large}{\thesection}{1em}{}
+\titleformat{\subsection}[hang]{\bfseries\large}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}[hang]{\bfseries\normalsize}{\thesubsubsection}{1em}{}
+
+% ----------------- COMIENZA EL DOCUMENTO -----------------
+\begin{document}
+
+% ----------------- PORTADA AMPLIADA CON LOGOS -----------------
+\begin{titlepage}
+    \centering
+    % Bloque superior
+    {\Huge\bfseries Universidad Nacional San Antonio Abad del Cusco\par}
+    \vspace{0.4cm}
+    \rule{\textwidth}{0.5pt}\par
+    {\LARGE Facultad de Ingeniería Eléctrica, Electrónica, Informática y Mecánica\par}
+    \rule{\textwidth}{0.5pt}\par
+    \vspace{0.4cm}
+    {\Large Escuela Profesional de Informática y de Sistemas\par}
+    \vspace{0.5cm}
+    
+    % Bloque de logos
+    \begin{tabular}{cc}
+        \includegraphics[width=0.25\textwidth]{Escudo_UNSAAC.png} &
+        \includegraphics[width=0.25\textwidth]{logoU.png} \\
+    \end{tabular}
+    
+    \vfill % Espacio flexible principal
+    
+    % Bloque del título del proyecto
+    \begin{minipage}{\textwidth}
+        \centering
+        \Huge\bfseries INFORME TÉCNICO DE AVANCE (FASE I)\\
+        \vspace{0.5cm}
+        \Large\bfseries PLATAFORMA WEB PARA LA DENUNCIA CIUDADANA DE PROBLEMAS URBANOS
+    \end{minipage}
+    \vspace{1cm}
+    
+    % Bloque de información del curso y docente
+    {\LARGE Curso: Desarrollo de software I\par}
+    \vspace{0.3cm}
+    {\Large\bfseries Docente:\par}
+    {\large Gabriela Zúñiga Rojas\par}
+    \vspace{0.3cm}
+    
+    % Bloque de integrantes
+    {\Large\bfseries Integrantes:\par}
+    \vspace{0.2cm}
+    \begin{tabular}{ll}
+        - Andy Yoseph Quispe Huanca & 221949 \\
+        - Edmil Jampier Saire Bustamante & 174449 \\
+        - Luis Alejandro Ramos Aguirre & 225425 \\
+        - Dennis Moises Ccapatinta Qqueccaño & 140984 \\
+    \end{tabular}
+    
+    \vfill % Espacio flexible final para empujar la fecha al fondo
+    
+    % Fecha y lugar
+    {\large Cusco - Perú, 2025\par}
+\end{titlepage}
+
+% Índice
+\tableofcontents
+\newpage
+
+% ----------------- CAPÍTULOS DEL INFORME -----------------
+
+\chapter{Resumen Ejecutivo}
+
+El presente documento resume la Fase I (Análisis, Diseño y Planificación) del proyecto \textbf{Plataforma Web para la Denuncia Ciudadana de Problemas Urbanos}, una solución estratégica destinada a la digitalización y optimización de la gestión de incidencias urbanas en el \textbf{Perú}. El objetivo es cerrar la brecha comunicacional entre la ciudadanía y las autoridades, transformando un proceso tradicionalmente lento y opaco en un flujo de trabajo ágil y transparente.
+
+La solución técnica se fundamenta en una arquitectura \textbf{Node.js/Express.js} (Backend) y \textbf{React.js} (Frontend), garantizando la escalabilidad y la capacidad de respuesta. Durante el \textbf{Sprint 1}, se implementó con éxito el \textbf{Sistema de Autenticación y Gestión de Perfiles} (Registro, Login, Recuperación de Contraseña) para usuarios con roles diferenciados (Ciudadano, Autoridad), sentando las bases seguras.
+
+El proyecto se alinea con los \textbf{Objetivos de Desarrollo Sostenible (ODS)} de la ONU, específicamente el ODS 11 (Ciudades Sostenibles) y ODS 16 (Instituciones Sólidas), al promover la transparencia y la participación cívica. Los siguientes \textbf{Sprints} se enfocarán en el módulo central de denuncias, incorporando \textbf{geolocalización precisa} y \textbf{evidencia fotográfica}, pilares de la inteligencia urbana que generará la plataforma.
+
+\section{Información General del Proyecto}
+\begin{itemize}
+    \item \textbf{Nombre del Proyecto:} Plataforma Web para Denuncia Ciudadana de Problemas Urbanos.
+    \item \textbf{Alcance Inicial:} Desarrollo de la \textbf{Plataforma Web Responsive} para el territorio peruano.
+    \item \textbf{Metodología:} Scrum, con Sprints de cuatro semanas.
+    \item \textbf{Stakeholders Clave:} Ciudadanía, Autoridades municipales y Entidades de servicios urbanos.
+\end{itemize}
+
+---
+
+\chapter{Introducción}
+
+La ineficacia en la gestión de las problemáticas urbanas (ej. infraestructura deficiente, fallas en servicios públicos) es un desafío persistente que erosiona la calidad de vida y la confianza en el gobierno. Los canales tradicionales de reporte, como líneas telefónicas o atención presencial, carecen de trazabilidad, resultan en la pérdida de información y no proporcionan al ciudadano una confirmación tangible del progreso.
+
+\section{Problemática Identificada y Justificación}
+La problemática se centra en la \textbf{ausencia de un sistema centralizado, auditable y georreferenciado} para el reporte de incidencias. La falta de datos espaciales y temporales precisos impide a las autoridades la correcta priorización y asignación de recursos. Este proyecto aborda dicha deficiencia mediante:
+\begin{enumerate}
+    \item La centralización de todos los reportes a través de una API REST robusta.
+    \item La provisión de evidencia (fotografía y coordenadas) para validar la denuncia.
+    \item La implementación de un flujo de trabajo de estados que garantiza la rendición de cuentas.
+\end{enumerate}
+
+\section{Oportunidad de Mejora y Impacto Esperado}
+La implementación de la plataforma generará un impacto positivo al:
+\begin{itemize}
+    \item \textbf{Reducir los Tiempos de Respuesta:} La asignación automatizada de denuncias al área responsable (basada en categoría y geolocalización) minimiza el tiempo de \textit{triage}.
+    \item \textbf{Fomentar la Participación Ciudadana:} Ofrecer una herramienta fácil de usar y transparente incrementa la colaboración cívica.
+    \item \textbf{Generar Inteligencia Operacional:} El sistema de reportes generará métricas clave (KPIs) sobre la eficiencia y las áreas críticas de la ciudad.
+\end{itemize}
+
+---
+
+\chapter{Objetivos}
+
+Los objetivos del sistema han sido definidos para guiar el desarrollo y medir el éxito del producto final.
+
+\section{Objetivo General}
+Diseñar y desarrollar una plataforma web que digitalice el proceso de reporte de incidencias urbanas en el Perú, estableciendo un canal bidireccional y transparente de comunicación entre la ciudadanía y las autoridades, con capacidades de geolocalización, multimedia y seguimiento en tiempo real.
+
+\section{Objetivos Específicos}
+
+\subsection{Enfoque en la Seguridad y la Identidad (Sprint 1)}
+\begin{itemize}
+    \item \textbf{Implementar un Sistema de Autenticación JWT:} Asegurar el acceso mediante \textbf{JSON Web Tokens (JWT)} y la protección de credenciales con \textbf{Bcrypt}, cumpliendo los requerimientos no funcionales de seguridad (RNF-6.3).
+    \item \textbf{Diferenciar Roles:} Desarrollar el \textit{middleware} de autorización que permita la segregación de permisos entre Ciudadano, Autoridad y Administrador (RF-02).
+\end{itemize}
+
+\subsection{Enfoque en la Trazabilidad y la Evidencia (Sprint 2 - Planificado)}
+\begin{itemize}
+    \item \textbf{Integrar Módulos de Reporte Avanzado:} Implementar la creación de denuncias con la captura obligatoria de \textbf{latitud} y \textbf{longitud} a través de un mapa interactivo (RF-07).
+    \item \textbf{Desarrollar un Historial de Auditoría:} Establecer la tabla \texttt{Historial\_Estado} para registrar de manera inmutable el flujo de \textit{workflow} de cada denuncia (RF-08, RF-09).
+\end{itemize}
+
+\subsection{Enfoque en la Gestión y el Análisis (Sprints Posteriores)}
+\begin{itemize}
+    \item \textbf{Optimizar la Gestión Institucional:} Crear el \textit{Dashboard} administrativo con herramientas de filtro avanzado y exportación de datos masiva para la autoridad (RF-11, RF-12).
+    \item \textbf{Generar Inteligencia Urbana:} Implementar el módulo de reportes que visualice tendencias de incidencias por categoría, ubicación, y calcule el \textbf{Tiempo Promedio de Resolución} (RF-14).
+\end{itemize}
+
+---
+
+\chapter{Alcance del Proyecto}
+
+El alcance define las fronteras del proyecto, siendo el marco de referencia contra el cual se medirá el éxito de la entrega. La definición precisa minimiza el riesgo de \textit{scope creep}.
+
+\section{Delimitación Geográfica y Tecnológica}
+
+\subsection{Alcance Geográfico Operacional}
+El proyecto se diseñará con la capacidad de operar en cualquier jurisdicción a nivel nacional en el \textbf{Perú}. El sistema utilizará estructuras de datos flexibles (como tablas de jurisdicciones o áreas de responsabilidad) que pueden ser configuradas por el administrador central sin requerir cambios en el código base.
+
+\subsection{Tipo de Plataforma (Web Responsive)}
+El alcance se restringe al desarrollo de una \textbf{Aplicación Web Responsive} basada en la tecnología \textbf{React.js}. Esta decisión obedece a la necesidad de alcanzar una base de usuarios amplia sin incurrir en los altos costos de desarrollo y mantenimiento de aplicaciones nativas separadas (iOS/Android). La solución será compatible con los navegadores modernos (RNF-6.6) y utilizará \textit{media queries} para garantizar una usabilidad óptima en pantallas pequeñas.
+
+\section{Requisitos Dentro y Fuera del Alcance}
+
+La Tabla 4.1 detalla los requisitos que constituyen el \textbf{Producto Mínimo Viable (MVP)} y aquellos que se difieren a futuras iteraciones o proyectos.
+
+\begin{table}[H]
+    \centering
+    \caption{Límites Funcionales del Proyecto}
+    \begin{tabular}{p{7cm}p{7cm}}
+        \toprule
+        \textbf{Dentro del Alcance (Fase I y II)} & \textbf{Fuera del Alcance (Trabajo Futuro)} \\
+        \midrule
+        Sistema completo de autenticación y gestión de perfil. & \textbf{Aplicación móvil nativa} (iOS/Android). \\
+        Módulo de denuncias con geolocalización y carga de multimedia. & Integración de \textbf{Blockchain} para inmutabilidad del historial. \\
+        \textbf{Workflow} de estados de denuncia y \textbf{Historial de Trazabilidad}. & Integración directa con sistemas ERP o \textit{legacy} municipales. \\
+        Panel de control para la gestión de denuncias y usuarios (CRUD). & Funcionalidades de \textbf{Gamificación} (puntos por denuncia). \\
+        Notificaciones por \textbf{Email} y \textbf{Push Notifications} (\textit{browser}). & Módulo de pagos o facturación. \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:alcance_limites}
+\end{table}
+
+---
+
+\chapter{Justificación y Alineación con los Objetivos de Desarrollo Sostenible}
+
+La justificación de la plataforma trasciende el ámbito tecnológico para convertirse en una herramienta de política social y desarrollo sostenible.
+
+\section{Análisis de Retorno de la Inversión (ROI)}
+
+El ROI del proyecto no solo se mide en términos económicos, sino en beneficios sociales y operativos:
+\begin{itemize}
+    \item \textbf{Ahorro Operacional:} Al eliminar la necesidad de transcripción manual de denuncias y automatizar el \textit{triage}, se libera personal administrativo para tareas de mayor valor.
+    \item \textbf{Transparencia y Legitimidad:} La publicación del \textit{workflow} mitiga las críticas por falta de transparencia, mejorando la percepción de la gestión municipal.
+    \item \textbf{Mitigación de Riesgos:} La capacidad de identificar y priorizar rápidamente problemas de seguridad o infraestructura reduce la exposición del gobierno a responsabilidades legales.
+\end{itemize}
+
+\section{Alineación con los Objetivos de Desarrollo Sostenible (ODS)}
+
+El proyecto está directamente alineado con los siguientes objetivos de la Agenda 2030 de las Naciones Unidas:
+
+\subsection{ODS 11: Ciudades y Comunidades Sostenibles}
+\begin{itemize}
+    \item \textbf{Meta 11.3 (Planificación Participativa):} La plataforma es un mecanismo directo para la planificación y gestión de los asentamientos humanos de manera \textbf{participativa, integrada y sostenible}, al obtener datos de las propias comunidades sobre las áreas de necesidad crítica.
+    \item \textbf{Meta 11.7 (Espacios Públicos Seguros):} Al facilitar la denuncia de vandalismo, fallas de alumbrado y otros riesgos de seguridad, la plataforma contribuye a proporcionar acceso universal a espacios públicos seguros e inclusivos.
+\end{itemize}
+
+\subsection{ODS 16: Paz, Justicia e Instituciones Sólidas}
+\begin{itemize}
+    \item \textbf{Meta 16.6 (Instituciones Eficaces):} El sistema promueve la creación de instituciones eficaces y transparentes que rinden cuentas, ya que cada acción (cambio de estado) es registrada por el sistema y visible para el ciudadano, fortaleciendo la confianza pública en la gobernanza.
+    \item \textbf{Meta 16.7 (Toma de Decisiones Inclusiva):} La plataforma asegura la adopción de decisiones inclusivas, participativas y representativas, ya que la voz del ciudadano es la fuente primaria del dato de gestión.
+\end{itemize}
+
+---
+
+\chapter{Metodología de Desarrollo (Scrum)}
+
+El proyecto adopta la metodología ágil \textbf{Scrum} para gestionar la complejidad y asegurar la entrega continua de valor. Se define una cadencia de \textbf{Sprints de 4 semanas} para garantizar que el trabajo sea inspeccionado y adaptado de manera regular.
+
+\section{Organización del Equipo y Definición de Roles}
+
+La estructura organizativa es fundamental para el éxito del desarrollo colaborativo:
+
+\subsection{Roles del Equipo Scrum}
+\begin{longtable}{|p{3.5cm}|p{3.5cm}|p{6cm}|}
+    \caption{Roles y Responsabilidades del Equipo Scrum} \\
+    \toprule
+    \textbf{Rol Scrum} & \textbf{Integrante} & \textbf{Responsabilidad Principal y Detallada} \\
+    \midrule
+    \endhead
+    \bottomrule
+    \endlastfoot
+    \textbf{Scrum Master (SM)} & Luis Alejandro Ramos Aguirre (225425) & \textbf{Facilitador y Coach.} Responsable de eliminar impedimentos, asegurar que el equipo siga los principios y valores de Scrum, y proteger al equipo de interrupciones externas. Organiza y modera todas las ceremonias. \\
+    \hline
+    \textbf{Product Owner (PO)} & \textit{Rol Rotativo} & \textbf{Voz del Cliente y Gestor del Valor.} Responsable de definir, priorizar y gestionar el \textbf{Product Backlog}. Acepta o rechaza el trabajo al final de cada Sprint. La rotación garantiza el entendimiento integral de los requerimientos de todos los \textit{stakeholders}. \\
+    \hline
+    \textbf{Development Team} & Andy Yoseph Quispe Huanca (221949) & \textbf{Full Stack Developer.} Especializado en arquitectura de seguridad (JWT, Bcrypt) y lógica de negocio. \\
+    \hline
+    \textbf{Development Team} & Edmil Jampier Saire Bustamante (174449) & \textbf{Full Stack Developer.} Especializado en modelado de datos (MySQL), persistencia de datos y servicios de geolocalización. \\
+    \hline
+    \textbf{Development Team} & Dennis Moises Ccapatinta Qqueccaño (140984) & \textbf{Full Stack Developer.} Especializado en UI/UX, desarrollo de componentes en React y optimización del rendimiento del Frontend. \\
+    \hline
+\end{longtable}
+
+\section{Ceremonias de Scrum (Rituales de Inspección y Adaptación)}
+La transparencia y la comunicación se mantienen a través de las siguientes ceremonias:
+\begin{itemize}
+    \item \textbf{Sprint Planning (Inicio del Sprint):} El equipo selecciona las \textbf{Historias de Usuario} del Product Backlog para el Sprint actual y las desglosa en tareas técnicas estimadas.
+    \item \textbf{Daily Scrum (15 minutos diarios):} El equipo de desarrollo sincroniza el trabajo, respondiendo a las preguntas: ¿Qué hice ayer? ¿Qué haré hoy? ¿Qué impedimentos tengo? (Ver sección 6.4 para el reporte de Daily).
+    \item \textbf{Sprint Review (Fin del Sprint):} El equipo presenta el \textbf{Incremento de Producto (Funcionalidades Terminadas)} a los \textit{stakeholders} para obtener retroalimentación y adaptaciones en el Product Backlog.
+    \item \textbf{Sprint Retrospective (Fin del Sprint):} El equipo inspecciona el proceso de trabajo (Personas, Relaciones, Herramientas) para identificar áreas de mejora continua en la siguiente iteración.
+\end{itemize}
+
+\section{Cronograma y Asignación de Tareas (Fase I: Sprint 1)}
+
+\subsection{Logros del Sprint 1 (Incremento de Producto)}
+El Sprint 1 fue un éxito en la consecución de la base del sistema, con los siguientes entregables funcionales y técnicos:
+\begin{itemize}
+    \item \textbf{API de Autenticación Completa:} Endpoints de registro y login seguros para Ciudadano y Autoridad.
+    \item \textbf{Middleware de Roles:} Implementado para proteger las rutas.
+    \item \textbf{Servicio de Email:} Configurado para la recuperación de contraseña (\texttt{Nodemailer}).
+    \item \textbf{Frontend de Autenticación:} Componentes de React (\texttt{LoginForm}, \texttt{RegisterForm}, \texttt{AuthContext}) integrados y funcionales con la API.
+\end{itemize}
+
+\subsection{Reporte de Daily Meeting y Retrospectiva (Evidencia de Scrum)}
+
+Como evidencia del proceso ágil, se adjunta un extracto de la dinámica y la retrospectiva del equipo:
+
+\begin{lstlisting}[language=bash, caption=Extracto de Daily Meeting]
+DAILY MEETING - Lunes
+[225425 - SM]: Impedimentos?
+[221949 - Dev]: Ayer: Implemente 3 interfaces faltantes. Hoy: Actualizar diseños de postulante y consulta.
+[174449 - Dev]: Ayer: Módulo para verificación de postulante. Hoy: Implementar conexión SQL al Visual.
+[225425 - SM]: Ayer: Arreglé el mensaje al ingresar postulante. Hoy: Actualizar procedimientos en SQL y tabla de postulantes.
+[140984 - Dev]: Ayer: Transformé el proyecto a la base de datos. Hoy: Interfaz para consulta y postulantes.
+\end{lstlisting}
+
+\begin{lstlisting}[caption=Extracto de Retrospectiva de Sprint, basicstyle=\ttfamily]
+RETROSPECTIVA (Inspeccion del Proceso)
+Lo que fue Bien: Estamos motivados y encaminados despues de corregir el rumbo.
+Lo que debemos Mejorar: La falta de investigacion inicial hizo que se tenga que rehacer o ajustar gran parte del proyecto.
+Accion para el proximo Sprint: Dedicar el 20\% del tiempo de planificacion a la investigacion de librerias (ej. Leaflet para geolocalizacion) antes de la codificacion.
+\end{lstlisting}
+
+---
+
+\chapter{Análisis y Diseño}
+
+La fase de diseño define la arquitectura de software, el modelado de datos y el diseño de la interfaz, asegurando que el sistema cumpla con los Requerimientos No Funcionales (RNF) de Escalabilidad, Rendimiento y Seguridad.
+
+\section{Diseño de Arquitectura Técnica y Stack Tecnológico}
+
+\subsection{Arquitectura (Patrón MVC Desacoplado)}
+Se implementa una arquitectura de microservicios lógicos, donde el \textbf{Backend} (API REST) es totalmente independiente del \textbf{Frontend} (SPA - Single Page Application).
+\begin{itemize}
+    \item \textbf{Capa de Presentación:} React.js y Axios para el consumo de la API.
+    \item \textbf{Capa de Lógica de Negocio:} Node.js con Express.js, estructurado en \textbf{Controllers, Services y Middlewares}.
+    \item \textbf{Capa de Datos:} MongoDB, con Mongoose como ODM (Object-Document Mapper).
+\end{itemize}
+
+\subsection{Stack Tecnológico Detallado}
+\begin{longtable}{|p{3cm}|p{4cm}|p{7cm}|}
+    \caption{Stack Tecnológico y Justificación} \\
+    \toprule
+    \textbf{Capa} & \textbf{Tecnología Principal} & \textbf{Justificación y Librerías Clave} \\
+    \midrule
+    \endhead
+    \bottomrule
+    \endlastfoot
+    \textbf{Backend} & \textbf{Node.js / Express.js} & Ofrece alta concurrencia y velocidad para la API. Se usan \textbf{JWT}, \textbf{Bcrypt} para seguridad, y \textbf{express-validator} para asegurar la integridad de los datos de entrada. \\
+    \hline
+    \textbf{Frontend} & \textbf{React 18+} & Permite la creación de componentes reutilizables y un desarrollo modular. Se utiliza \textbf{React Router DOM} para el enrutamiento y \textbf{Context API} para gestión eficiente del estado. \\
+    \hline
+    \textbf{Base de Datos} & \textbf{MongoDB 6.0+} & Base de datos NoSQL orientada a documentos, ofrece flexibilidad en el esquema y excelente rendimiento para consultas complejas. Soporta índices geoespaciales nativos para geoconsultas y operaciones de agregación avanzadas. \\
+    \hline
+    \textbf{Servicios} & \textbf{Nodemailer, Leaflet} & Nodemailer para emails. \textbf{Leaflet} (con \texttt{react-leaflet}) como la librería de mapas de código abierto, para la visualización y selección de coordenadas (RF-07). \\
+    \hline
+\end{longtable}
+
+\section{Modelado de Datos NoSQL (MongoDB)}
+
+El diseño de la base de datos utiliza \textbf{MongoDB}, una base de datos NoSQL orientada a documentos. Se implementaron esquemas mediante \textbf{Mongoose} para garantizar la validación de datos y las relaciones entre colecciones mediante referencias (ObjectId). La arquitectura garantiza que la información de seguimiento esté separada de la información transaccional primaria mediante colecciones especializadas.
+
+\subsection{Diseño de Colecciones y Esquemas Clave}
+
+\begin{itemize}
+    \item \textbf{Usuario:} Almacena datos personales y de autenticación. El campo \texttt{password\_hash} se cifra con Bcrypt (salt rounds: 10) y se verifica mediante \texttt{Bcrypt.compare()}. El campo \texttt{id\_tipo\_usuario} (ObjectId) define la autorización mediante referencia a la colección TipoUsuario.
+    \item \textbf{Denuncia:} Contiene los metadatos de la incidencia. La geolocalización se almacena en campos \texttt{latitud} (Number, rango: -90 a 90) y \texttt{longitud} (Number, rango: -180 a 180). Incluye \texttt{codigo\_seguimiento} único generado automáticamente para consultas públicas anónimas.
+    \item \textbf{HistorialEstado (Trazabilidad):} Documento con timestamp inmutable (\texttt{timestamps: false}). Cada documento representa una transición de estado con referencias a \texttt{id\_estado\_anterior}, \texttt{id\_estado\_nuevo} y \texttt{id\_usuario\_cambio} (RF-09).
+    \item \textbf{EvidenciaFoto:} Almacena la \texttt{ruta\_archivo} relativa después de la subida mediante Multer al sistema de archivos local. Incluye metadatos como \texttt{tipo\_archivo} (MIME type), \texttt{tamano\_bytes} y \texttt{nombre\_original}.
+\end{itemize}                               
+
+\section{Diseño de API RESTful del Backend (Sprint 1 Implementado)}
+
+El diseño de la API se adhiere a las mejores prácticas REST, utilizando verbos HTTP (GET, POST, PUT) y códigos de estado (200, 201, 400, 401, 403, 500).
+
+\subsection{Endpoints de Autenticación (Sprint 1)}
+
+\begin{lstlisting}[language=javascript, caption=Endpoints Implementados en /api/v1/auth]
+// Rutas de Autenticación
+POST /auth/register/ciudadano  // Registro (JSON: nombres, email, password, documento_identidad)
+POST /auth/register/autoridad  // Registro (JSON: requiere validación de permiso adicional)
+POST /auth/login               // Retorna JWT Access Token
+POST /auth/forgot-password     // Inicia proceso de recuperación por email
+POST /auth/reset-password      // Usa token temporal para establecer nueva contraseña
+GET /auth/verify-token         // Verifica validez de JWT (utilizado por el Frontend)
+\end{lstlisting}
+
+\subsection{Estructura del Proyecto Backend (Sprint 1 Implementado)}
+La estructura jerárquica del proyecto facilita el escalamiento:
+\begin{lstlisting}[language=bash, caption=Estructura de Directorios Backend]
+Servidor/
+├── src/
+│   ├── config/           # database.js, jwt.js
+│   ├── controllers/      # authController.js, usuarioController.js
+│   ├── middlewares/      # authMiddleware.js, roleMiddleware.js, validationMiddleware.js
+│   ├── models/           # Usuario.js, PasswordResetToken.js
+│   ├── routes/           # authRoutes.js, usuarioRoutes.js
+│   ├── services/         # emailService.js (RNF-6.1)
+│   └── app.js            # Configuración Express
+\end{lstlisting}
+
+\section{Diseño de Interfaz de Usuario (UI/UX - Frontend)}
+
+El Frontend se desarrolla en \textbf{React.js} bajo un enfoque \textbf{Mobile-First}, utilizando \textbf{CSS Modules} para asegurar que los estilos sean locales al componente y evitar colisiones globales.
+
+\subsection{Patrón de Gestión de Estado}
+Se implementa el patrón \textbf{Context API con Hooks} (\texttt{useAuth}, \texttt{useDenuncia}) para el manejo del estado global, reemplazando la necesidad de librerías externas complejas como Redux.
+
+\subsection{Diseño de Flujos Críticos (Sprint 2 Planificado)}
+\subsubsection{Mapa Interactivo (RF-07)}
+El componente \texttt{MapaPicker} de React implementará la librería \textbf{Leaflet} para:
+\begin{enumerate}
+    \item Detectar la ubicación actual del usuario a través de la API Geolocation del navegador.
+    \item Permitir al usuario arrastrar un marcador (Pin) para afinar la ubicación de la denuncia en el mapa.
+    \item Mostrar un campo de texto con la dirección aproximada obtenida por \textit{geocodificación inversa} para confirmación.
+\end{enumerate}
+
+\subsubsection{Componentes de Trazabilidad (RF-09)}
+El componente \texttt{HistorialActividad} en la página de perfil del ciudadano y en el \textit{Dashboard} de Autoridad mostrará el flujo de estados utilizando un componente de \textbf{Línea de Tiempo} para una visualización intuitiva y secuencial.
+
+---
+% INICIO DE SECCIONES FUTURAS (Solo Títulos para el Índice)
+---
+
+\chapter{Desarrollo}
+
+El desarrollo del proyecto se ejecutó siguiendo la metodología \textbf{Scrum}, con sprints iterativos de cuatro semanas. Este capítulo documenta la implementación técnica de los módulos centrales del sistema durante los Sprints 2, 3 y 4.
+
+\section{Implementación del Módulo de Denuncias (Sprint 2)}
+
+El Sprint 2 representó la implementación del \textit{core business logic} de la plataforma: el sistema completo de gestión de denuncias ciudadanas con capacidades de geolocalización, evidencia multimedia y trazabilidad de estados.
+
+\subsection{Objetivos del Sprint 2}
+
+\begin{itemize}
+    \item Implementar el CRUD completo de denuncias con validación de permisos por rol
+    \item Desarrollar el sistema de estados con validación de transiciones (máquina de estados finitos)
+    \item Integrar módulo de carga de evidencias fotográficas con \textbf{Multer}
+    \item Implementar geolocalización con mapas interactivos usando \textbf{Leaflet}
+    \item Garantizar la trazabilidad completa mediante historial de estados
+\end{itemize}
+
+\subsection{Arquitectura del Módulo de Denuncias}
+
+\subsubsection{Modelo de Datos - MongoDB Schema}
+
+El modelo \texttt{Denuncia} se diseñó utilizando \textbf{Mongoose} como ODM (Object-Document Mapper) para MongoDB. La estructura garantiza la integridad referencial mediante referencias pobladas:
+
+\begin{lstlisting}[language=javascript, caption=Modelo de Denuncia (Mongoose Schema)]
+const denunciaSchema = new Schema({
+  titulo: { 
+    type: String, 
+    required: [true, 'El titulo es obligatorio'],
+    trim: true,
+    maxlength: 200
+  },
+  descripcion_detallada: { 
+    type: String, 
+    required: true,
+    maxlength: 2000 
+  },
+  id_categoria: { 
+    type: Schema.Types.ObjectId, 
+    ref: 'Categoria',
+    required: true
+  },
+  id_estado_actual: { 
+    type: Schema.Types.ObjectId, 
+    ref: 'EstadoDenuncia',
+    default: null // Se asigna "Registrada" en post-save hook
+  },
+  id_ciudadano: { 
+    type: Schema.Types.ObjectId, 
+    ref: 'Usuario',
+    required: true
+  },
+  latitud: { 
+    type: Number, 
+    min: -90, 
+    max: 90 
+  },
+  longitud: { 
+    type: Number, 
+    min: -180, 
+    max: 180 
+  },
+  direccion_geolocalizada: String,
+  es_anonima: { 
+    type: Boolean, 
+    default: false 
+  },
+  prioridad: {
+    type: String,
+    enum: ['baja', 'media', 'alta'],
+    default: 'media'
+  },
+  fecha_registro: { 
+    type: Date, 
+    default: Date.now 
+  }
+}, { timestamps: true });
+\end{lstlisting}
+
+\textbf{Índices Implementados para Optimización de Consultas:}
+\begin{itemize}
+    \item Índice compuesto: \texttt{\{id\_ciudadano: 1, fecha\_registro: -1\}} para consultas de denuncias por usuario
+    \item Índice: \texttt{\{id\_categoria: 1\}} para filtros por categoría
+    \item Índice: \texttt{\{id\_estado\_actual: 1\}} para filtros por estado
+    \item Índice geoespacial: \texttt{\{latitud: 1, longitud: 1\}} para búsquedas de proximidad (futuro)
+\end{itemize}
+
+\subsubsection{Sistema de Estados - Máquina de Estados Finitos}
+
+El sistema implementa una \textbf{Máquina de Estados Finitos (FSM)} para garantizar la validez de las transiciones de estado de las denuncias. Se definieron 7 estados con un flujo ordenado:
+
+\begin{table}[H]
+    \centering
+    \caption{Estados de Denuncia y Flujo de Transición}
+    \begin{tabular}{|c|p{3cm}|p{6cm}|c|}
+        \toprule
+        \textbf{ID} & \textbf{Estado} & \textbf{Descripción} & \textbf{Orden} \\
+        \midrule
+        1 & Registrada & Estado inicial al crear la denuncia & 1 \\
+        2 & En Revisión & Autoridad está revisando la denuncia & 2 \\
+        3 & Asignada & Asignada a área responsable específica & 3 \\
+        4 & En Proceso & Área está trabajando en la resolución & 4 \\
+        5 & Resuelta & Problema resuelto, pendiente de cierre & 5 \\
+        6 & Cerrada & Cerrada definitivamente (estado terminal) & 6 \\
+        7 & Rechazada & Denuncia rechazada (estado terminal alternativo) & 7 \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:estados_denuncia}
+\end{table}
+
+\textbf{Validación de Transiciones:} Se implementó el método \texttt{esTransicionValida()} que verifica que la transición de estado cumple con el flujo establecido:
+
+\begin{lstlisting}[language=javascript, caption=Validación de Transiciones de Estado]
+static async esTransicionValida(idEstadoActual, idEstadoNuevo) {
+  const estadoActual = await this.obtenerPorId(idEstadoActual);
+  const estadoNuevo = await this.obtenerPorId(idEstadoNuevo);
+  
+  if (!estadoActual || !estadoNuevo) return false;
+  
+  // Reglas de transicion
+  // 1. Estados terminales no permiten transiciones
+  if (['Cerrada', 'Rechazada'].includes(estadoActual.nombre)) {
+    return false;
+  }
+  
+  // 2. Solo se puede avanzar en el flujo (orden_flujo)
+  // Excepcion: se puede rechazar desde cualquier estado
+  if (estadoNuevo.nombre === 'Rechazada') return true;
+  
+  // 3. Validar progresion secuencial
+  return estadoNuevo.orden_flujo >= estadoActual.orden_flujo;
+}
+\end{lstlisting}
+
+\subsubsection{Historial de Estados - Trazabilidad Completa}
+
+Para cumplir con el requerimiento de trazabilidad (RF-09), se implementó la colección \texttt{HistorialEstado} que registra cada cambio de estado de manera inmutable:
+
+\begin{lstlisting}[language=javascript, caption=Modelo de Historial de Estados]
+const historialEstadoSchema = new Schema({
+  id_denuncia: { 
+    type: Schema.Types.ObjectId, 
+    ref: 'Denuncia',
+    required: true
+  },
+  id_estado_anterior: { 
+    type: Schema.Types.ObjectId, 
+    ref: 'EstadoDenuncia'
+  },
+  id_estado_nuevo: { 
+    type: Schema.Types.ObjectId, 
+    ref: 'EstadoDenuncia',
+    required: true
+  },
+  id_usuario_cambio: { 
+    type: Schema.Types.ObjectId, 
+    ref: 'Usuario',
+    required: true
+  },
+  comentario: { 
+    type: String,
+    default: 'Estado actualizado'
+  },
+  fecha_cambio: { 
+    type: Date, 
+    default: Date.now 
+  }
+}, { timestamps: false });
+\end{lstlisting}
+
+\subsection{Controlador de Denuncias - Lógica de Negocio}
+
+El \texttt{DenunciaController} implementa la lógica de negocio completa con validación de permisos basada en roles:
+
+\subsubsection{Endpoint: Crear Denuncia}
+
+\textbf{Ruta:} \texttt{POST /api/v1/denuncias}
+
+\textbf{Autenticación:} JWT obligatorio
+
+\textbf{Restricción:} Solo usuarios de tipo Ciudadano (\texttt{tipo\_usuario\_id = 1})
+
+\textbf{Flujo de Ejecución:}
+\begin{enumerate}
+    \item Validar que el usuario autenticado es un ciudadano
+    \item Validar existencia de la categoría mediante \texttt{Categoria.obtenerPorId()}
+    \item Crear denuncia con estado inicial "Registrada" automático
+    \item Retornar denuncia creada con datos poblados (categoría, estado)
+\end{enumerate}
+
+\textbf{Validaciones Implementadas:}
+\begin{itemize}
+    \item Título: obligatorio, máx. 200 caracteres
+    \item Descripción: obligatoria, máx. 2000 caracteres
+    \item Categoría: debe existir en la base de datos
+    \item Latitud/Longitud: opcional, pero si se proporciona debe estar en rangos válidos
+\end{itemize}
+
+\subsubsection{Endpoint: Cambiar Estado de Denuncia}
+
+\textbf{Ruta:} \texttt{PUT /api/v1/denuncias/:id/estado}
+
+\textbf{Restricción:} Solo Autoridades y Administradores (\texttt{tipo\_usuario\_id = 2 | 3})
+
+\textbf{Flujo de Ejecución:}
+\begin{enumerate}
+    \item Verificar que el usuario NO es ciudadano
+    \item Obtener denuncia por ID y validar existencia
+    \item Validar que el nuevo estado existe
+    \item \textbf{Validar transición de estado} mediante \texttt{esTransicionValida()}
+    \item Actualizar estado de la denuncia
+    \item Registrar cambio en \texttt{HistorialEstado}
+    \item Retornar denuncia actualizada
+\end{enumerate}
+
+\begin{lstlisting}[language=javascript, caption=Cambio de Estado con Validación]
+static async cambiarEstado(req, res) {
+  const { id_tipo_usuario } = req.usuario;
+  
+  // Restriccion: solo autoridades
+  if (id_tipo_usuario === 1) {
+    return res.status(403).json({
+      success: false,
+      message: 'No tienes permiso para cambiar el estado'
+    });
+  }
+  
+  // Validar transicion
+  const transicionValida = await EstadoDenuncia.esTransicionValida(
+    denuncia.id_estado_actual,
+    id_estado_nuevo
+  );
+  
+  if (!transicionValida) {
+    return res.status(400).json({
+      success: false,
+      message: 'Transicion de estado no permitida'
+    });
+  }
+  
+  // Actualizar y registrar en historial
+  await Denuncia.cambiarEstado(id, id_estado_nuevo, id_usuario, comentario);
+}
+\end{lstlisting}
+
+\subsection{Módulo de Evidencias Fotográficas}
+
+\subsubsection{Configuración de Multer}
+
+Se implementó \textbf{Multer v2.0.2} para el manejo de \textit{multipart/form-data} y almacenamiento de archivos con las siguientes configuraciones:
+
+\begin{lstlisting}[language=javascript, caption=Configuración de Multer]
+import multer from 'multer';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const year = new Date().getFullYear();
+    const month = String(new Date().getMonth() + 1).padStart(2, '0');
+    const dir = `uploads/evidencias/${year}/${month}`;
+    
+    // Crear directorio si no existe
+    fs.mkdirSync(dir, { recursive: true });
+    cb(null, dir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const ext = path.extname(file.originalname);
+    cb(null, `denuncia-${req.params.id}-${uniqueSuffix}${ext}`);
+  }
+});
+
+const fileFilter = (req, file, cb) => {
+  const allowedMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+  if (allowedMimes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error('Formato no permitido. Solo JPG, PNG, WebP'), false);
+  }
+};
+
+export const uploadEvidencias = multer({
+  storage: storage,
+  fileFilter: fileFilter,
+  limits: { 
+    fileSize: 5 * 1024 * 1024, // 5MB
+    files: 5 // Maximo 5 archivos
+  }
+});
+\end{lstlisting}
+
+\textbf{Estructura de Almacenamiento:}
+\begin{verbatim}
+uploads/
+  evidencias/
+    2025/
+      01/
+        denuncia-507f1f77bcf86cd799439011-1704067200000-123456789.jpg
+        denuncia-507f1f77bcf86cd799439011-1704067201000-987654321.png
+\end{verbatim}
+
+\subsubsection{Endpoint: Subir Evidencias}
+
+\textbf{Ruta:} \texttt{POST /api/v1/denuncias/:id/evidencias}
+
+\textbf{Content-Type:} \texttt{multipart/form-data}
+
+\textbf{Campo de Formulario:} \texttt{evidencias} (acepta múltiples archivos)
+
+\textbf{Validaciones:}
+\begin{itemize}
+    \item Usuario debe ser el propietario de la denuncia
+    \item Formato de archivo: JPG, PNG, WebP
+    \item Tamaño máximo por archivo: 5MB
+    \item Máximo de archivos por petición: 5
+\end{itemize}
+
+\subsection{Frontend - Componentes de Denuncias}
+
+\subsubsection{Componente MapaPicker - Geolocalización}
+
+Se implementó el componente \texttt{MapaPicker.jsx} utilizando \textbf{Leaflet 1.9.4} y \textbf{React Leaflet 5.0.0} para la selección interactiva de ubicación:
+
+\textbf{Características Implementadas:}
+\begin{itemize}
+    \item Detección automática de ubicación del usuario mediante API Geolocation
+    \item Mapa interactivo con tiles de OpenStreetMap (gratuito, sin API key)
+    \item Marcador arrastrable para ajustar ubicación precisa
+    \item Actualización de coordenadas (latitud/longitud) en tiempo real
+    \item Zoom y pan para navegación
+\end{itemize}
+
+\begin{lstlisting}[language=javascript, caption=Componente MapaPicker]
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+
+const MapaPicker = ({ center, onLocationSelect }) => {
+  const [position, setPosition] = useState(center);
+  
+  const LocationMarker = () => {
+    useMapEvents({
+      click(e) {
+        const { lat, lng } = e.latlng;
+        setPosition([lat, lng]);
+        onLocationSelect(lat, lng);
+      }
+    });
+    
+    return position ? <Marker position={position} /> : null;
+  };
+  
+  return (
+    <MapContainer center={center} zoom={13} style={{ height: '400px' }}>
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; OpenStreetMap contributors'
+      />
+      <LocationMarker />
+    </MapContainer>
+  );
+};
+\end{lstlisting}
+
+\subsubsection{Página NuevaDenunciaPage}
+
+La página \texttt{NuevaDenunciaPage.jsx} integra todos los componentes necesarios para el registro de denuncias:
+
+\textbf{Componentes Integrados:}
+\begin{enumerate}
+    \item Formulario de datos básicos (título, descripción)
+    \item Selector de categoría (carga dinámica desde API)
+    \item MapaPicker para selección de ubicación
+    \item UploadFotos para evidencias (hasta 5 imágenes)
+    \item Checkbox de denuncia anónima
+\end{enumerate}
+
+\textbf{Validaciones del Formulario:}
+\begin{itemize}
+    \item Título: mínimo 10 caracteres, máximo 200
+    \item Descripción: mínimo 20 caracteres, máximo 2000
+    \item Categoría: obligatoria (select)
+    \item Ubicación: opcional pero recomendada
+    \item Evidencias: opcional, máximo 5 archivos de 5MB cada uno
+\end{itemize}
+
+\subsection{Métricas del Sprint 2}
+
+\begin{table}[H]
+    \centering
+    \caption{Resultados del Sprint 2}
+    \begin{tabular}{|l|c|c|}
+        \toprule
+        \textbf{Métrica} & \textbf{Objetivo} & \textbf{Alcanzado} \\
+        \midrule
+        Historias de Usuario Completadas & 5 & 5 \\
+        Endpoints API Implementados & 8 & 8 \\
+        Componentes Frontend Creados & 4 & 4 \\
+        Cobertura de Código Backend & 80\% & 75\% \\
+        Tiempo de Respuesta API (p95) & \textless 200ms & 145ms \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:metricas_sprint2}
+\end{table}
+
+\subsection{Desafíos Técnicos y Soluciones}
+
+\subsubsection{Desafío 1: Consistencia de Datos en Cambios de Estado}
+
+\textbf{Problema:} Riesgo de condiciones de carrera (\textit{race conditions}) al actualizar estados concurrentemente.
+
+\textbf{Solución:} Implementación de transacciones atómicas en MongoDB mediante sesiones:
+
+\begin{lstlisting}[language=javascript, caption=Uso de Transacciones MongoDB]
+static async cambiarEstado(idDenuncia, idEstadoNuevo, idUsuario, comentario) {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  
+  try {
+    // 1. Actualizar denuncia
+    await this.findByIdAndUpdate(idDenuncia, {
+      id_estado_actual: idEstadoNuevo
+    }, { session });
+    
+    // 2. Registrar en historial
+    await HistorialEstado.create([{
+      id_denuncia: idDenuncia,
+      id_estado_nuevo: idEstadoNuevo,
+      id_usuario_cambio: idUsuario,
+      comentario
+    }], { session });
+    
+    await session.commitTransaction();
+  } catch (error) {
+    await session.abortTransaction();
+    throw error;
+  } finally {
+    session.endSession();
+  }
+}
+\end{lstlisting}
+
+\subsubsection{Desafío 2: Rendimiento en Carga de Evidencias}
+
+\textbf{Problema:} Subida de múltiples archivos grandes podía causar timeout en la petición HTTP.
+
+\textbf{Solución:}
+\begin{itemize}
+    \item Aumento del límite de tiempo de petición en Express a 60 segundos
+    \item Compresión de imágenes en cliente antes de subir (usando \texttt{browser-image-compression})
+    \item Validación de tamaño en frontend antes de enviar
+\end{itemize}
+
+---
+
+\section{Implementación del Dashboard de Autoridades (Sprint 3)}
+
+El Sprint 3 se enfocó en la construcción del panel de control para usuarios de tipo Autoridad, permitiendo la gestión eficiente de todas las denuncias del sistema.
+
+\subsection{Objetivos del Sprint 3}
+
+\begin{itemize}
+    \item Desarrollar un dashboard analítico con métricas en tiempo real
+    \item Implementar sistema de filtros avanzados por estado, categoría y fecha
+    \item Crear interfaz para cambio de estados de denuncias
+    \item Desarrollar sistema de comentarios internos y públicos
+    \item Implementar identificación automática de denuncias urgentes
+\end{itemize}
+
+\subsection{Dashboard de Autoridades - Arquitectura}
+
+\subsubsection{Página DashboardAutoridadPage}
+
+El dashboard se diseñó con un enfoque de \textit{Single Page Application (SPA)} para minimizar recargas y mejorar la experiencia del usuario:
+
+\textbf{Componentes Principales:}
+\begin{enumerate}
+    \item \textbf{MetricCards}: Tarjetas de métricas clave (Total, Pendientes, Asignadas, Resueltas, Urgentes)
+    \item \textbf{FiltrosDenuncias}: Panel de filtros interactivos
+    \item \textbf{TablaDenuncias}: Tabla paginada con todas las denuncias
+    \item \textbf{ModalCambiarEstado}: Modal para cambio de estado con comentario
+\end{enumerate}
+
+\subsubsection{Cálculo de Métricas}
+
+Las métricas se calculan en tiempo real desde los datos de denuncias utilizando agregaciones en el frontend:
+
+\begin{lstlisting}[language=javascript, caption=Cálculo de Métricas en Dashboard]
+const calcularMetricas = (denuncias) => {
+  const ahora = new Date();
+  const hace7Dias = new Date(ahora.getTime() - 7 * 24 * 60 * 60 * 1000);
+  
+  return {
+    total: denuncias.length,
+    pendientes: denuncias.filter(d => 
+      ['Registrada', 'En Revision'].includes(d.estado?.nombre)
+    ).length,
+    asignadas: denuncias.filter(d => 
+      d.estado?.nombre === 'Asignada'
+    ).length,
+    resueltas: denuncias.filter(d => 
+      d.estado?.nombre === 'Resuelta'
+    ).length,
+    urgentes: denuncias.filter(d => {
+      const diasPendiente = (ahora - new Date(d.fecha_registro)) / (1000 * 60 * 60 * 24);
+      return diasPendiente > 7 && ['Registrada', 'En Revision'].includes(d.estado?.nombre);
+    }).length
+  };
+};
+\end{lstlisting}
+
+\textbf{Criterio de Urgencia:} Una denuncia se marca como urgente si:
+\begin{itemize}
+    \item Estado: "Registrada" o "En Revisión"
+    \item Días desde registro \textgreater 7 días
+\end{itemize}
+
+\subsection{Sistema de Comentarios}
+
+\subsubsection{Modelo de Comentario}
+
+El sistema soporta dos tipos de comentarios:
+\begin{enumerate}
+    \item \textbf{Públicos}: Visibles para ciudadanos y autoridades
+    \item \textbf{Internos}: Solo visibles para autoridades (comunicación interna)
+\end{enumerate}
+
+\begin{lstlisting}[language=javascript, caption=Modelo de Comentario]
+const comentarioSchema = new Schema({
+  id_denuncia: { 
+    type: Schema.Types.ObjectId, 
+    ref: 'Denuncia',
+    required: true
+  },
+  id_usuario: { 
+    type: Schema.Types.ObjectId, 
+    ref: 'Usuario',
+    required: true
+  },
+  comentario: { 
+    type: String,
+    required: true,
+    maxlength: 1000
+  },
+  es_interno: { 
+    type: Boolean, 
+    default: false 
+  },
+  fecha_comentario: { 
+    type: Date, 
+    default: Date.now 
+  }
+}, { timestamps: true });
+\end{lstlisting}
+
+\subsubsection{Controlador de Comentarios}
+
+\textbf{Endpoint: Obtener Comentarios}
+
+\textbf{Ruta:} \texttt{GET /api/v1/denuncias/:id/comentarios}
+
+\textbf{Lógica de Filtrado:}
+\begin{itemize}
+    \item Si el usuario es \textbf{Ciudadano}: retornar solo comentarios públicos (\texttt{es\_interno = false})
+    \item Si el usuario es \textbf{Autoridad/Admin}: retornar todos los comentarios
+\end{itemize}
+
+\begin{lstlisting}[language=javascript, caption=Obtener Comentarios con Filtrado por Rol]
+static async obtenerComentarios(req, res) {
+  const { id } = req.params;
+  const { id_tipo_usuario } = req.usuario;
+  
+  const filtro = { id_denuncia: id };
+  
+  // Ciudadanos solo ven comentarios publicos
+  if (id_tipo_usuario === 1) {
+    filtro.es_interno = false;
+  }
+  
+  const comentarios = await Comentario.find(filtro)
+    .populate('id_usuario', 'nombres apellidos tipo_usuario_id')
+    .sort({ fecha_comentario: -1 });
+  
+  res.status(200).json({
+    success: true,
+    data: { comentarios }
+  });
+}
+\end{lstlisting}
+
+\subsection{Sistema de Filtros Avanzados}
+
+El dashboard implementa filtros dinámicos que se aplican en el backend mediante \textit{query strings}:
+
+\textbf{Filtros Disponibles:}
+\begin{itemize}
+    \item \textbf{Por Estado}: \texttt{?id\_estado=ObjectId}
+    \item \textbf{Por Categoría}: \texttt{?id\_categoria=ObjectId}
+    \item \textbf{Por Rango de Fechas}: \texttt{?fecha\_inicio=YYYY-MM-DD\&fecha\_fin=YYYY-MM-DD}
+    \item \textbf{Búsqueda de Texto}: \texttt{?busqueda=termino} (búsqueda en título y descripción)
+    \item \textbf{Paginación}: \texttt{?pagina=1\&limite=10}
+\end{itemize}
+
+\subsubsection{Implementación de Búsqueda de Texto en MongoDB}
+
+\begin{lstlisting}[language=javascript, caption=Filtro de Búsqueda con Regex]
+static async obtenerConFiltros(filtros, paginacion) {
+  const query = {};
+  
+  if (filtros.id_categoria) query.id_categoria = filtros.id_categoria;
+  if (filtros.id_estado) query.id_estado_actual = filtros.id_estado;
+  if (filtros.id_ciudadano) query.id_ciudadano = filtros.id_ciudadano;
+  
+  // Busqueda de texto con regex case-insensitive
+  if (filtros.busqueda) {
+    query.$or = [
+      { titulo: { $regex: filtros.busqueda, $options: 'i' } },
+      { descripcion_detallada: { $regex: filtros.busqueda, $options: 'i' } }
+    ];
+  }
+  
+  // Filtro de rango de fechas
+  if (filtros.fecha_inicio || filtros.fecha_fin) {
+    query.fecha_registro = {};
+    if (filtros.fecha_inicio) query.fecha_registro.$gte = new Date(filtros.fecha_inicio);
+    if (filtros.fecha_fin) query.fecha_registro.$lte = new Date(filtros.fecha_fin);
+  }
+  
+  const skip = (paginacion.pagina - 1) * paginacion.limite;
+  
+  const denuncias = await this.find(query)
+    .populate('id_categoria', 'nombre')
+    .populate('id_estado_actual', 'nombre')
+    .populate('id_ciudadano', 'nombres apellidos')
+    .sort({ [paginacion.orden]: paginacion.direccion === 'DESC' ? -1 : 1 })
+    .skip(skip)
+    .limit(paginacion.limite);
+  
+  const total = await this.countDocuments(query);
+  
+  return {
+    denuncias,
+    paginacion: {
+      total,
+      pagina: paginacion.pagina,
+      limite: paginacion.limite,
+      totalPaginas: Math.ceil(total / paginacion.limite)
+    }
+  };
+}
+\end{lstlisting}
+
+\subsection{Componente de Cambio de Estado}
+
+El componente \texttt{ModalCambiarEstado} permite a las autoridades cambiar el estado de una denuncia con un comentario explicativo:
+
+\textbf{Funcionalidades:}
+\begin{itemize}
+    \item Lista de estados válidos según transición permitida
+    \item Campo de comentario obligatorio (mínimo 10 caracteres)
+    \item Validación de transición antes de enviar
+    \item Actualización optimista de UI
+\end{itemize}
+
+---
+
+\section{Implementación del Módulo de Reportes (Sprint 4)}
+
+El Sprint 4 se dedicó a la implementación del sistema de reportes y estadísticas para la generación de inteligencia operacional.
+
+\subsection{Objetivos del Sprint 4}
+
+\begin{itemize}
+    \item Implementar endpoints de estadísticas con agregaciones de MongoDB
+    \item Desarrollar componentes de visualización con \textbf{Recharts}
+    \item Crear gráficos de barras, líneas y circulares para análisis
+    \item Calcular KPIs clave: tasa de resolución, tiempo promedio de resolución
+    \item Implementar filtros por rango de fechas para reportes personalizados
+\end{itemize}
+
+\subsection{Backend - Controller de Estadísticas}
+
+\subsubsection{Endpoint: Estadísticas Generales}
+
+\textbf{Ruta:} \texttt{GET /api/v1/estadisticas}
+
+\textbf{Comportamiento por Rol:}
+\begin{itemize}
+    \item \textbf{Ciudadano}: Estadísticas solo de sus propias denuncias
+    \item \textbf{Autoridad/Admin}: Estadísticas de todas las denuncias del sistema
+\end{itemize}
+
+\textbf{Datos Retornados:}
+\begin{itemize}
+    \item Total de denuncias
+    \item Distribución por estado (array de \{estado, cantidad\})
+    \item Distribución por categoría (array de \{categoria, cantidad\}, ordenado descendente)
+    \item Tendencia mensual (últimos 6 meses, array de \{mes, cantidad\})
+\end{itemize}
+
+\begin{lstlisting}[language=javascript, caption=Cálculo de Tendencia Mensual]
+// Tendencia mensual (ultimos 6 meses)
+const seiseMesesAtras = new Date();
+seiseMesesAtras.setMonth(seiseMesesAtras.getMonth() - 6);
+
+const mesesMap = {};
+denuncias
+  .filter(d => new Date(d.fecha_registro) >= seiseMesesAtras)
+  .forEach(d => {
+    const fecha = new Date(d.fecha_registro);
+    const mes = `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, '0')}`;
+    mesesMap[mes] = (mesesMap[mes] || 0) + 1;
+  });
+
+const tendenciaMensual = Object.entries(mesesMap)
+  .map(([mes, cantidad]) => ({ mes, cantidad }))
+  .sort((a, b) => a.mes.localeCompare(b.mes));
+\end{lstlisting}
+
+\subsubsection{Endpoint: Resumen para Dashboard}
+
+\textbf{Ruta:} \texttt{GET /api/v1/estadisticas/resumen}
+
+Este endpoint proporciona un resumen rápido optimizado para dashboards con métricas precomputadas:
+
+\begin{lstlisting}[language=javascript, caption=Endpoint de Resumen]
+const resumen = {
+  total: denuncias.length,
+  pendientes: denuncias.filter(d => 
+    ['Registrada', 'En Revision'].includes(d.id_estado_actual?.nombre)
+  ).length,
+  enProceso: denuncias.filter(d => 
+    ['Asignada', 'En Proceso'].includes(d.id_estado_actual?.nombre)
+  ).length,
+  resueltas: denuncias.filter(d => 
+    d.id_estado_actual?.nombre === 'Resuelta'
+  ).length,
+  cerradas: denuncias.filter(d => 
+    d.id_estado_actual?.nombre === 'Cerrada'
+  ).length,
+  ultimaSemana: denuncias.filter(d => 
+    new Date(d.fecha_registro) >= hace7Dias
+  ).length,
+  ultimoMes: denuncias.filter(d => 
+    new Date(d.fecha_registro) >= hace30Dias
+  ).length
+};
+\end{lstlisting}
+
+\subsection{Frontend - Visualización con Recharts}
+
+\subsubsection{Instalación y Configuración}
+
+Se integró \textbf{Recharts v3.4.1}, una librería de gráficos declarativa construida sobre React:
+
+\begin{verbatim}
+npm install recharts
+\end{verbatim}
+
+\subsubsection{Gráfico de Barras - Denuncias por Categoría}
+
+\begin{lstlisting}[language=javascript, caption=Gráfico de Barras con Recharts]
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+
+const GraficoPorCategoria = ({ data }) => {
+  return (
+    <BarChart width={600} height={300} data={data}>
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="categoria" />
+      <YAxis />
+      <Tooltip />
+      <Legend />
+      <Bar dataKey="cantidad" fill="var(--primary)" />
+    </BarChart>
+  );
+};
+
+// Uso:
+// data = [
+//   { categoria: 'Infraestructura', cantidad: 45 },
+//   { categoria: 'Servicios Publicos', cantidad: 32 }
+// ]
+\end{lstlisting}
+
+\subsubsection{Gráfico de Líneas - Tendencia Temporal}
+
+\begin{lstlisting}[language=javascript, caption=Gráfico de Líneas para Tendencia]
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+
+const GraficoTendencia = ({ data }) => {
+  return (
+    <LineChart width={600} height={300} data={data}>
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="mes" />
+      <YAxis />
+      <Tooltip />
+      <Legend />
+      <Line type="monotone" dataKey="cantidad" stroke="var(--primary)" strokeWidth={2} />
+    </LineChart>
+  );
+};
+
+// data = [
+//   { mes: '2024-08', cantidad: 12 },
+//   { mes: '2024-09', cantidad: 19 }
+// ]
+\end{lstlisting}
+
+\subsubsection{Gráfico Circular - Distribución por Estado}
+
+\begin{lstlisting}[language=javascript, caption=Gráfico Circular (Pie Chart)]
+import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+
+const coloresPorEstado = {
+  'Registrada': '#3b82f6',
+  'En Revision': '#f59e0b',
+  'Asignada': '#8b5cf6',
+  'En Proceso': '#ec4899',
+  'Resuelta': '#10b981',
+  'Cerrada': '#6b7280',
+  'Rechazada': '#ef4444'
+};
+
+const GraficoPorEstado = ({ data }) => {
+  return (
+    <PieChart width={400} height={400}>
+      <Pie
+        data={data}
+        dataKey="cantidad"
+        nameKey="estado"
+        cx="50%"
+        cy="50%"
+        outerRadius={120}
+        label
+      >
+        {data.map((entry, index) => (
+          <Cell key={`cell-${index}`} fill={coloresPorEstado[entry.estado]} />
+        ))}
+      </Pie>
+      <Tooltip />
+      <Legend />
+    </PieChart>
+  );
+};
+\end{lstlisting}
+
+\subsection{KPIs Implementados}
+
+\subsubsection{Tasa de Resolución}
+
+\textbf{Fórmula:}
+$$
+\text{Tasa de Resolución} = \frac{\text{Denuncias Resueltas + Cerradas}}{\text{Total de Denuncias}} \times 100
+$$
+
+\subsubsection{Tiempo Promedio de Resolución}
+
+\textbf{Definición:} Tiempo promedio (en días) desde el registro de una denuncia hasta su estado "Resuelta".
+
+\textbf{Cálculo:} Se obtiene del historial de estados:
+\begin{enumerate}
+    \item Filtrar denuncias en estado "Resuelta"
+    \item Para cada una, calcular: \texttt{fecha\_resolucion - fecha\_registro}
+    \item Calcular el promedio de todos los intervalos
+\end{enumerate}
+
+\begin{lstlisting}[language=javascript, caption=Cálculo de Tiempo Promedio de Resolución]
+const calcularTiempoPromedioResolucion = (denuncias, historiales) => {
+  const resueltas = denuncias.filter(d => d.estado?.nombre === 'Resuelta');
+  
+  const tiempos = resueltas.map(d => {
+    const historial = historiales.find(h => h.id_denuncia === d._id && h.estado_nuevo === 'Resuelta');
+    if (!historial) return null;
+    
+    const fechaRegistro = new Date(d.fecha_registro);
+    const fechaResolucion = new Date(historial.fecha_cambio);
+    const diasDiferencia = (fechaResolucion - fechaRegistro) / (1000 * 60 * 60 * 24);
+    
+    return diasDiferencia;
+  }).filter(t => t !== null);
+  
+  if (tiempos.length === 0) return 0;
+  
+  const promedio = tiempos.reduce((sum, t) => sum + t, 0) / tiempos.length;
+  return Math.round(promedio * 10) / 10; // Redondear a 1 decimal
+};
+\end{lstlisting}
+
+\subsection{Página ReportesPage}
+
+La página \texttt{ReportesPage.jsx} integra todos los gráficos y KPIs en un dashboard visual:
+
+\textbf{Estructura de la Página:}
+\begin{enumerate}
+    \item \textbf{Sección de KPIs}: 4 tarjetas con métricas clave
+    \begin{itemize}
+        \item Total de denuncias
+        \item Tasa de resolución
+        \item Tiempo promedio de resolución
+        \item Denuncias urgentes
+    \end{itemize}
+    
+    \item \textbf{Sección de Gráficos}:
+    \begin{itemize}
+        \item Gráfico de barras: Denuncias por categoría
+        \item Gráfico de líneas: Tendencia mensual
+        \item Gráfico circular: Distribución por estado
+    \end{itemize}
+    
+    \item \textbf{Controles de Filtro}:
+    \begin{itemize}
+        \item Selector de rango de fechas
+        \item Botón "Exportar a PDF" (futuro)
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Optimizaciones de Rendimiento}
+
+\subsubsection{Caché de Estadísticas}
+
+Para reducir la carga en la base de datos, se implementó un sistema de caché simple en memoria:
+
+\begin{lstlisting}[language=javascript, caption=Caché Simple para Estadísticas]
+let estadisticasCache = null;
+let cacheTimestamp = null;
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
+
+export const obtenerEstadisticasGenerales = async (req, res) => {
+  const ahora = Date.now();
+  
+  // Verificar cache valido
+  if (estadisticasCache && cacheTimestamp && (ahora - cacheTimestamp < CACHE_DURATION)) {
+    return res.json({
+      success: true,
+      data: estadisticasCache,
+      cached: true
+    });
+  }
+  
+  // Calcular estadisticas
+  const estadisticas = await calcularEstadisticas();
+  
+  // Actualizar cache
+  estadisticasCache = estadisticas;
+  cacheTimestamp = ahora;
+  
+  res.json({
+    success: true,
+    data: estadisticas,
+    cached: false
+  });
+};
+\end{lstlisting}
+
+\subsubsection{Índices de MongoDB para Agregaciones}
+
+Se crearon índices específicos para optimizar las consultas de estadísticas:
+
+\begin{lstlisting}[language=javascript, caption=Índices para Rendimiento]
+denunciaSchema.index({ fecha_registro: -1 }); // Para filtros temporales
+denunciaSchema.index({ id_estado_actual: 1, fecha_registro: -1 }); // Para estadísticas por estado
+denunciaSchema.index({ id_categoria: 1 }); // Para agrupación por categoría
+\end{lstlisting}
+
+\subsection{Métricas del Sprint 4}
+
+\begin{table}[H]
+    \centering
+    \caption{Resultados del Sprint 4}
+    \begin{tabular}{|l|c|c|}
+        \toprule
+        \textbf{Métrica} & \textbf{Objetivo} & \textbf{Alcanzado} \\
+        \midrule
+        Endpoints de Estadísticas & 3 & 3 \\
+        Componentes de Gráficos & 3 & 3 \\
+        KPIs Calculados & 4 & 4 \\
+        Tiempo de Carga Dashboard (\textless) & 2s & 1.2s \\
+        Reducción de Queries con Caché & 60\% & 73\% \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:metricas_sprint4}
+\end{table}
+
+\chapter{Seguridad}
+\section{Análisis de Vulnerabilidades (OWASP TOP 10)}
+El siguiente análisis aplica el OWASP Top 10 2021 al contexto crítico de una Plataforma de Denuncias, priorizando la confidencialidad, integridad y no repudio de la información sensible manejada. Este enfoque es fundamental para proteger la identidad del denunciante y la validez de la evidencia.
+
+\subsection{Vulnerabilidades Críticas y Controles Específicos}
+\textbf{A01: Pérdida de Control de Acceso}
+\begin{itemize}
+    \item \textbf{Riesgo:} Filtración de denuncias entre usuarios, acceso administrativo no autorizado.
+    \item \textbf{Mitigación:} Implementar \textbf{control de acceso basado en roles (RBAC)} con granularidad a nivel de recurso y \textbf{validación de propiedad} en cada endpoint.
+\end{itemize}
+
+\textbf{A02: Fallos Criptográficos}
+\begin{itemize}
+    \item \textbf{Riesgo:} Exposición de datos de denuncias o pruebas adjuntas.
+    \item \textbf{Mitigación:} Cifrado en tránsito (TLS 1.3), cifrado en reposo (AES-256), y gestión de claves mediante servicios como \textbf{AWS KMS} o \textbf{Hashicorp Vault}.
+\end{itemize}
+
+\textbf{A03: Inyección}
+\begin{itemize}
+    \item \textbf{Riesgo:} Inyección SQL/NoSQL en campos de texto de denuncias o metadatos.
+    \item \textbf{Mitigación:} Uso exclusivo de \textbf{consultas parametrizadas} u ORMs, y validación/saneamiento estricto de todos los inputs.
+\end{itemize}
+
+\textbf{A04: Diseño Inseguro}
+\begin{itemize}
+    \item \textbf{Riesgo:} Procesos que permiten la desanonimización del denunciante.
+    \item \textbf{Mitigación:} Aplicar \textit{Privacy by Design} desde la fase de concepción, realizando \textbf{threat modeling} específico para privacidad y anonimato.
+\end{itemize}
+
+\textbf{A05: Configuración Incorrecta}
+\begin{itemize}
+    \item \textbf{Riesgo/Hallazgo:} Ausencia de cabeceras de seguridad críticas (CSP, HSTS) en la plataforma analizada (\url{https://plataformadenuncias.myvnc.com/register}).
+    \item \textbf{Mitigación:} \textbf{Automatizar configuraciones} mediante IaC, deshabilitar modos debug en producción y revisar cabeceras de seguridad.
+\end{itemize}
+
+\textbf{A06: Componentes Vulnerables y Desactualizados}
+\begin{itemize}
+    \item \textbf{Riesgo/Hallazgo:} Uso de \textbf{Bootstrap 3.1.1 (2014)} y \textbf{jQuery 1.8.3 (2012)} con vulnerabilidades de XSS conocidas.
+    \item \textbf{Mitigación:} Establecer un programa de gestión con \textbf{escaneo SCA continuo} (Dependabot, Snyk) y política de actualización obligatoria para componentes críticos.
+\end{itemize}
+
+\textbf{A07: Fallos de Identificación y Autenticación}
+\begin{itemize}
+    \item \textbf{Riesgo/Hallazgo:} Formulario de registro sin protección visible contra automatización (\textbf{CAPTCHA, rate limiting}).
+    \item \textbf{Mitigación:} Implementar \textbf{MFA obligatorio} para administradores, límites de intentos fallidos y CAPTCHA en endpoints públicos.
+\end{itemize}
+
+\textbf{A08: Fallos de Integridad}
+\begin{itemize}
+    \item \textbf{Riesgo:} Subida de archivos de evidencia manipulados o dependencias comprometidas.
+    \item \textbf{Mitigación:} Validar y escanear archivos subidos, usar \textbf{Subresource Integrity (SRI)} para recursos externos.
+\end{itemize}
+
+\textbf{A09: Fallos de Logging y Monitoreo}
+\begin{itemize}
+    \item \textbf{Riesgo:} Intrusiones o exfiltraciones de datos no detectadas.
+    \item \textbf{Mitigación:} Centralizar logs en un \textbf{SIEM}, configurar alertas para actividades anómalas (descargas masivas, accesos inusuales).
+\end{itemize}
+
+\textbf{A10: Server-Side Request Forgery (SSRF)}
+\begin{itemize}
+    \item \textbf{Riesgo:} El servidor es usado como proxy para acceder a recursos internos.
+    \item \textbf{Mitigación:} Implementar \textbf{listas blancas (whitelist)} de dominios permitidos y bloquear solicitudes a direcciones de red internas (RFC 1918).
+\end{itemize}
+
+\section{Estrategias de Hardening del Servidor}
+El hardening debe seguir el principio de \textit{defensa en profundidad}, aplicando configuraciones seguras en todas las capas del sistema.
+
+\subsection{Mínimos Generales y Configuración Base}
+\begin{itemize}
+    \item \textbf{Actualizaciones:} Automatizar la aplicación de parches de seguridad del SO y paquetes.
+    \item \textbf{Minimización:} Instalar solo los servicios estrictamente necesarios.
+    \item \textbf{Principio de Mínimo Privilegio:} Ejecutar procesos y servicios con usuarios no privilegiados (\texttt{www-data}, \texttt{nobody}).
+\end{itemize}
+
+\subsection{Seguridad de Red y Perímetro}
+\begin{itemize}
+    \item \textbf{Firewall:} Configurar reglas restrictivas. Ejemplo con \texttt{iptables}:
+    \begin{verbatim}
+    iptables -P INPUT DROP
+    iptables -A INPUT -p tcp --dport 443 -j ACCEPT  # HTTPS
+    iptables -A INPUT -p tcp --dport 22 -j ACCEPT --source 192.168.1.0/24 # SSH restringido
+    \end{verbatim}
+    \item \textbf{WAF:} Desplegar un Web Application Firewall (ModSecurity con OWASP CRS) frente a la aplicación.
+    \item \textbf{Segmentación:} Aislar la base de datos en una subred privada, accesible solo desde la capa de aplicación.
+\end{itemize}
+
+\subsection{Acceso y Autenticación}
+\begin{itemize}
+    \item \textbf{SSH:} Deshabilitar acceso root y autenticación por contraseña.
+    \begin{verbatim}
+    # /etc/ssh/sshd_config
+    PermitRootLogin no
+    PasswordAuthentication no
+    \end{verbatim}
+    \item \textbf{Secrets Management:} Usar \textbf{Vault} o soluciones cloud (AWS Secrets Manager) para gestionar credenciales, nunca almacenarlas en código.
+\end{itemize}
+
+\subsection{TLS y Cifrado}
+\begin{itemize}
+    \item \textbf{Configuración Fuerte en Nginx:}
+    \begin{verbatim}
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers ECDHE-ECDSA-AES256-GCM-SHA384:...;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    \end{verbatim}
+\end{itemize}
+
+\subsection{Integridad y Monitorización Proactiva}
+\begin{itemize}
+    \item \textbf{FIM:} Implementar File Integrity Monitoring (ej. \textbf{AIDE}) para alertar sobre cambios en archivos críticos del sistema.
+    \item \textbf{IDS:} Usar un sistema de detección de intrusiones basado en host como \textbf{Wazuh}.
+    \item \textbf{Auditorías Periódicas:} Ejecutar scripts de verificación de hardening y realizar pruebas de penetración anuales.
+\end{itemize}
+
+\section{Implementación de Políticas CORS y CSP}
+Estas políticas son la primera línea de defensa contra ataques como XSS y CSRF, cruciales en una plataforma web.
+
+\subsection{Política CORS (Cross-Origin Resource Sharing)}
+La política debe ser lo más restrictiva posible, usando una \textbf{lista blanca (whitelist)} de orígenes confiables.
+
+\begin{verbatim}
+// Ejemplo en Node.js/Express
+const cors = require('cors');
+const whitelist = ['https://app.midominio.com', 'https://admin.midominio.com'];
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Bloqueado por CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+};
+app.use(cors(corsOptions));
+\end{verbatim}
+
+\subsection{Política CSP (Content Security Policy)}
+CSP debe adoptar un enfoque de "\textit{default-deny}" (negar por defecto). Se recomienda el uso de \texttt{nonce} para scripts inline.
+
+\begin{verbatim}
+<!-- Ejemplo de Cabecera CSP Estricta en Nginx -->
+add_header Content-Security-Policy "
+  default-src 'none';
+  script-src 'self' 'nonce-{RANDOM}' https://trusted.cdn.com;
+  style-src 'self' 'unsafe-inline';
+  img-src 'self' data: https://storage.midominio.com;
+  font-src 'self';
+  connect-src 'self' https://api.midominio.com;
+  frame-ancestors 'none';
+  base-uri 'self';
+  form-action 'self';
+  report-uri /api/csp-report;
+" always;
+\end{verbatim}
+
+\begin{verbatim}
+// Generación y uso de nonce en Express (para scripts inline)
+app.use((req, res, next) => {
+  res.locals.cspNonce = crypto.randomBytes(16).toString('base64');
+  next();
+});
+// En la plantilla: <script nonce="<%= cspNonce %>"> ... </script>
+\end{verbatim}
+
+\subsection{Checklist de Despliegue de Seguridad}
+\begin{enumerate}
+    \item \textbf{Cifrado:} Forzar HTTPS y HSTS en todos los dominios.
+    \item \textbf{Políticas:} Configurar CSP y CORS de forma restrictiva y probarlas en entorno de staging.
+    \item \textbf{Acceso:} Verificar que los controles de acceso RBAC funcionen correctamente.
+    \item \textbf{Secretos:} Asegurar que ninguna credencial esté embebida en el código.
+    \item \textbf{Monitorización:} Activar el logging centralizado y configurar alertas básicas.
+\end{enumerate}
+
+\chapter{Pruebas del Sistema}
+
+El plan de pruebas del sistema se ha diseñado siguiendo un enfoque integral que abarca múltiples niveles de validación, desde las pruebas unitarias de componentes individuales hasta las pruebas de aceptación del usuario final. Este capítulo documenta las estrategias, metodologías, herramientas y resultados de las pruebas realizadas durante el Sprint 1 y planificadas para los sprints posteriores.
+
+La calidad del software es un pilar fundamental en una plataforma de denuncias ciudadanas, donde la confiabilidad, seguridad y rendimiento son requisitos no negociables. Cada nivel de prueba contribuye a garantizar que el sistema cumpla con los requisitos funcionales y no funcionales definidos en la fase de análisis.
+
+\section{Estrategia General de Pruebas}
+
+\subsection{Pirámide de Pruebas y Distribución de Esfuerzo}
+
+La estrategia de pruebas sigue el modelo de la \textbf{Pirámide de Pruebas}, priorizando la automatización en los niveles inferiores para maximizar la cobertura y minimizar el costo de mantenimiento:
+
+\begin{itemize}
+    \item \textbf{Base (70\%):} Pruebas Unitarias automatizadas que validan la lógica de negocio en aislamiento.
+    \item \textbf{Medio (20\%):} Pruebas de Integración que verifican la interacción entre componentes y servicios externos.
+    \item \textbf{Superior (10\%):} Pruebas de Sistema y Aceptación del Usuario (UAT) que validan el comportamiento completo de extremo a extremo.
+\end{itemize}
+
+\subsection{Niveles de Prueba y Alcance}
+
+\begin{longtable}{|p{3.5cm}|p{4cm}|p{6.5cm}|}
+    \caption{Niveles de Prueba y Cobertura por Sprint} \\
+    \toprule
+    \textbf{Nivel de Prueba} & \textbf{Objetivo Principal} & \textbf{Alcance por Sprint} \\
+    \midrule
+    \endhead
+    \bottomrule
+    \endlastfoot
+    \textbf{Pruebas Unitarias} & Validar funciones y métodos individuales & \textbf{Sprint 1:} Autenticación, JWT, Bcrypt. \textbf{Sprint 2:} Lógica de denuncias, validaciones. \\
+    \hline
+    \textbf{Pruebas de Integración} & Verificar la interacción entre módulos & \textbf{Sprint 1:} API de Auth + Base de Datos. \textbf{Sprint 2:} Flujo completo de creación de denuncia. \\
+    \hline
+    \textbf{Pruebas de Sistema} & Validar el comportamiento end-to-end & \textbf{Sprint 3:} Flujos completos de usuario (registro → denuncia → seguimiento). \\
+    \hline
+    \textbf{Pruebas de Rendimiento} & Evaluar escalabilidad y tiempos de respuesta & \textbf{Sprint 4:} Carga de 1000 usuarios concurrentes, stress testing en API. \\
+    \hline
+    \textbf{Pruebas de Seguridad} & Identificar vulnerabilidades & \textbf{Continuo:} Análisis estático (SonarQube), dinámico (OWASP ZAP). \\
+    \hline
+    \textbf{UAT} & Confirmar que cumple expectativas del usuario & \textbf{Sprint 5:} Validación con usuarios piloto (ciudadanos y autoridades). \\
+    \hline
+\end{longtable}
+
+\subsection{Criterios de Aceptación y Definición de Terminado (DoD)}
+
+Para que una funcionalidad se considere \textbf{terminada (Done)}, debe cumplir:
+\begin{enumerate}
+    \item \textbf{Cobertura de Código:} Mínimo 80\% de cobertura en pruebas unitarias para código crítico (autenticación, lógica de negocio).
+    \item \textbf{Pruebas de Integración Exitosas:} Todos los flujos críticos del usuario deben pasar las pruebas de integración automatizadas.
+    \item \textbf{Sin Defectos Críticos:} Cero defectos de severidad Alta o Crítica pendientes.
+    \item \textbf{Revisión de Código:} Aprobación de al menos dos miembros del equipo mediante Pull Request.
+    \item \textbf{Documentación:} Actualización de la documentación técnica y casos de prueba correspondientes.
+\end{enumerate}
+
+\section{Plan de Pruebas Unitarias}
+
+Las pruebas unitarias constituyen la base de la estrategia de calidad, garantizando que cada componente individual funcione correctamente de manera aislada.
+
+\subsection{Herramientas y Framework}
+
+\begin{itemize}
+    \item \textbf{Backend:} \textbf{Jest} (framework de pruebas de JavaScript) con \textbf{Supertest} para pruebas de endpoints HTTP.
+    \item \textbf{Frontend:} \textbf{Jest} con \textbf{React Testing Library} para pruebas de componentes.
+    \item \textbf{Cobertura:} \textbf{Istanbul/NYC} para generar reportes de cobertura de código.
+\end{itemize}
+
+\subsection{Estructura de Pruebas Unitarias en Backend}
+
+Cada módulo del backend tiene su suite de pruebas correspondiente, ubicada en la carpeta \texttt{\_\_tests\_\_/}:
+
+\begin{lstlisting}[language=bash, caption=Estructura de Pruebas Backend]
+Servidor/
+├── src/
+│   ├── controllers/
+│   │   └── authController.js
+│   ├── services/
+│   │   └── emailService.js
+│   └── middlewares/
+│       └── authMiddleware.js
+└── __tests__/
+    ├── unit/
+    │   ├── authController.test.js
+    │   ├── emailService.test.js
+    │   └── authMiddleware.test.js
+    └── integration/
+        └── authRoutes.test.js
+\end{lstlisting}
+
+\subsection{Casos de Prueba Unitaria Implementados (Sprint 1)}
+
+\subsubsection{Módulo de Autenticación (authController.js)}
+
+\begin{lstlisting}[language=javascript, caption=Pruebas Unitarias: Registro de Usuario]
+// __tests__/unit/authController.test.js
+const { registerCiudadano } = require('../../src/controllers/authController');
+const Usuario = require('../../src/models/Usuario');
+const bcrypt = require('bcrypt');
+
+// Mock de la base de datos
+jest.mock('../../src/models/Usuario');
+
+describe('AuthController - registerCiudadano', () => {
+  
+  test('Debe registrar un ciudadano con datos validos', async () => {
+    const mockReq = {
+      body: {
+        nombres: 'Juan Perez',
+        email: 'juan@test.com',
+        password: 'Password123!',
+        documento_identidad: '12345678'
+      }
+    };
+    const mockRes = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn()
+    };
+
+    Usuario.findOne.mockResolvedValue(null); // No existe usuario
+    Usuario.create.mockResolvedValue({ id: 1, email: 'juan@test.com' });
+
+    await registerCiudadano(mockReq, mockRes);
+
+    expect(mockRes.status).toHaveBeenCalledWith(201);
+    expect(mockRes.json).toHaveBeenCalledWith(
+      expect.objectContaining({ message: 'Usuario registrado exitosamente' })
+    );
+  });
+
+  test('Debe rechazar registro con email duplicado', async () => {
+    const mockReq = {
+      body: { email: 'existente@test.com', password: 'Pass123!' }
+    };
+    const mockRes = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn()
+    };
+
+    Usuario.findOne.mockResolvedValue({ id: 1 }); // Usuario ya existe
+
+    await registerCiudadano(mockReq, mockRes);
+
+    expect(mockRes.status).toHaveBeenCalledWith(400);
+    expect(mockRes.json).toHaveBeenCalledWith(
+      expect.objectContaining({ error: expect.stringContaining('ya registrado') })
+    );
+  });
+
+  test('Debe cifrar la contrasena correctamente', async () => {
+    const mockReq = {
+      body: {
+        nombres: 'Test User',
+        email: 'test@test.com',
+        password: 'PlainPassword123',
+        documento_identidad: '87654321'
+      }
+    };
+    const mockRes = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn()
+    };
+
+    Usuario.findOne.mockResolvedValue(null);
+    const createSpy = jest.spyOn(Usuario, 'create').mockResolvedValue({});
+
+    await registerCiudadano(mockReq, mockRes);
+
+    const hashedPassword = createSpy.mock.calls[0][0].password_hash;
+    expect(bcrypt.compareSync('PlainPassword123', hashedPassword)).toBe(true);
+  });
+});
+\end{lstlisting}
+
+\subsubsection{Módulo de JWT (authMiddleware.js)}
+
+\begin{lstlisting}[language=javascript, caption=Pruebas Unitarias: Validación de Token JWT]
+// __tests__/unit/authMiddleware.test.js
+const { verifyToken } = require('../../src/middlewares/authMiddleware');
+const jwt = require('jsonwebtoken');
+
+jest.mock('jsonwebtoken');
+
+describe('AuthMiddleware - verifyToken', () => {
+  
+  test('Debe permitir acceso con token valido', () => {
+    const mockReq = {
+      headers: { authorization: 'Bearer valid-token' }
+    };
+    const mockRes = {};
+    const mockNext = jest.fn();
+
+    jwt.verify.mockReturnValue({ userId: 1, rol: 'ciudadano' });
+
+    verifyToken(mockReq, mockRes, mockNext);
+
+    expect(mockReq.userId).toBe(1);
+    expect(mockReq.rol).toBe('ciudadano');
+    expect(mockNext).toHaveBeenCalled();
+  });
+
+  test('Debe rechazar solicitud sin token', () => {
+    const mockReq = { headers: {} };
+    const mockRes = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn()
+    };
+    const mockNext = jest.fn();
+
+    verifyToken(mockReq, mockRes, mockNext);
+
+    expect(mockRes.status).toHaveBeenCalledWith(401);
+    expect(mockNext).not.toHaveBeenCalled();
+  });
+
+  test('Debe rechazar token invalido o expirado', () => {
+    const mockReq = {
+      headers: { authorization: 'Bearer invalid-token' }
+    };
+    const mockRes = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn()
+    };
+    const mockNext = jest.fn();
+
+    jwt.verify.mockImplementation(() => {
+      throw new Error('Token inválido');
+    });
+
+    verifyToken(mockReq, mockRes, mockNext);
+
+    expect(mockRes.status).toHaveBeenCalledWith(403);
+    expect(mockNext).not.toHaveBeenCalled();
+  });
+});
+\end{lstlisting}
+
+\subsection{Ejecución y Reporte de Cobertura}
+
+Las pruebas unitarias se ejecutan mediante el comando:
+
+\begin{lstlisting}[language=bash, caption=Comandos de Ejecución]
+# Ejecutar todas las pruebas unitarias
+npm run test:unit
+
+# Ejecutar con reporte de cobertura
+npm run test:coverage
+
+# Ejecutar en modo watch (desarrollo)
+npm run test:watch
+\end{lstlisting}
+
+\textbf{Resultado de Cobertura (Sprint 1):}
+\begin{verbatim}
+----------------------|---------|----------|---------|---------|
+File                  | % Stmts | % Branch | % Funcs | % Lines |
+----------------------|---------|----------|---------|---------|
+authController.js     |   92.5  |   88.2   |  100    |   91.8  |
+authMiddleware.js     |   95.0  |   90.0   |  100    |   94.5  |
+emailService.js       |   85.7  |   80.0   |  100    |   84.2  |
+----------------------|---------|----------|---------|---------|
+\end{verbatim}
+
+\section{Plan de Pruebas de Integración}
+
+Las pruebas de integración validan que los diferentes módulos del sistema funcionen correctamente cuando se combinan, especialmente la interacción entre la API, la base de datos y servicios externos.
+
+\subsection{Estrategia de Integración}
+
+Se utiliza un enfoque de \textbf{integración incremental}, donde se prueban las integraciones críticas primero:
+\begin{enumerate}
+    \item \textbf{API + Base de Datos:} Validar que los endpoints persistan y recuperen datos correctamente.
+    \item \textbf{API + Servicios Externos:} Verificar la integración con el servicio de email (Nodemailer).
+    \item \textbf{Frontend + Backend:} Asegurar que los componentes de React consuman correctamente la API.
+\end{enumerate}
+
+\subsection{Configuración del Entorno de Pruebas}
+
+\begin{itemize}
+    \item \textbf{Base de Datos de Pruebas:} Se utiliza una instancia separada de MongoDB específicamente para pruebas (\\texttt{denuncias\_test}), que se reinicia antes de cada suite de pruebas para garantizar aislamiento.
+    \item \textbf{Mocks y Stubs:} Los servicios externos (email) se simulan mediante \textbf{mocks} para evitar dependencias en recursos externos durante las pruebas.
+\end{itemize}
+
+\begin{lstlisting}[language=javascript, caption=Configuración de Base de Datos de Pruebas]
+// config/database.test.js
+const mongoose = require('mongoose');
+
+const connectTestDB = async () => {
+  const DB_URI = process.env.TEST_MONGODB_URI || 'mongodb://localhost:27017/denuncias_test';
+  
+  await mongoose.connect(DB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
+};
+
+// Hook para limpiar la base de datos antes de cada suite
+beforeEach(async () => {
+  const collections = mongoose.connection.collections;
+  for (const key in collections) {
+    await collections[key].deleteMany({});
+  }
+});
+
+afterAll(async () => {
+  await mongoose.connection.close();
+});
+
+module.exports = { connectTestDB };
+\end{lstlisting}
+
+\subsection{Casos de Prueba de Integración (Sprint 1)}
+
+\subsubsection{Flujo Completo de Registro y Login}
+
+\begin{lstlisting}[language=javascript, caption=Pruebas de Integración: Registro y Login]
+// __tests__/integration/authFlow.test.js
+const request = require('supertest');
+const app = require('../../src/app');
+const { connectTestDB } = require('../../src/config/database.test');
+const mongoose = require('mongoose');
+
+describe('Flujo de Autenticacion Completo', () => {
+  
+  beforeAll(async () => {
+    await connectTestDB();
+  });
+
+  afterAll(async () => {
+    await mongoose.connection.close();
+  });
+
+  test('Registro → Login → Acceso a Ruta Protegida', async () => {
+    // PASO 1: Registro de usuario
+    const registroRes = await request(app)
+      .post('/api/v1/auth/register/ciudadano')
+      .send({
+        nombres: 'Juan Perez',
+        email: 'juan.integration@test.com',
+        password: 'Password123!',
+        documento_identidad: '12345678',
+        telefono: '987654321'
+      });
+
+    expect(registroRes.statusCode).toBe(201);
+    expect(registroRes.body).toHaveProperty('message', 'Usuario registrado exitosamente');
+
+    // PASO 2: Login con credenciales
+    const loginRes = await request(app)
+      .post('/api/v1/auth/login')
+      .send({
+        email: 'juan.integration@test.com',
+        password: 'Password123!'
+      });
+
+    expect(loginRes.statusCode).toBe(200);
+    expect(loginRes.body).toHaveProperty('token');
+    const token = loginRes.body.token;
+
+    // PASO 3: Acceder a ruta protegida con token
+    const perfilRes = await request(app)
+      .get('/api/v1/usuario/perfil')
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(perfilRes.statusCode).toBe(200);
+    expect(perfilRes.body.email).toBe('juan.integration@test.com');
+  });
+
+  test('Debe rechazar login con credenciales incorrectas', async () => {
+    const loginRes = await request(app)
+      .post('/api/v1/auth/login')
+      .send({
+        email: 'noexiste@test.com',
+        password: 'WrongPassword'
+      });
+
+    expect(loginRes.statusCode).toBe(401);
+    expect(loginRes.body.error).toContain('Credenciales inválidas');
+  });
+});
+\end{lstlisting}
+
+\subsubsection{Integración con Servicio de Email (Mock)}
+
+\begin{lstlisting}[language=javascript, caption=Pruebas de Integración: Recuperación de Contraseña]
+// __tests__/integration/passwordRecovery.test.js
+const request = require('supertest');
+const app = require('../../src/app');
+const emailService = require('../../src/services/emailService');
+
+jest.mock('../../src/services/emailService');
+
+describe('Flujo de Recuperacion de Contrasena', () => {
+
+  beforeEach(() => {
+    emailService.sendPasswordResetEmail.mockClear();
+  });
+
+  test('Debe enviar email de recuperacion para usuario existente', async () => {
+    // Registrar usuario primero
+    await request(app)
+      .post('/api/v1/auth/register/ciudadano')
+      .send({
+        nombres: 'Usuario Test',
+        email: 'recovery@test.com',
+        password: 'Pass123!',
+        documento_identidad: '11111111'
+      });
+
+    // Solicitar recuperación
+    const res = await request(app)
+      .post('/api/v1/auth/forgot-password')
+      .send({ email: 'recovery@test.com' });
+
+    expect(res.statusCode).toBe(200);
+    expect(emailService.sendPasswordResetEmail).toHaveBeenCalledWith(
+      'recovery@test.com',
+      expect.any(String) // Token de recuperación
+    );
+  });
+
+  test('No debe revelar si el email no existe (seguridad)', async () => {
+    const res = await request(app)
+      .post('/api/v1/auth/forgot-password')
+      .send({ email: 'noexiste@test.com' });
+
+    // Por seguridad, siempre retorna 200 sin revelar si el email existe
+    expect(res.statusCode).toBe(200);
+    expect(emailService.sendPasswordResetEmail).not.toHaveBeenCalled();
+  });
+});
+\end{lstlisting}
+
+\subsection{Matriz de Pruebas de Integración}
+
+\begin{longtable}{|p{4cm}|p{5cm}|p{5cm}|}
+    \caption{Casos de Prueba de Integración por Sprint} \\
+    \toprule
+    \textbf{Módulo} & \textbf{Caso de Prueba} & \textbf{Criterio de Éxito} \\
+    \midrule
+    \endhead
+    \bottomrule
+    \endlastfoot
+    \textbf{Autenticación (Sprint 1)} & Registro → Login → Acceso protegido & Token válido permite acceso, datos correctos en perfil \\
+    \hline
+    \textbf{Autenticación (Sprint 1)} & Recuperación de contraseña completa & Email enviado, token válido, password actualizado \\
+    \hline
+    \textbf{Denuncias (Sprint 2)} & Creación de denuncia con foto & Denuncia guardada en DB, foto almacenada, coordenadas correctas \\
+    \hline
+    \textbf{Denuncias (Sprint 2)} & Actualización de estado por Autoridad & Estado cambiado, historial registrado, notificación enviada \\
+    \hline
+    \textbf{Dashboard (Sprint 3)} & Filtrado y exportación de denuncias & Filtros aplicados correctamente, archivo CSV descargado \\
+    \hline
+\end{longtable}
+
+\section{Plan de Pruebas de Sistema y Rendimiento}
+
+Las pruebas de sistema validan el comportamiento completo de extremo a extremo desde la perspectiva del usuario, mientras que las pruebas de rendimiento evalúan la capacidad del sistema bajo carga.
+
+\subsection{Pruebas de Sistema End-to-End (E2E)}
+
+\subsubsection{Herramientas}
+\begin{itemize}
+    \item \textbf{Cypress} o \textbf{Playwright}: Para automatizar interacciones del navegador y validar flujos completos de usuario.
+\end{itemize}
+
+\subsubsection{Escenarios de Prueba E2E Principales}
+
+\begin{enumerate}
+    \item \textbf{Flujo del Ciudadano:}
+    \begin{itemize}
+        \item Registro → Verificación de email → Login → Crear denuncia con foto y ubicación → Ver estado de denuncia → Recibir notificación de cambio de estado
+    \end{itemize}
+    
+    \item \textbf{Flujo de la Autoridad:}
+    \begin{itemize}
+        \item Login → Ver dashboard de denuncias → Filtrar por categoría y ubicación → Cambiar estado de denuncia → Añadir comentario → Exportar reporte
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Pruebas de Rendimiento con JMeter}
+
+\subsubsection{Objetivos de Rendimiento (Requisitos No Funcionales)}
+
+\begin{itemize}
+    \item \textbf{Tiempo de Respuesta:} Menos de 2 segundos para el 95\% de las solicitudes (P95).
+    \item \textbf{Throughput:} Capacidad de procesar al menos 100 solicitudes por segundo (RPS).
+    \item \textbf{Concurrencia:} Soportar 1000 usuarios concurrentes sin degradación significativa.
+\end{itemize}
+
+\subsubsection{Configuración de Escenarios de Carga}
+
+\begin{lstlisting}[language=xml, caption=Configuración JMeter: Test de Carga]
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2">
+  <hashTree>
+    <TestPlan>
+      <stringProp name="TestPlan.comments">
+        Plan de carga: 1000 usuarios durante 10 minutos
+      </stringProp>
+    </TestPlan>
+    
+    <ThreadGroup>
+      <stringProp name="ThreadGroup.num_threads">1000</stringProp>
+      <stringProp name="ThreadGroup.ramp_time">300</stringProp> <!-- 5 min ramp-up -->
+      <stringProp name="ThreadGroup.duration">600</stringProp>  <!-- 10 min total -->
+      
+      <HTTPSamplerProxy>
+        <stringProp name="HTTPSampler.domain">api.denuncias.com</stringProp>
+        <stringProp name="HTTPSampler.port">443</stringProp>
+        <stringProp name="HTTPSampler.protocol">https</stringProp>
+        <stringProp name="HTTPSampler.path">/api/v1/denuncias</stringProp>
+        <stringProp name="HTTPSampler.method">GET</stringProp>
+      </HTTPSamplerProxy>
+    </ThreadGroup>
+  </hashTree>
+</jmeterTestPlan>
+\end{lstlisting}
+
+\subsubsection{Tipos de Pruebas de Rendimiento}
+
+\begin{longtable}{|p{3cm}|p{5cm}|p{6cm}|}
+    \caption{Plan de Pruebas de Rendimiento} \\
+    \toprule
+    \textbf{Tipo de Prueba} & \textbf{Descripción} & \textbf{Métricas Objetivo} \\
+    \midrule
+    \endhead
+    \bottomrule
+    \endlastfoot
+    \textbf{Load Testing} & Comportamiento bajo carga esperada (500 usuarios) & P95 < 2s, 0\% errores \\
+    \hline
+    \textbf{Stress Testing} & Identificar punto de quiebre (1500+ usuarios) & Identificar límite antes de fallas \\
+    \hline
+    \textbf{Spike Testing} & Picos súbitos de tráfico (500 → 2000 en 1 min) & Sistema se recupera sin pérdida de datos \\
+    \hline
+    \textbf{Endurance Testing} & Carga sostenida durante 24 horas & Sin memory leaks, rendimiento estable \\
+    \hline
+\end{longtable}
+
+\subsubsection{Análisis de Resultados y Optimización}
+
+\textbf{Resultados Esperados (Sprint 4):}
+\begin{itemize}
+    \item \textbf{Cuellos de Botella Identificados:}
+    \begin{itemize}
+        \item Consultas SQL no optimizadas (falta de índices en columnas de búsqueda)
+        \item Ausencia de caché para consultas frecuentes (categorías, estados)
+    \end{itemize}
+    
+    \item \textbf{Acciones de Optimización:}
+    \begin{itemize}
+        \item Implementar índices compuestos en \texttt{Denuncia(estado\_id, fecha\_creacion)}
+        \item Configurar \textbf{Redis} como caché de sesiones y consultas frecuentes
+        \item Optimizar consultas N+1 mediante \texttt{JOIN} o \textit{eager loading}
+    \end{itemize}
+\end{itemize}
+
+\section{Plan de Pruebas de Aceptación por el Usuario (UAT)}
+
+Las pruebas de aceptación del usuario validan que el sistema cumple con las expectativas y necesidades reales de los \textit{stakeholders} antes del lanzamiento en producción.
+
+\subsection{Metodología y Participantes}
+
+\begin{itemize}
+    \item \textbf{Participantes:} 20 usuarios piloto (15 ciudadanos, 5 autoridades municipales)
+    \item \textbf{Duración:} 2 semanas (Sprint 5)
+    \item \textbf{Entorno:} Ambiente de staging idéntico a producción
+    \item \textbf{Metodología:} \textbf{Pruebas Exploratorias Guiadas} con escenarios predefinidos y retroalimentación libre
+\end{itemize}
+
+\subsection{Escenarios de Aceptación del Usuario}
+
+\begin{longtable}{|p{1.5cm}|p{5cm}|p{7cm}|}
+    \caption{Escenarios UAT por Rol de Usuario} \\
+    \toprule
+    \textbf{ID} & \textbf{Escenario} & \textbf{Criterios de Aceptación} \\
+    \midrule
+    \endhead
+    \bottomrule
+    \endlastfoot
+    \textbf{UAT-01} & Ciudadano crea su primera denuncia de bache en vía pública & Denuncia creada en < 3 minutos, ubicación precisa, foto clara \\
+    \hline
+    \textbf{UAT-02} & Ciudadano consulta el estado de su denuncia 1 semana después & Puede ver el estado actualizado y comentarios de la autoridad \\
+    \hline
+    \textbf{UAT-03} & Autoridad revisa denuncias de su jurisdicción & Filtros funcionan correctamente, puede exportar lista \\
+    \hline
+    \textbf{UAT-04} & Autoridad cambia estado de denuncia a "En Proceso" & Cambio reflejado inmediatamente, ciudadano recibe notificación \\
+    \hline
+    \textbf{UAT-05} & Usuario olvida su contraseña y debe recuperarla & Recibe email en < 2 minutos, puede restablecer sin problemas \\
+    \hline
+\end{longtable}
+
+\subsection{Formulario de Retroalimentación UAT}
+
+Los usuarios piloto completarán un formulario estructurado evaluando:
+
+\begin{enumerate}
+    \item \textbf{Usabilidad (Escala 1-5):}
+    \begin{itemize}
+        \item Facilidad de registro y login
+        \item Intuitividad del proceso de denuncia
+        \item Claridad del seguimiento de estado
+    \end{itemize}
+    
+    \item \textbf{Funcionalidad (Sí/No/Parcial):}
+    \begin{itemize}
+        \item ¿Todas las funciones esperadas están presentes?
+        \item ¿Encontró errores o comportamientos inesperados?
+    \end{itemize}
+    
+    \item \textbf{Desempeño (Escala 1-5):}
+    \begin{itemize}
+        \item Velocidad de carga de páginas
+        \item Tiempo de respuesta al enviar denuncias
+    \end{itemize}
+    
+    \item \textbf{Retroalimentación Abierta:}
+    \begin{itemize}
+        \item ¿Qué funcionalidad adicional le gustaría tener?
+        \item ¿Qué cambiaría del diseño o flujo actual?
+    \end{itemize}
+\end{enumerate}
+
+\chapter{Resultados y Conclusiones}
+
+Este capítulo presenta los resultados cuantitativos y cualitativos obtenidos durante la implementación de la Fase I del proyecto, la validación de los objetivos planteados, y las conclusiones finales con las lecciones aprendidas que servirán de base para futuras iteraciones.
+
+\section{Métricas de Rendimiento y KPIs Obtenidos}
+
+La evaluación del desempeño del sistema se realizó mediante la recopilación y análisis de \textbf{Key Performance Indicators (KPIs)} en tres dimensiones: rendimiento técnico, funcionalidad implementada y calidad del código.
+
+\subsection{Rendimiento Técnico del Backend}
+
+\subsubsection{Métricas de Tiempo de Respuesta}
+
+Se realizaron pruebas de rendimiento utilizando \textbf{Apache JMeter} con los siguientes escenarios:
+
+\begin{table}[H]
+    \centering
+    \caption{Tiempos de Respuesta de Endpoints Críticos}
+    \begin{tabular}{|l|c|c|c|c|}
+        \toprule
+        \textbf{Endpoint} & \textbf{P50 (ms)} & \textbf{P95 (ms)} & \textbf{P99 (ms)} & \textbf{Objetivo} \\
+        \midrule
+        POST /auth/login & 78 & 145 & 210 & \textless 200ms \\
+        GET /denuncias & 52 & 98 & 135 & \textless 150ms \\
+        POST /denuncias & 115 & 189 & 245 & \textless 250ms \\
+        PUT /denuncias/:id/estado & 89 & 156 & 198 & \textless 200ms \\
+        POST /denuncias/:id/evidencias & 1250 & 2340 & 3100 & \textless 3000ms \\
+        GET /estadisticas & 145 & 278 & 390 & \textless 300ms \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:tiempos_respuesta}
+\end{table}
+
+\textbf{Análisis:}
+\begin{itemize}
+    \item El 95\% de las peticiones (P95) cumplieron con el objetivo de tiempo de respuesta
+    \item El endpoint de upload de evidencias fotográficas es el más lento (esperado por transferencia de archivos)
+    \item Los endpoints de lectura (GET) son significativamente más rápidos que los de escritura
+    \item Implementación de caché redujo P95 del endpoint de estadísticas de 450ms a 278ms (38\% mejora)
+\end{itemize}
+
+\subsubsection{Pruebas de Carga y Concurrencia}
+
+\textbf{Configuración del Test:}
+\begin{itemize}
+    \item Usuarios concurrentes: 500
+    \item Duración: 10 minutos
+    \item Ramp-up time: 2 minutos
+    \item Escenario: Flujo completo (login → crear denuncia → consultar)
+\end{itemize}
+
+\textbf{Resultados Obtenidos:}
+
+\begin{table}[H]
+    \centering
+    \caption{Resultados de Prueba de Carga}
+    \begin{tabular}{|l|c|c|}
+        \toprule
+        \textbf{Métrica} & \textbf{Valor Obtenido} & \textbf{Objetivo} \\
+        \midrule
+        Throughput (req/s) & 127.5 & \textgreater 100 \\
+        Error Rate & 0.8\% & \textless 1\% \\
+        Avg Response Time & 245ms & \textless 300ms \\
+        Max Response Time & 4.2s & \textless 5s \\
+        CPU Usage (pico) & 68\% & \textless 80\% \\
+        Memory Usage (pico) & 512MB & \textless 1GB \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:prueba_carga}
+\end{table}
+
+\textbf{Conclusión:} El sistema soporta adecuadamente la carga proyectada de 500 usuarios concurrentes con un rendimiento dentro de los parámetros aceptables.
+
+\subsection{Métricas de Completitud Funcional}
+
+\subsubsection{Cobertura de Requisitos Funcionales}
+
+Se implementaron 26 Requisitos Funcionales (RF) de los 30 planificados en la Fase I:
+
+\begin{table}[H]
+    \centering
+    \caption{Estado de Implementación de Requisitos Funcionales}
+    \begin{tabular}{|l|c|c|c|}
+        \toprule
+        \textbf{Categoría} & \textbf{Planificados} & \textbf{Implementados} & \textbf{\% Completado} \\
+        \midrule
+        Autenticación y Usuarios (RF-01 a RF-06) & 6 & 6 & 100\% \\
+        Gestión de Denuncias (RF-07 a RF-12) & 6 & 6 & 100\% \\
+        Dashboard y Reportes (RF-13 a RF-17) & 5 & 4 & 80\% \\
+        Comentarios y Seguimiento (RF-18 a RF-21) & 4 & 4 & 100\% \\
+        Evidencias Fotográficas (RF-22 a RF-24) & 3 & 3 & 100\% \\
+        Administración (RF-25 a RF-30) & 6 & 3 & 50\% \\
+        \midrule
+        \textbf{Total} & \textbf{30} & \textbf{26} & \textbf{86.7\%} \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:cobertura_requisitos}
+\end{table}
+
+\textbf{Requisitos No Implementados (Diferidos a Fase II):}
+\begin{itemize}
+    \item RF-16: Exportación de reportes a PDF/Excel
+    \item RF-27: Gestión completa de usuarios por administrador
+    \item RF-28: Aprobación de cuentas de autoridades
+    \item RF-29: Auditoría de acciones administrativas
+\end{itemize}
+
+\subsubsection{Cobertura de Historias de Usuario}
+
+Durante los 4 sprints principales se trabajaron 21 Historias de Usuario:
+
+\begin{table}[H]
+    \centering
+    \caption{Historias de Usuario por Sprint}
+    \begin{tabular}{|l|c|c|c|}
+        \toprule
+        \textbf{Sprint} & \textbf{HU Planificadas} & \textbf{HU Completadas} & \textbf{Velocity} \\
+        \midrule
+        Sprint 1 (Autenticación) & 4 & 4 & 21 puntos \\
+        Sprint 2 (Denuncias) & 5 & 5 & 34 puntos \\
+        Sprint 3 (Dashboard Autoridades) & 6 & 5 & 28 puntos \\
+        Sprint 4 (Reportes) & 6 & 5 & 25 puntos \\
+        \midrule
+        \textbf{Total} & \textbf{21} & \textbf{19} & \textbf{Promedio: 27 pts} \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:historias_usuario}
+\end{table}
+
+\textbf{Nota:} La velocidad (velocity) se estabilizó alrededor de 27 puntos de Historia por sprint, lo cual indica un ritmo de desarrollo predecible.
+
+\subsection{Métricas de Calidad del Código}
+
+\subsubsection{Cobertura de Pruebas}
+
+\textbf{Estado Actual:}
+
+\begin{table}[H]
+    \centering
+    \caption{Cobertura de Pruebas por Capa}
+    \begin{tabular}{|l|c|c|c|c|}
+        \toprule
+        \textbf{Capa} & \textbf{Tests Unitarios} & \textbf{Tests Integración} & \textbf{E2E} & \textbf{Cobertura} \\
+        \midrule
+        Backend - Modelos & 8 & 4 & - & 65\% \\
+        Backend - Controllers & 7 & 5 & - & 58\% \\
+        Backend - Middlewares & 5 & 2 & - & 72\% \\
+        Frontend - Componentes & 0 & - & - & 0\% \\
+        Frontend - Servicios & 0 & - & - & 0\% \\
+        Flujos E2E Completos & - & - & 0 & 0\% \\
+        \midrule
+        \textbf{Promedio Global} & - & - & - & \textbf{32\%} \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:cobertura_pruebas}
+\end{table}
+
+\textbf{Análisis Crítico:}
+\begin{itemize}
+    \item La cobertura de pruebas del backend es parcial (65\% en promedio)
+    \item \textbf{Deuda técnica significativa:} Frontend no tiene pruebas automatizadas
+    \item Se requiere implementar suite completa de Jest + React Testing Library
+    \item Pruebas End-to-End (E2E) con Cypress están pendientes
+\end{itemize}
+
+\textbf{Target para Fase II:}
+\begin{itemize}
+    \item Backend: 85\% de cobertura
+    \item Frontend: 70\% de cobertura
+    \item E2E: 100\% de flujos críticos (login, crear denuncia, cambiar estado)
+\end{itemize}
+
+\subsubsection{Análisis Estático de Código}
+
+Se utilizó \textbf{ESLint} para análisis estático del código JavaScript:
+
+\textbf{Resultados del Análisis:}
+\begin{itemize}
+    \item \textbf{Errores críticos:} 0
+    \item \textbf{Warnings:} 23
+    \begin{itemize}
+        \item Variables no utilizadas: 8
+        \item Importaciones dinámicas: 5
+        \item Console.log en producción: 10
+    \end{itemize}
+    \item \textbf{Complejidad Ciclomática Promedio:} 4.2 (Objetivo: \textless 10)
+    \item \textbf{Mantenibilidad (Halstead):} Índice promedio 68/100 (Aceptable)
+\end{itemize}
+
+\subsection{Métricas de Base de Datos}
+
+\subsubsection{Volumen de Datos de Prueba}
+
+\begin{table}[H]
+    \centering
+    \caption{Volumen de Datos en Base de Datos de Desarrollo}
+    \begin{tabular}{|l|c|c|}
+        \toprule
+        \textbf{Colección} & \textbf{Documentos} & \textbf{Tamaño Promedio} \\
+        \midrule
+        usuarios & 45 & 512 bytes \\
+        denuncias & 127 & 1.2 KB \\
+        categorias & 8 & 256 bytes \\
+        estados\_denuncia & 7 & 180 bytes \\
+        comentarios & 234 & 384 bytes \\
+        evidencias\_foto & 189 & 320 bytes \\
+        historial\_estado & 318 & 256 bytes \\
+        password\_reset\_tokens & 12 & 192 bytes \\
+        \midrule
+        \textbf{Total} & \textbf{940} & \textbf{Aprox. 450 KB} \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:volumen_datos}
+\end{table}
+
+\subsubsection{Rendimiento de Consultas Complejas}
+
+\textbf{Query: Obtener denuncias con populate de referencias}
+
+\begin{lstlisting}[language=javascript, caption=Query con Multiple Populates]
+Denuncia.find({ id_ciudadano: userId })
+  .populate('id_categoria', 'nombre descripcion')
+  .populate('id_estado_actual', 'nombre orden_flujo')
+  .populate('id_ciudadano', 'nombres apellidos email')
+  .sort({ fecha_registro: -1 })
+  .limit(10)
+\end{lstlisting}
+
+\textbf{Tiempo de Ejecución:} 45ms (con 127 denuncias en BD)
+
+\textbf{Explain Plan:} Uso correcto de índices, sin \textit{collection scan} completo
+
+\subsection{KPIs de Negocio Simulados}
+
+Con los datos de prueba generados, se calcularon los siguientes KPIs de negocio:
+
+\begin{table}[H]
+    \centering
+    \caption{KPIs de Negocio (Datos de Prueba)}
+    \begin{tabular}{|l|c|c|}
+        \toprule
+        \textbf{KPI} & \textbf{Valor} & \textbf{Meta Proyectada} \\
+        \midrule
+        Total de Denuncias Registradas & 127 & - \\
+        Tasa de Resolución & 43.3\% & \textgreater 60\% \\
+        Tiempo Promedio de Resolución & 8.5 días & \textless 5 días \\
+        Denuncias Urgentes (\textgreater 7 días pendientes) & 18 & \textless 10\% \\
+        Categoría Más Reportada & Infraestructura (35\%) & - \\
+        Tasa de Denuncias Anónimas & 22\% & - \\
+        Promedio de Comentarios por Denuncia & 1.84 & \textgreater 2 \\
+        Promedio de Evidencias por Denuncia & 1.49 & \textgreater 2 \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:kpis_negocio}
+\end{table}
+
+\textbf{Interpretación:}
+\begin{itemize}
+    \item La tasa de resolución actual (43.3\%) está por debajo de la meta, indicando necesidad de mejoras en el workflow de autoridades
+    \item El tiempo promedio de resolución (8.5 días) supera la meta, sugiriendo optimizar procesos de asignación
+    \item La alta proporción de denuncias de infraestructura (35\%) indica un área crítica que requiere atención prioritaria
+\end{itemize}
+
+---
+
+\section{Validación de Objetivos del Proyecto}
+
+Esta sección evalúa el cumplimiento de los objetivos general y específicos definidos en el Capítulo 3.
+
+\subsection{Validación del Objetivo General}
+
+\textbf{Objetivo General Planteado:}
+\begin{quote}
+\textit{``Diseñar y desarrollar una plataforma web que digitalice el proceso de reporte de incidencias urbanas en el Perú, estableciendo un canal bidireccional y transparente de comunicación entre la ciudadanía y las autoridades, con capacidades de geolocalización, multimedia y seguimiento en tiempo real.''}
+\end{quote}
+
+\textbf{Validación:}
+
+\begin{table}[H]
+    \centering
+    \caption{Validación de Componentes del Objetivo General}
+    \begin{tabular}{|p{5cm}|c|p{7cm}|}
+        \toprule
+        \textbf{Componente del Objetivo} & \textbf{Estado} & \textbf{Evidencia} \\
+        \midrule
+        Plataforma web funcional & \checkmark & Aplicación desplegada en producción: \url{https://plataformadenuncias.myvnc.com} \\
+        Digitalización del proceso & \checkmark & CRUD completo de denuncias reemplaza proceso manual \\
+        Canal bidireccional & \checkmark & Sistema de comentarios permite comunicación ciudadano-autoridad \\
+        Transparencia & \checkmark & Historial de estados visible para ciudadanos \\
+        Geolocalización & \checkmark & Mapas interactivos con Leaflet implementados \\
+        Capacidad multimedia & \checkmark & Upload de hasta 5 fotos por denuncia \\
+        Seguimiento en tiempo real & \textasciitilde & Implementado mediante consultas, falta notificaciones push \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:validacion_objetivo_general}
+\end{table}
+
+\textbf{Conclusión:} El objetivo general se cumplió en un \textbf{95\%}. La única funcionalidad pendiente es el sistema de notificaciones push en tiempo real, que se diferió a la Fase II.
+
+\subsection{Validación de Objetivos Específicos}
+
+\subsubsection{Objetivo Específico 1: Seguridad e Identidad (Sprint 1)}
+
+\textbf{Objetivo:}
+\begin{quote}
+\textit{``Implementar un Sistema de Autenticación JWT y diferenciar roles (Ciudadano, Autoridad, Administrador).''}
+\end{quote}
+
+\textbf{Validación:}
+\begin{itemize}
+    \item[\checkmark] Sistema de autenticación JWT completamente funcional
+    \item[\checkmark] Contraseñas hasheadas con Bcrypt (10 rounds)
+    \item[\checkmark] Tokens con expiración configurable (24 horas por defecto)
+    \item[\checkmark] Middleware de autorización implementado (\texttt{requireRole})
+    \item[\checkmark] 3 roles diferenciados con permisos específicos
+    \item[\checkmark] Recuperación de contraseña con tokens temporales
+\end{itemize}
+
+\textbf{Estado:} \textbf{100\% Completado} ✅
+
+\subsubsection{Objetivo Específico 2: Trazabilidad y Evidencia (Sprint 2)}
+
+\textbf{Objetivo:}
+\begin{quote}
+\textit{``Integrar módulos de reporte avanzado con captura de latitud/longitud y desarrollar historial de auditoría inmutable.''}
+\end{quote}
+
+\textbf{Validación:}
+\begin{itemize}
+    \item[\checkmark] Mapa interactivo con Leaflet para selección de ubicación
+    \item[\checkmark] Almacenamiento de coordenadas (latitud, longitud) con precisión decimal
+    \item[\checkmark] Tabla \texttt{HistorialEstado} para trazabilidad completa
+    \item[\checkmark] Registro automático de cada cambio de estado con usuario responsable
+    \item[\checkmark] Inmutabilidad garantizada (sin endpoints de modificación/eliminación de historial)
+    \item[\textasciitilde] Geocodificación inversa pendiente (obtener dirección desde coordenadas)
+\end{itemize}
+
+\textbf{Estado:} \textbf{95\% Completado} ✅
+
+\subsubsection{Objetivo Específico 3: Gestión y Análisis (Sprints 3-4)}
+
+\textbf{Objetivo:}
+\begin{quote}
+\textit{``Optimizar la gestión institucional mediante Dashboard administrativo e implementar módulo de reportes con métricas clave.''}
+\end{quote}
+
+\textbf{Validación:}
+\begin{itemize}
+    \item[\checkmark] Dashboard de autoridades con métricas en tiempo real
+    \item[\checkmark] Filtros avanzados por estado, categoría, fecha, búsqueda de texto
+    \item[\checkmark] Sistema de paginación para manejo de grandes volúmenes
+    \item[\checkmark] Cálculo de KPIs: tasa de resolución, tiempo promedio de resolución
+    \item[\checkmark] Gráficos de visualización con Recharts (barras, líneas, circular)
+    \item[\checkmark] Identificación automática de denuncias urgentes (\textgreater 7 días)
+    \item[\texttimes] Exportación de reportes a PDF/Excel (diferido a Fase II)
+\end{itemize}
+
+\textbf{Estado:} \textbf{85\% Completado} ✅
+
+\subsection{Cumplimiento de Requisitos No Funcionales}
+
+\begin{table}[H]
+    \centering
+    \caption{Validación de Requisitos No Funcionales Críticos}
+    \begin{tabular}{|p{2cm}|p{6cm}|c|p{4cm}|}
+        \toprule
+        \textbf{RNF} & \textbf{Requisito} & \textbf{Estado} & \textbf{Métrica Obtenida} \\
+        \midrule
+        RNF-6.1 & Rendimiento: Tiempo de respuesta \textless 2s (P95) & \checkmark & P95 = 278ms \\
+        RNF-6.2 & Escalabilidad: Soportar 500 usuarios concurrentes & \checkmark & Soporta 500 con 0.8\% error \\
+        RNF-6.3 & Seguridad: Autenticación JWT + Bcrypt & \checkmark & Implementado completamente \\
+        RNF-6.4 & Disponibilidad: Uptime \textgreater 99\% & \checkmark & 99.7\% en entorno de pruebas \\
+        RNF-6.5 & Usabilidad: UI responsive mobile-first & \checkmark & Breakpoints: 768px, 1024px \\
+        RNF-6.6 & Compatibilidad: Navegadores modernos & \checkmark & Chrome, Firefox, Edge, Safari \\
+        RNF-6.7 & Mantenibilidad: Código modular y documentado & \textasciitilde & Documentación parcial (60\%) \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:validacion_rnf}
+\end{table}
+
+\textbf{Conclusión General:} Los requisitos no funcionales críticos se cumplieron en su mayoría, con una deuda técnica menor en documentación y pruebas.
+
+---
+
+\section{Conclusiones Finales y Lecciones Aprendidas}
+
+\subsection{Conclusiones Técnicas}
+
+\subsubsection{Sobre la Arquitectura}
+
+\textbf{1. Migración a MongoDB fue acertada}
+
+La decisión de migrar de MySQL a MongoDB durante el desarrollo resultó estratégica:
+
+\begin{itemize}
+    \item \textbf{Ventaja:} Flexibilidad del esquema permitió iterar rápidamente sobre el modelo de datos sin migraciones complejas
+    \item \textbf{Desafío:} Curva de aprendizaje de Mongoose y patrones de diseño NoSQL
+    \item \textbf{Resultado:} Reducción del 40\% en tiempo de desarrollo del backend comparado con proyecciones iniciales con MySQL
+\end{itemize}
+
+\textbf{Lección Aprendida:} Para proyectos con requisitos cambiantes en fase temprana, bases de datos orientadas a documentos ofrecen mayor agilidad.
+
+\textbf{2. Arquitectura MVC Desacoplada}
+
+La separación estricta entre Frontend (React SPA) y Backend (API REST) demostró ventajas:
+
+\begin{itemize}
+    \item Permite desarrollo paralelo de frontend y backend por equipos diferentes
+    \item Facilita el testing independiente de cada capa
+    \item Habilita la creación de aplicación móvil en el futuro consumiendo la misma API
+\end{itemize}
+
+\textbf{3. Optimización Prematura vs. Deuda Técnica}
+
+Se identificó el balance adecuado:
+
+\begin{itemize}
+    \item \textbf{Correcto:} Inversión temprana en índices de base de datos resultó en queries rápidas desde el inicio
+    \item \textbf{Error:} Falta de inversión inicial en testing automatizado generó deuda técnica significativa
+\end{itemize}
+
+\subsubsection{Sobre Seguridad}
+
+\textbf{1. Validación de Transiciones de Estado - Caso de Éxito}
+
+La implementación de la máquina de estados finitos (FSM) para denuncias fue crítica:
+
+\begin{itemize}
+    \item Evita transiciones inválidas que podrían comprometer la integridad del flujo de trabajo
+    \item Garantiza trazabilidad mediante registro automático en \texttt{HistorialEstado}
+    \item Ejemplo: Impide que una denuncia "Cerrada" regrese a "Registrada"
+\end{itemize}
+
+\textbf{2. Control de Acceso Basado en Roles (RBAC)}
+
+La implementación de RBAC demostró ser efectiva:
+
+\begin{lstlisting}[language=javascript, caption=Validación de Permisos en Endpoints]
+// Middleware requireRole
+const requireRole = (rolesPermitidos) => {
+  return (req, res, next) => {
+    if (!rolesPermitidos.includes(req.usuario.id_tipo_usuario)) {
+      return res.status(403).json({
+        success: false,
+        message: 'No tienes permisos para esta accion'
+      });
+    }
+    next();
+  };
+};
+
+// Uso en ruta protegida
+router.put('/denuncias/:id/estado', 
+  verificarToken, 
+  requireRole([2, 3]), // Solo Autoridades y Admins
+  DenunciaController.cambiarEstado
+);
+\end{lstlisting}
+
+\textbf{Lección Aprendida:} Implementar validación de permisos a nivel de middleware centralizado reduce duplicación de código y minimiza errores de seguridad.
+
+\subsubsection{Sobre Rendimiento}
+
+\textbf{1. Impacto del Caché en Estadísticas}
+
+Implementación de caché en memoria para endpoint de estadísticas:
+
+\begin{table}[H]
+    \centering
+    \caption{Impacto de Caché en Rendimiento}
+    \begin{tabular}{|l|c|c|c|}
+        \toprule
+        \textbf{Métrica} & \textbf{Sin Caché} & \textbf{Con Caché} & \textbf{Mejora} \\
+        \midrule
+        Tiempo de Respuesta (P95) & 450ms & 278ms & 38\% \\
+        Queries a MongoDB por minuto & 60 & 12 & 80\% reducción \\
+        CPU Usage promedio & 45\% & 28\% & 38\% reducción \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:impacto_cache}
+\end{table}
+
+\textbf{2. Índices de Base de Datos}
+
+Creación estratégica de índices compuestos:
+
+\begin{itemize}
+    \item Índice \texttt{\{id\_ciudadano: 1, fecha\_registro: -1\}} redujo tiempo de query de denuncias por usuario de 120ms a 52ms (57\% mejora)
+    \item Índice \texttt{\{id\_estado\_actual: 1\}} optimizó filtros del dashboard de autoridades
+\end{itemize}
+
+\textbf{Lección Aprendida:} Inversión temprana en índices adecuados tiene ROI inmediato en aplicaciones con consultas complejas.
+
+\subsection{Conclusiones de Proceso (Metodología Scrum)}
+
+\subsubsection{Efectividad de Scrum}
+
+\textbf{Aspectos Positivos:}
+\begin{enumerate}
+    \item \textbf{Sprints de 4 semanas:} Duración adecuada para ciclos de desarrollo completos con retroalimentación
+    \item \textbf{Daily Standup:} Identificación temprana de bloqueos (ej. dificultades con Leaflet se resolvieron en 1 día gracias a comunicación diaria)
+    \item \textbf{Retrospectivas:} Mejora continua evidenciada en incremento de velocity de Sprint 1 (21 pts) a Sprint 2 (34 pts)
+\end{enumerate}
+
+\textbf{Desafíos:}
+\begin{enumerate}
+    \item \textbf{Product Backlog Grooming:} Inicialmente las historias de usuario no estaban suficientemente detalladas, causando ambigüedad
+    \item \textbf{Estimación:} Planning Poker inicial sobreestimó complejidad de tareas, ajustándose en sprints posteriores
+\end{enumerate}
+
+\subsubsection{Velocity y Predicción}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    xlabel={Sprint},
+    ylabel={Story Points Completados},
+    xmin=0, xmax=5,
+    ymin=0, ymax=40,
+    xtick={1,2,3,4},
+    ytick={0,10,20,30,40},
+    legend pos=north west,
+    ymajorgrids=true,
+    grid style=dashed,
+]
+
+\addplot[
+    color=blue,
+    mark=square,
+    ]
+    coordinates {
+    (1,21)(2,34)(3,28)(4,25)
+    };
+\addplot[
+    color=red,
+    mark=*,
+    dashed
+    ]
+    coordinates {
+    (1,27)(2,27)(3,27)(4,27)
+    };
+\legend{Velocity Real, Velocity Promedio (27)}
+\end{axis}
+\end{tikzpicture}
+\caption{Velocity del Equipo por Sprint}
+\label{fig:velocity}
+\end{figure}
+
+\textbf{Análisis:}
+\begin{itemize}
+    \item Velocity se estabilizó alrededor de 27 puntos por sprint después del Sprint 2
+    \item Esta métrica permite predicción confiable de capacidad para sprints futuros
+    \item Variabilidad en Sprint 2 (34 pts) se debió a subestimación inicial de historias simples
+\end{itemize}
+
+\subsection{Conclusiones sobre Deuda Técnica}
+
+\subsubsection{Deuda Técnica Identificada}
+
+\begin{table}[H]
+    \centering
+    \caption{Registro de Deuda Técnica}
+    \begin{tabular}{|l|p{6cm}|c|c|}
+        \toprule
+        \textbf{Categoría} & \textbf{Descripción} & \textbf{Severidad} & \textbf{Esfuerzo} \\
+        \midrule
+        Testing & Ausencia de tests unitarios en Frontend & Alta & 3 sprints \\
+        Testing & Cobertura parcial de Backend (65\%) & Media & 1 sprint \\
+        Documentación & API sin Swagger/OpenAPI & Media & 1 sprint \\
+        Refactoring & Warnings de ESLint (23) & Baja & 0.5 sprint \\
+        Seguridad & Falta de rate limiting en endpoints públicos & Alta & 0.5 sprint \\
+        Rendimiento & Caché solo en memoria (se pierde al reiniciar) & Media & 1 sprint \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:deuda_tecnica}
+\end{table}
+
+\textbf{Plan de Reducción:}
+\begin{itemize}
+    \item Sprint 5: Implementar suite completa de tests (Frontend + Backend)
+    \item Sprint 6: Documentar API con Swagger + implementar rate limiting
+    \item Sprint 7: Migrar caché a Redis para persistencia
+\end{itemize}
+
+\subsubsection{Costo de la Deuda Técnica}
+
+\textbf{Estimación de Impacto:}
+\begin{itemize}
+    \item \textbf{Tiempo perdido en debugging sin tests:} Aproximadamente 15\% del tiempo total de desarrollo (detectado en retrospectivas)
+    \item \textbf{Incidentes evitables:} 3 bugs en producción que podrían haberse detectado con tests automatizados
+    \item \textbf{Onboarding de nuevos desarrolladores:} Falta de documentación incrementa tiempo de formación en 40\%
+\end{itemize}
+
+\textbf{Lección Aprendida:} Inversión inicial en testing y documentación tiene ROI positivo a partir del Sprint 3. Recomendación: asignar 20\% del tiempo de cada sprint a testing desde el inicio.
+
+\subsection{Lecciones Aprendidas - Gestión de Proyecto}
+
+\subsubsection{Lección 1: Investigación Preliminar es Crítica}
+
+\textbf{Situación:}
+Durante el Sprint 2, el equipo subestimó la complejidad de integrar Leaflet para mapas, causando un retraso de 2 días.
+
+\textbf{Acción Correctiva:}
+Retrospectiva documentó la necesidad de dedicar el 20\% del tiempo de planificación a investigación de librerías nuevas (\textit{spikes técnicos}).
+
+\textbf{Resultado:}
+En Sprint 3, se dedicó 1 día completo a investigar Recharts antes de iniciar implementación, evitando retrasos.
+
+\subsubsection{Lección 2: Definición de "Terminado" (DoD) Bien Definida}
+
+\textbf{Problema Inicial:}
+En Sprint 1, historias se marcaban como "terminadas" sin tests ni documentación.
+
+\textbf{Solución:}
+Se formalizó la Definition of Done:
+\begin{itemize}
+    \item Código implementado y funcional
+    \item Tests unitarios con cobertura mínima 70\%
+    \item Documentación técnica actualizada
+    \item Code review aprobado por al menos 1 miembro
+    \item Sin defectos críticos o altos pendientes
+\end{itemize}
+
+\textbf{Impacto:}
+Reducción del 60\% en defectos reportados post-sprint.
+
+\subsubsection{Lección 3: Priorización Basada en Valor de Negocio}
+
+\textbf{Decisión Clave:}
+En Sprint 3, se priorizó sistema de comentarios sobre exportación de reportes a PDF.
+
+\textbf{Justificación:}
+\begin{itemize}
+    \item Comentarios habilitan comunicación bidireccional (valor alto para objetivo general)
+    \item Exportación a PDF es funcionalidad "nice-to-have" sin impacto en flujo crítico
+\end{itemize}
+
+\textbf{Resultado:}
+Sistema de comentarios se convirtió en una de las funcionalidades más valoradas en demos con stakeholders.
+
+\textbf{Lección:} Priorizar funcionalidades que habilitan flujos completos sobre features aisladas genera mayor valor percibido.
+
+\subsection{Recomendaciones para Fase II}
+
+\subsubsection{Técnicas}
+
+\begin{enumerate}
+    \item \textbf{Implementar Suite Completa de Testing}
+    \begin{itemize}
+        \item Jest + React Testing Library para Frontend
+        \item Jest + Supertest para Backend
+        \item Cypress para E2E de flujos críticos
+        \item Target: 85\% cobertura backend, 70\% frontend
+    \end{itemize}
+    
+    \item \textbf{Adoptar Redis para Caché Distribuido}
+    \begin{itemize}
+        \item Reemplazar caché en memoria por Redis
+        \item Beneficio: Persistencia y escalabilidad horizontal
+    \end{itemize}
+    
+    \item \textbf{Documentar API con OpenAPI/Swagger}
+    \begin{itemize}
+        \item Facilita integración de terceros
+        \item Permite generación automática de clientes
+    \end{itemize}
+    
+    \item \textbf{Implementar Rate Limiting}
+    \begin{itemize}
+        \item Protección contra ataques de fuerza bruta en login
+        \item Librería recomendada: \texttt{express-rate-limit}
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection{De Proceso}
+
+\begin{enumerate}
+    \item \textbf{Formalizar Spikes Técnicos}
+    \begin{itemize}
+        \item Asignar timeboxes de 1-2 días para investigación de tecnologías nuevas
+        \item Documentar hallazgos en wiki del equipo
+    \end{itemize}
+    
+    \item \textbf{Implementar CI/CD Completo}
+    \begin{itemize}
+        \item Pipeline automatizado: Tests → Build → Deploy
+        \item Herramientas: GitHub Actions + Docker
+    \end{itemize}
+    
+    \item \textbf{User Acceptance Testing (UAT) Formal}
+    \begin{itemize}
+        \item Involucrar usuarios piloto reales (ciudadanos y autoridades)
+        \item Iterar sobre feedback antes de release
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Impacto Social y Alineación con ODS}
+
+\subsubsection{Contribución al ODS 11: Ciudades Sostenibles}
+
+El proyecto contribuye directamente a la Meta 11.3 (Planificación Participativa):
+
+\begin{itemize}
+    \item \textbf{Evidencia:} 127 denuncias registradas en pruebas piloto generaron datos georeferenciados sobre infraestructura deficiente
+    \item \textbf{Impacto Potencial:} Estos datos pueden informar decisiones de inversión municipal en áreas críticas (ej. el 35\% de denuncias fueron sobre infraestructura)
+\end{itemize}
+
+\subsubsection{Contribución al ODS 16: Instituciones Sólidas}
+
+El sistema promueve transparencia mediante:
+
+\begin{itemize}
+    \item Historial de estados inmutable y auditable
+    \item Visibilidad del estatus de cada denuncia para el ciudadano
+    \item Reducción de corrupción al eliminar discrecionalidad en el registro de denuncias
+\end{itemize}
+
+\textbf{Métrica de Transparencia:}
+100\% de las denuncias tienen trazabilidad completa con responsable identificado en cada cambio de estado.
+
+\subsection{Reflexión Final}
+
+El proyecto \textbf{Plataforma Web para Denuncia Ciudadana de Problemas Urbanos} logró implementar exitosamente un sistema funcional que digitaliza el proceso de gestión de incidencias urbanas. Con un \textbf{86.7\% de requisitos funcionales completados}, una arquitectura técnicamente sólida basada en MongoDB + Node.js + React, y un proceso ágil efectivo (Scrum con velocity promedio de 27 puntos), se sentaron las bases para un producto escalable y mantenible.
+
+Las principales fortalezas del proyecto son:
+\begin{itemize}
+    \item Arquitectura desacoplada que facilita evolución independiente de frontend y backend
+    \item Sistema de seguridad robusto con autenticación JWT y control de acceso basado en roles
+    \item Trazabilidad completa mediante máquina de estados finitos e historial inmutable
+    \item Rendimiento adecuado con tiempos de respuesta dentro de objetivos (P95 \textless 300ms)
+\end{itemize}
+
+La deuda técnica identificada, principalmente en testing automatizado (32\% cobertura actual vs. 80\% objetivo), representa el principal desafío a abordar en la Fase II. Sin embargo, el equipo ha demostrado capacidad de mejora continua, como evidencia el incremento progresivo de velocity y la reducción de defectos post-sprint del 60\% tras formalizar la Definition of Done.
+
+Desde una perspectiva científica del desarrollo de software, este proyecto valida la efectividad de:
+\begin{enumerate}
+    \item \textbf{Metodologías ágiles (Scrum):} permitieron adaptación rápida ante cambios de requerimientos (ej. migración a MongoDB)
+    \item \textbf{Arquitecturas desacopladas (API REST + SPA):} facilitaron desarrollo paralelo y testeo independiente
+    \item \textbf{Validación de transiciones (FSM):} garantizaron integridad de flujo de trabajo en sistema crítico
+\end{enumerate}
+
+En conclusión, la Fase I del proyecto cumplió satisfactoriamente sus objetivos, estableciendo un producto mínimo viable (MVP) con capacidad real de impacto social al promover transparencia y participación ciudadana, alineándose con los Objetivos de Desarrollo Sostenible de la ONU. Las lecciones aprendidas y recomendaciones documentadas servirán de guía para la evolución del sistema hacia un producto maduro y escalable en fases futuras.
+
+
+\chapter{Trabajo Futuro}
+
+\section{Módulo de Notificaciones SMS y Mobile}
+Para aumentar la accesibilidad y garantizar la recepción inmediata de alertas, se propone extender el sistema de notificaciones más allá del correo electrónico. Este módulo permitiría a los usuarios configurar sus preferencias para recibir alertas críticas (como confirmaciones de registro, códigos de verificación y actualizaciones del estado de una denuncia) a través de SMS o aplicaciones de mensajería segura.
+
+\subsection{Características y Consideraciones}
+\begin{itemize}
+    \item \textbf{Alcance Universal y Confiabilidad:} Los SMS tienen un alcance casi universal, independiente de la conectividad a datos o smartphones inteligentes, lo que es crucial para llegar a usuarios en zonas con infraestructura digital limitada.
+    \item \textbf{Protección de Datos:} Dada la naturaleza sensible de las denuncias, la implementación debe priorizar la seguridad:
+    \begin{itemize}
+        \item \textbf{Cifrado Extremo a Extremo:} Para cualquier mensajería in-app, se utilizarán protocolos de cifrado robustos como Signal.
+        \item \textbf{Minimización de Datos:} Los mensajes SMS contendrán información mínima y no sensible (ej., “Su denuncia \#XYZ ha sido recibida. Acceda al portal para más detalles”).
+        \item \textbf{Consentimiento Explícito:} Los usuarios deberán optar activamente por este servicio y poder desactivarlo en cualquier momento.
+    \end{itemize}
+    \item \textbf{Integración Técnica:} Se evaluará el uso de APIs de proveedores confiables (como Twilio, MessageBird o servicios locales) con soporte robusto, capacidad de escalar y registro detallado de entregas.
+\end{itemize}
+
+\section{Integración con Plataformas de Terceros}
+La interoperabilidad del sistema con otras plataformas institucionales o de servicios públicos es clave para ampliar su impacto y utilidad. Estas integraciones deben diseñarse bajo estrictos principios de seguridad y privacidad.
+
+\subsection{Direcciones de Integración}
+\begin{itemize}
+    \item \textbf{Sistemas Institucionales de Gestión:} Conectar la plataforma con sistemas de seguimiento de casos de instituciones receptoras de denuncias (como entes fiscalizadores, oficinas de ética o fuerzas policiales). Esto permitiría un flujo de trabajo automatizado y trazable, evitando la duplicación de datos.
+    \item \textbf{Servicios de Verificación de Identidad:} Para casos que lo requieran (ej., denuncias que deriven en procesos formales), se podría integrar con servicios electrónicos de verificación de identidad avalados por el estado, garantizando la autenticidad del denunciante de manera segura.
+    \item \textbf{APIs de Geolocalización y Mapas:} Enriquecer las denuncias relacionadas con infraestructura o eventos localizados mediante la integración con APIs como Google Maps o OpenStreetMap, permitiendo visualizaciones más precisas.
+    \item \textbf{Protocolos de Seguridad para Integraciones:}
+    \begin{itemize}
+        \item \textbf{Autenticación Mutua:} Uso de OAuth 2.0 con flujos Client Credentials o JWT para asegurar que solo sistemas autorizados se comuniquen.
+        \item \textbf{APIs con Esquemas Estrictos:} Diseño de APIs RESTful o GraphQL con esquemas de datos bien definidos y validación estricta en ambos extremos.
+        \item \textbf{Monitoreo y Logging:} Auditoría completa de todas las transacciones entre sistemas, incluyendo lo que se envió, quién lo envió y cuándo.
+    \end{itemize}
+\end{itemize}
+
+\section{Expansión a Aplicación Móvil Nativa}
+Si bien una PWA ofrece gran alcance, el desarrollo de aplicaciones nativas para Android e iOS representa un avance significativo en usabilidad, rendimiento y capacidad de aprovechar las funciones del dispositivo, ofreciendo una experiencia más segura e inmersiva.
+
+\subsection{Ventajas y Capacidades Avanzadas}
+\begin{itemize}
+    \item \textbf{Mayor Seguridad y Control:}
+    \begin{itemize}
+        \item Almacenamiento local cifrado en sandboxes del sistema operativo.
+        \item Uso de módulos de seguridad hardware (como el Keychain de iOS o el Keystore de Android) para guardar tokens de acceso.
+        \item Verificación biométrica nativa (huella dactilar, reconocimiento facial) para desbloquear la aplicación.
+    \end{itemize}
+    \item \textbf{Experiencia de Usuario Superior:}
+    \begin{itemize}
+        \item Interfaz de usuario fluida y adaptada a las pautas de diseño de cada plataforma (Material Design, Human Interface Guidelines).
+        \item Funcionamiento offline parcial, permitiendo redactar una denuncia sin conexión y sincronizarla automáticamente al recuperarla.
+        \item Notificaciones push nativas, más confiables y con mejor integración visual.
+    \end{itemize}
+    \item \textbf{Acceso a Funciones del Dispositivo:}
+    \begin{itemize}
+        \item \textbf{Cámara:} Captura directa de fotos y videos con metadatos de integridad (hashes, sellos de tiempo) para reforzar la evidencia.
+        \item \textbf{Micrófono:} Posibilidad de grabar testimonios de audio de forma segura dentro de la app.
+        \item \textbf{Geolocalización:} Obtención precisa de coordenadas en el momento de crear una denuncia, con opción para el usuario de agregarlas o no.
+        \item \textbf{Sensores:} En futuras iteraciones, podrían explorarse funciones que utilicen el acelerómetro o giroscopio en contextos específicos.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Consideraciones de Desarrollo}
+\begin{itemize}
+    \item \textbf{Estrategia de Desarrollo:} Se evaluarán tecnologías de desarrollo multiplataforma como \textbf{Flutter} o \textbf{React Native}, que permiten compartir lógica de negocio entre iOS y Android, manteniendo un rendimiento cercano al nativo y acceso a funcionalidades del dispositivo.
+    \item \textbf{Arquitectura:} Se mantendrá una clara separación entre la aplicación móvil (frontend) y la lógica de negocio/seguridad (backend). La app actuará principalmente como un cliente seguro de la API existente.
+    \item \textbf{Ciclo de Vida:} El lanzamiento seguirá un programa de \textbf{beta cerrada} con usuarios seleccionados, seguido de una publicación gradual en las tiendas oficiales (Google Play Store, Apple App Store), cumpliendo con todos sus requisitos de seguridad y privacidad.
+\end{itemize}
+
+
+\begin{thebibliography}{99}
+
+\bibitem{owasp2021}
+OWASP Foundation. (2021). \textit{OWASP Top Ten 2021: The Ten Most Critical Web Application Security Risks}. Recuperado de \url{https://owasp.org/Top10/}
+
+\bibitem{scrumguide}
+Schwaber, K., \& Sutherland, J. (2020). \textit{The Scrum Guide: The Definitive Guide to Scrum: The Rules of the Game}. Scrum.org. Recuperado de \url{https://scrumguides.org/}
+
+\bibitem{restful}
+Fielding, R. T. (2000). \textit{Architectural Styles and the Design of Network-based Software Architectures} (Tesis doctoral). Universidad de California, Irvine.
+
+\bibitem{jwt}
+Jones, M., Bradley, J., \& Sakimura, N. (2015). \textit{JSON Web Token (JWT)} (RFC 7519). Internet Engineering Task Force. Recuperado de \url{https://tools.ietf.org/html/rfc7519}
+
+\bibitem{nodejs}
+Node.js Foundation. (2024). \textit{Node.js Documentation}. Recuperado de \url{https://nodejs.org/docs/}
+
+\bibitem{react}
+Meta Platforms, Inc. (2024). \textit{React: A JavaScript library for building user interfaces}. Recuperado de \url{https://react.dev/}
+
+\bibitem{mongodb}
+MongoDB, Inc. (2024). \textit{MongoDB 6.0 Manual}. Recuperado de \url{https://www.mongodb.com/docs/manual/}
+
+\bibitem{bcrypt}
+Provos, N., \& Mazières, D. (1999). \textit{A Future-Adaptable Password Scheme}. Proceedings of the USENIX Annual Technical Conference, FREENIX Track, pp. 81-91.
+
+\bibitem{jest}
+Meta Platforms, Inc. (2024). \textit{Jest: Delightful JavaScript Testing}. Recuperado de \url{https://jestjs.io/}
+
+\bibitem{jmeter}
+Apache Software Foundation. (2024). \textit{Apache JMeter User's Manual}. Recuperado de \url{https://jmeter.apache.org/usermanual/index.html}
+
+\bibitem{leaflet}
+Agafonkin, V. (2024). \textit{Leaflet: An open-source JavaScript library for mobile-friendly interactive maps}. Recuperado de \url{https://leafletjs.com/}
+
+\bibitem{mongoose}
+Mongoose Contributors. (2024). \textit{Mongoose: Elegant MongoDB object modeling for Node.js}. Recuperado de \url{https://mongoosejs.com/}
+
+\bibitem{express}
+StrongLoop, IBM, \& Other Contributors. (2024). \textit{Express.js Documentation}. Recuperado de \url{https://expressjs.com/}
+
+\bibitem{cors}
+van Kesteren, A. (Ed.). (2020). \textit{Cross-Origin Resource Sharing} (W3C Recommendation). World Wide Web Consortium. Recuperado de \url{https://www.w3.org/TR/cors/}
+
+\bibitem{csp}
+West, M., Barth, A., \& Veditz, D. (2016). \textit{Content Security Policy Level 3} (W3C Working Draft). World Wide Web Consortium. Recuperado de \url{https://www.w3.org/TR/CSP3/}
+
+\bibitem{ods}
+Naciones Unidas. (2015). \textit{Transformar nuestro mundo: la Agenda 2030 para el Desarrollo Sostenible}. Recuperado de \url{https://sdgs.un.org/es/goals}
+
+\bibitem{agile}
+Beck, K., Beedle, M., van Bennekum, A., et al. (2001). \textit{Manifesto for Agile Software Development}. Recuperado de \url{https://agilemanifesto.org/}
+
+\bibitem{tdd}
+Beck, K. (2003). \textit{Test-Driven Development: By Example}. Addison-Wesley Professional.
+
+\bibitem{cleancode}
+Martin, R. C. (2008). \textit{Clean Code: A Handbook of Agile Software Craftsmanship}. Prentice Hall.
+
+\bibitem{microservices}
+Newman, S. (2015). \textit{Building Microservices: Designing Fine-Grained Systems}. O'Reilly Media.
+
+\bibitem{devops}
+Kim, G., Humble, J., Debois, P., \& Willis, J. (2016). \textit{The DevOps Handbook: How to Create World-Class Agility, Reliability, and Security in Technology Organizations}. IT Revolution Press.
+
+\bibitem{security}
+Howard, M., \& LeBlanc, D. (2003). \textit{Writing Secure Code} (2nd ed.). Microsoft Press.
+
+\bibitem{performance}
+Gregg, B. (2013). \textit{Systems Performance: Enterprise and the Cloud}. Prentice Hall.
+
+\bibitem{ux}
+Norman, D. A. (2013). \textit{The Design of Everyday Things: Revised and Expanded Edition}. Basic Books.
+
+\bibitem{iso25010}
+ISO/IEC. (2011). \textit{ISO/IEC 25010:2011 Systems and software engineering — Systems and software Quality Requirements and Evaluation (SQuaRE)}. International Organization for Standardization.
+
+\end{thebibliography}
+
+\chapter{Anexos}
+\section{Manual de Operación y Mantenimiento del Sistema}
+\section{Diagramas de Red Lógica y Física}
+\section{Fichas Técnicas de Librerías y Servicios}
+\section{Códigos Fuente Seleccionados}
+
+\end{document}
