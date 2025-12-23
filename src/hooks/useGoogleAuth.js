@@ -17,7 +17,7 @@ export const useGoogleAuth = () => {
     script.src = 'https://accounts.google.com/gsi/client';
     script.async = true;
     script.defer = true;
-    
+
     script.onload = () => {
       console.log('Google Identity Services cargado');
       setIsGoogleLoaded(true);
@@ -94,9 +94,12 @@ export const useGoogleAuth = () => {
         if (notification.isNotDisplayed()) {
           const reason = notification.getNotDisplayedReason();
           console.warn('Google One Tap no se mostró:', reason);
-          
-          // Si falla por origen no registrado, usar flujo OAuth2 manual
-          if (reason === 'unregistered_origin' || reason === 'invalid_client') {
+
+          // Si falla por cualquier razón relevante, usar flujo OAuth2 manual
+          if (reason === 'unregistered_origin' ||
+            reason === 'invalid_client' ||
+            reason === 'opt_out_or_no_session' ||
+            reason === 'suppressed_by_user') {
             console.log('🔄 Usando flujo OAuth2 alternativo...');
             initiateOAuth2Flow(handleCredentialResponse, onError);
           } else {
@@ -118,7 +121,7 @@ export const useGoogleAuth = () => {
     try {
       const redirectUri = `${window.location.origin}/auth/google/callback`;
       const scope = 'openid profile email';
-      
+
       // Construir URL de autorización de Google
       const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
       authUrl.searchParams.set('client_id', GOOGLE_CLIENT_ID);
@@ -129,13 +132,13 @@ export const useGoogleAuth = () => {
       authUrl.searchParams.set('prompt', 'select_account');
 
       console.log('Abriendo ventana de autenticación:', authUrl.toString());
-      
+
       // Abrir ventana popup
       const width = 500;
       const height = 600;
       const left = window.screenX + (window.outerWidth - width) / 2;
       const top = window.screenY + (window.outerHeight - height) / 2;
-      
+
       const popup = window.open(
         authUrl.toString(),
         'Google Login',
@@ -151,18 +154,18 @@ export const useGoogleAuth = () => {
       const messageHandler = (event) => {
         // Verificar origen por seguridad
         if (event.origin !== window.location.origin) return;
-        
+
         if (event.data.type === 'GOOGLE_AUTH_SUCCESS') {
           console.log('✅ Autenticación exitosa desde popup');
           console.log('Credential recibido:', event.data.credential);
           window.removeEventListener('message', messageHandler);
-          
+
           try {
             if (popup && !popup.closed) popup.close();
           } catch (e) {
             console.warn('No se pudo cerrar popup:', e);
           }
-          
+
           // Llamar directamente con el credential (no envuelto en response)
           if (event.data.credential) {
             onSuccess({ credential: event.data.credential });
@@ -205,7 +208,7 @@ export const useGoogleAuth = () => {
           // Esto puede pasar con Cross-Origin-Opener-Policy
         }
       }, 1000);
-      
+
     } catch (error) {
       console.error('Error en flujo OAuth2:', error);
       onError?.(error.message);

@@ -258,7 +258,8 @@
   }
 
   .form {
-    padding: 1.5rem;
+    padding: 1.5rem 1.5rem 100px;
+    /* Padding bottom aumentado para móviles */
   }
 
   .row {
@@ -271,7 +272,8 @@
   }
 
   .footer {
-    padding: 1rem 1.5rem;
+    padding: 1rem 1.5rem 30px;
+    /* Padding bottom extra para visibilidad */
   }
 }
 
@@ -293,7 +295,8 @@
   }
 
   .form {
-    padding: 1rem;
+    padding: 1rem 1rem 120px;
+    /* Padding bottom mayor para pantallas muy pequeñas */
   }
 
   .input {

@@ -23,6 +23,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -106,7 +107,8 @@
 
 @media (max-width: 768px) {
   .register-card {
-    padding: 32px 24px;
+    padding: 32px 24px 100px;
+    /* Padding bottom aumentado para móviles */
     margin: 16px;
   }
 
@@ -121,5 +123,32 @@
   .form-row {
     grid-template-columns: 1fr;
     gap: 0;
+  }
+
+  .login-link,
+  .authority-link {
+    padding-bottom: 20px;
+    /* Espacio extra para asegurar visibilidad */
+  }
+}
+
+@media (max-width: 480px) {
+  .register-container {
+    padding: 0.5rem;
+  }
+
+  .register-card {
+    padding: 24px 16px 120px;
+    /* Padding bottom mayor para pantallas muy pequeñas */
+  }
+
+  .register-title {
+    font-size: 1.5rem;
+  }
+
+  .login-link,
+  .authority-link {
+    padding-bottom: 30px;
+    /* Espacio extra considerable */
   }
 }

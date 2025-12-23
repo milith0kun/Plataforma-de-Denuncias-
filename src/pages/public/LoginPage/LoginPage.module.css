@@ -28,6 +28,7 @@
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -58,8 +59,13 @@
 }
 
 @keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .info-content {
@@ -309,11 +315,11 @@
     max-width: 500px;
     min-height: auto;
   }
-  
+
   .info-section {
     display: none;
   }
-  
+
   .form-section {
     padding: 3rem 2rem;
   }
@@ -323,17 +329,23 @@
   .login-container {
     padding: 1rem;
   }
-  
+
   .form-section {
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.5rem 100px;
+    /* Padding bottom aumentado para que los enlaces sean visibles */
   }
-  
+
   .login-title {
     font-size: 1.5rem;
   }
-  
+
   .login-form {
     gap: 1rem;
+  }
+
+  .footer-links {
+    padding-bottom: 20px;
+    /* Espacio extra para asegurar visibilidad */
   }
 }
 
@@ -341,26 +353,29 @@
   .login-container {
     padding: 0.5rem;
   }
-  
+
   .form-section {
-    padding: 1.5rem 1rem;
+    padding: 1.5rem 1rem 120px;
+    /* Padding bottom aún mayor para pantallas muy pequeñas */
   }
-  
+
   .login-title {
     font-size: 1.375rem;
   }
-  
+
   .login-subtitle {
     font-size: 0.875rem;
   }
-  
+
   .google-button {
     padding: 0.75rem 1rem;
     font-size: 0.875rem;
   }
-  
+
   .footer-links {
     margin-top: 1.5rem;
+    padding-bottom: 30px;
+    /* Espacio extra considerable para asegurar visibilidad total */
   }
 }
 
@@ -368,36 +383,36 @@
   .info-section {
     padding: 2rem;
   }
-  
+
   .logo-large {
     width: 60px;
     height: 60px;
   }
-  
+
   .info-title {
     font-size: 1.5rem;
   }
-  
+
   .info-description {
     font-size: 1rem;
     margin-bottom: 2rem;
   }
-  
+
   .features {
     gap: 1rem;
     margin-bottom: 2rem;
   }
-  
+
   .feature-icon {
     width: 40px;
     height: 40px;
   }
-  
+
   .stats {
     gap: 1rem;
     padding-top: 1.5rem;
   }
-  
+
   .stat-number {
     font-size: 1.5rem;
   }
