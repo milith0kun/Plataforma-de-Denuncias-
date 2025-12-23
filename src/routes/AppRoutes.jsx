@@ -103,7 +103,7 @@ const AppRoutes = () => {
           path="/seguimiento"
           element={
             <PrivateRoute>
-              <MapaDenunciasPage />
+              <SeguimientoDenunciaPage />
             </PrivateRoute>
           }
         />
@@ -111,7 +111,7 @@ const AppRoutes = () => {
           path="/seguimiento/:id"
           element={
             <PrivateRoute>
-              <MapaDenunciasPage />
+              <SeguimientoDenunciaPage />
             </PrivateRoute>
           }
         />

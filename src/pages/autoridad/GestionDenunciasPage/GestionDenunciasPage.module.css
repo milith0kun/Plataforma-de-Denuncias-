@@ -362,7 +362,8 @@
 }
 
 .btnVer,
-.btnEstado {
+.btnEstado,
+.btnArea {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -377,7 +378,8 @@
 }
 
 .btnVer svg,
-.btnEstado svg {
+.btnEstado svg,
+.btnArea svg {
   width: 16px;
   height: 16px;
 }
@@ -402,6 +404,22 @@
   background: var(--color-primary-dark);
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(21, 53, 149, 0.3);
+}
+
+.btnArea {
+  background: var(--color-success);
+  color: white;
+}
+
+.btnArea:hover {
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+}
+
+.btnArea svg {
+  width: 16px;
+  height: 16px;
 }
 
 /* Paginación */
@@ -857,7 +875,8 @@
   }
 
   .btnVer,
-  .btnEstado {
+  .btnEstado,
+  .btnArea {
     width: 100%;
     justify-content: center;
   }
@@ -997,7 +1016,8 @@
   }
 
   .btnVer,
-  .btnEstado {
+  .btnEstado,
+  .btnArea {
     flex: 1;
     padding: 10px 12px;
     font-size: 0.75rem;

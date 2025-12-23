@@ -49,6 +49,13 @@ router.put('/:id', DenunciaController.actualizarDenuncia);
 router.put('/:id/estado', DenunciaController.cambiarEstado);
 
 /**
+ * @route   PUT /api/v1/denuncias/:id/asignar
+ * @desc    Asignar área responsable a una denuncia
+ * @access  Privado (Autoridades y Administradores)
+ */
+router.put('/:id/asignar', DenunciaController.asignarArea);
+
+/**
  * @route   DELETE /api/v1/denuncias/:id
  * @desc    Eliminar una denuncia
  * @access  Privado (Ciudadano propietario, solo en estado Registrada)

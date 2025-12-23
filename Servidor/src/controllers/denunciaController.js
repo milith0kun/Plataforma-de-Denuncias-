@@ -515,7 +515,7 @@ class DenunciaController {
     try {
       const { id } = req.params;
 
-      // Verificar que la denuncia existe
+      // Verificar que la denuncia exists
       const denuncia = await Denuncia.obtenerPorId(id);
       if (!denuncia) {
         return res.status(404).json({
@@ -539,6 +539,75 @@ class DenunciaController {
       res.status(500).json({
         success: false,
         message: MENSAJES_ERROR.ERROR_SERVIDOR || 'Error al obtener historial'
+      });
+    }
+  }
+
+  /**
+   * Asignar área responsable a una denuncia
+   * PUT /api/v1/denuncias/:id/asignar
+   */
+  static async asignarArea(req, res) {
+    try {
+      const { id } = req.params;
+      const { area_asignada, comentario } = req.body;
+      const { id_usuario, id_tipo_usuario } = req.usuario;
+
+      // Solo autoridades y administradores pueden asignar áreas
+      if (id_tipo_usuario !== 2 && id_tipo_usuario !== 3) {
+        return res.status(403).json({
+          success: false,
+          message: 'No tienes permisos para asignar áreas'
+        });
+      }
+
+      // Validar que el área sea válida
+      const areasValidas = ['Obras Públicas', 'Limpieza', 'Seguridad', 'Salud', 'Medio Ambiente', 'Transporte', 'Servicios Sociales'];
+      if (!area_asignada || !areasValidas.includes(area_asignada)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Área no válida'
+        });
+      }
+
+      // Verificar que la denuncia existe
+      const denuncia = await Denuncia.obtenerPorId(id);
+      if (!denuncia) {
+        return res.status(404).json({
+          success: false,
+          message: 'Denuncia no encontrada'
+        });
+      }
+
+      // Actualizar la denuncia
+      await Denuncia.actualizar(id, {
+        area_asignada,
+        ultima_actualizacion: new Date()
+      });
+
+      // Cambiar estado a "Asignada" si aún no lo está
+      const estadoAsignada = await EstadoDenuncia.obtenerPorNombre('Asignada');
+      if (estadoAsignada && denuncia.id_estado_actual.toString() !== estadoAsignada._id.toString()) {
+        await Denuncia.cambiarEstado(
+          id,
+          estadoAsignada._id,
+          comentario || `Denuncia asignada al área: ${area_asignada}`,
+          id_usuario
+        );
+      }
+
+      res.status(200).json({
+        success: true,
+        message: MENSAJES_EXITO.ACTUALIZACION_EXITOSA || 'Área asignada exitosamente',
+        data: {
+          area_asignada
+        }
+      });
+    } catch (error) {
+      console.error('Error en asignarArea:', error);
+      res.status(500).json({
+        success: false,
+        message: MENSAJES_ERROR.ERROR_SERVIDOR || 'Error al asignar área'
       });
     }
   }
