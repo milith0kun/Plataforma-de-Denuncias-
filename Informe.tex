@@ -28,7 +28,13 @@
     stringstyle=\color{red!90!black},
     breaklines=true,
     breakatwhitespace=true,
-    tabsize=2
+    tabsize=2,
+    inputencoding=utf8,
+    extendedchars=true,
+    literate=%
+        {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'{\i}}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+        {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+        {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {ü}{{\"u}}1 {Ü}{{\"U}}1
 }
 
 % Márgenes
@@ -260,7 +266,7 @@ La estructura organizativa es fundamental para el éxito del desarrollo colabora
     \hline
     \textbf{Development Team} & Andy Yoseph Quispe Huanca (221949) & \textbf{Full Stack Developer.} Especializado en arquitectura de seguridad (JWT, Bcrypt) y lógica de negocio. \\
     \hline
-    \textbf{Development Team} & Edmil Jampier Saire Bustamante (174449) & \textbf{Full Stack Developer.} Especializado en modelado de datos (MySQL), persistencia de datos y servicios de geolocalización. \\
+    \textbf{Development Team} & Edmil Jampier Saire Bustamante (174449) & \textbf{Full Stack Developer.} Especializado en modelado de datos (MongoDB), persistencia de datos y servicios de geolocalización. \\
     \hline
     \textbf{Development Team} & Dennis Moises Ccapatinta Qqueccaño (140984) & \textbf{Full Stack Developer.} Especializado en UI/UX, desarrollo de componentes en React y optimización del rendimiento del Frontend. \\
     \hline
@@ -293,10 +299,10 @@ Como evidencia del proceso ágil, se adjunta un extracto de la dinámica y la re
 \begin{lstlisting}[language=bash, caption=Extracto de Daily Meeting]
 DAILY MEETING - Lunes
 [225425 - SM]: Impedimentos?
-[221949 - Dev]: Ayer: Implemente 3 interfaces faltantes. Hoy: Actualizar diseños de postulante y consulta.
-[174449 - Dev]: Ayer: Módulo para verificación de postulante. Hoy: Implementar conexión SQL al Visual.
-[225425 - SM]: Ayer: Arreglé el mensaje al ingresar postulante. Hoy: Actualizar procedimientos en SQL y tabla de postulantes.
-[140984 - Dev]: Ayer: Transformé el proyecto a la base de datos. Hoy: Interfaz para consulta y postulantes.
+[221949 - Dev]: Ayer: Implemente 3 interfaces faltantes. Hoy: Actualizar disenos de postulante y consulta.
+[174449 - Dev]: Ayer: Modulo para verificacion de postulante. Hoy: Implementar conexion SQL al Visual.
+[225425 - SM]: Ayer: Arregle el mensaje al ingresar postulante. Hoy: Actualizar procedimientos en SQL y tabla de postulantes.
+[140984 - Dev]: Ayer: Transforme el proyecto a la base de datos. Hoy: Interfaz para consulta y postulantes.
 \end{lstlisting}
 
 \begin{lstlisting}[caption=Extracto de Retrospectiva de Sprint, basicstyle=\ttfamily]
@@ -361,12 +367,12 @@ El diseño de la API se adhiere a las mejores prácticas REST, utilizando verbos
 \subsection{Endpoints de Autenticación (Sprint 1)}
 
 \begin{lstlisting}[language=javascript, caption=Endpoints Implementados en /api/v1/auth]
-// Rutas de Autenticación
+// Rutas de Autenticacion
 POST /auth/register/ciudadano  // Registro (JSON: nombres, email, password, documento_identidad)
-POST /auth/register/autoridad  // Registro (JSON: requiere validación de permiso adicional)
+POST /auth/register/autoridad  // Registro (JSON: requiere validacion de permiso adicional)
 POST /auth/login               // Retorna JWT Access Token
-POST /auth/forgot-password     // Inicia proceso de recuperación por email
-POST /auth/reset-password      // Usa token temporal para establecer nueva contraseña
+POST /auth/forgot-password     // Inicia proceso de recuperacion por email
+POST /auth/reset-password      // Usa token temporal para establecer nueva contrasena
 GET /auth/verify-token         // Verifica validez de JWT (utilizado por el Frontend)
 \end{lstlisting}
 
