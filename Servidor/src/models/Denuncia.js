@@ -156,6 +156,9 @@ denunciaSchema.statics.obtenerPorId = async function (id_denuncia) {
       return null;
     }
 
+    // Asegurar que id_denuncia esté presente (lean no incluye virtuals)
+    denuncia.id_denuncia = denuncia._id;
+
     // Guardar el ID original del ciudadano antes de cualquier transformación
     denuncia.id_ciudadano_original = denuncia.id_ciudadano?._id;
 

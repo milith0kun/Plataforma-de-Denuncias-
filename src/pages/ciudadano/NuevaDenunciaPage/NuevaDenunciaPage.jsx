@@ -127,11 +127,15 @@ const NuevaDenunciaPage = () => {
       const response = await denunciaService.crearDenuncia(datosDenuncia);
 
       if (response.success) {
+        const id_denuncia = response.data.denuncia.id_denuncia;
+        console.log('Denuncia creada con ID:', id_denuncia);
+
         // Subir fotos si hay
         if (fotos.length > 0) {
           try {
+            console.log('Subiendo evidencias para denuncia:', id_denuncia);
             const archivosFiles = fotos.map(f => f.file);
-            await denunciaService.subirEvidencias(response.data.denuncia.id_denuncia, archivosFiles);
+            await denunciaService.subirEvidencias(id_denuncia, archivosFiles);
           } catch (errorFotos) {
             console.error('Error al subir fotos:', errorFotos);
             // La denuncia ya fue creada, solo mostramos advertencia
@@ -154,7 +158,7 @@ const NuevaDenunciaPage = () => {
   return (
     <div className={styles.pageContainer}>
       <Header />
-      
+
       <div className={styles.container}>
         <div className={styles.header}>
           <h1 className={styles.title}>Nueva Denuncia</h1>
@@ -167,7 +171,7 @@ const NuevaDenunciaPage = () => {
           {/* Información básica */}
           <div className={styles.section}>
             <h2 className={styles.sectionTitle}>Información Básica</h2>
-            
+
             <div className={styles.formGroup}>
               <label htmlFor="titulo" className={styles.label}>
                 Título de la Denuncia *
