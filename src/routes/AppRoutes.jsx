@@ -20,6 +20,7 @@ import NuevaDenunciaPage from '../pages/ciudadano/NuevaDenunciaPage/NuevaDenunci
 import DetalleDenunciaPage from '../pages/ciudadano/DetalleDenunciaPage/DetalleDenunciaPage';
 import ReportesPage from '../pages/ciudadano/ReportesPage/ReportesPage';
 import SeguimientoDenunciaPage from '../pages/SeguimientoDenunciaPage/SeguimientoDenunciaPage';
+import MapaDenunciasPage from '../pages/MapaDenunciasPage/MapaDenunciasPage';
 
 // Páginas privadas (autoridades)
 import DashboardAutoridadPage from '../pages/autoridad/DashboardAutoridadPage/DashboardAutoridadPage';
@@ -39,106 +40,106 @@ const AppRoutes = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/register-authority" element={<RegisterAuthorityPage />} />
-        
+
         {/* Rutas de autenticación */}
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/auth/google/callback" element={<GoogleCallback />} />
-        
+
         {/* Rutas privadas para ciudadanos */}
-        <Route 
-          path="/home" 
+        <Route
+          path="/home"
           element={
-              <PrivateRoute requireRole="ciudadano">
-                <HomePage />
-              </PrivateRoute>
-            } 
+            <PrivateRoute requireRole="ciudadano">
+              <HomePage />
+            </PrivateRoute>
+          }
         />
-        <Route 
-          path="/inicio" 
-          element={<Navigate to="/home" replace />} 
+        <Route
+          path="/inicio"
+          element={<Navigate to="/home" replace />}
         />
-        <Route 
-          path="/perfil" 
+        <Route
+          path="/perfil"
           element={
-              <PrivateRoute>
-                <PerfilPage />
-              </PrivateRoute>
-            } 
+            <PrivateRoute>
+              <PerfilPage />
+            </PrivateRoute>
+          }
         />
-        <Route 
-          path="/denuncias" 
+        <Route
+          path="/denuncias"
           element={
-              <PrivateRoute>
-                <DenunciasPage />
-              </PrivateRoute>
-            } 
+            <PrivateRoute>
+              <DenunciasPage />
+            </PrivateRoute>
+          }
         />
         <Route
           path="/nueva-denuncia"
           element={
-              <PrivateRoute requireRole="ciudadano">
-                <NuevaDenunciaPage />
-              </PrivateRoute>
-            }
+            <PrivateRoute requireRole="ciudadano">
+              <NuevaDenunciaPage />
+            </PrivateRoute>
+          }
         />
         <Route
           path="/denuncias/:id"
           element={
-              <PrivateRoute>
-                <DetalleDenunciaPage />
-              </PrivateRoute>
-            }
+            <PrivateRoute>
+              <DetalleDenunciaPage />
+            </PrivateRoute>
+          }
         />
         <Route
           path="/reportes"
           element={
-              <PrivateRoute>
-                <ReportesPage />
-              </PrivateRoute>
-            }
+            <PrivateRoute>
+              <ReportesPage />
+            </PrivateRoute>
+          }
         />
         <Route
           path="/seguimiento"
           element={
-              <PrivateRoute>
-                <SeguimientoDenunciaPage />
-              </PrivateRoute>
-            }
+            <PrivateRoute>
+              <MapaDenunciasPage />
+            </PrivateRoute>
+          }
         />
         <Route
           path="/seguimiento/:id"
           element={
-              <PrivateRoute>
-                <SeguimientoDenunciaPage />
-              </PrivateRoute>
-            }
+            <PrivateRoute>
+              <MapaDenunciasPage />
+            </PrivateRoute>
+          }
         />
         <Route
           path="/mapa-denuncias"
           element={
-              <PrivateRoute>
-                <SeguimientoDenunciaPage />
-              </PrivateRoute>
-            }
+            <PrivateRoute>
+              <MapaDenunciasPage />
+            </PrivateRoute>
+          }
         />
 
         {/* Rutas privadas para autoridades */}
         <Route
           path="/dashboard-autoridad"
           element={
-              <PrivateRoute requireRole="autoridad">
-                <DashboardAutoridadPage />
-              </PrivateRoute>
-            }
+            <PrivateRoute requireRole="autoridad">
+              <DashboardAutoridadPage />
+            </PrivateRoute>
+          }
         />
         <Route
           path="/gestionar-denuncias"
           element={
-              <PrivateRoute requireRole="autoridad">
-                <GestionDenunciasPage />
-              </PrivateRoute>
-            }
+            <PrivateRoute requireRole="autoridad">
+              <GestionDenunciasPage />
+            </PrivateRoute>
+          }
         />
         <Route
           path="/autoridad/gestion-denuncias"
@@ -147,34 +148,34 @@ const AppRoutes = () => {
         <Route
           path="/estadisticas"
           element={
-              <PrivateRoute requireRole="autoridad">
-                <DashboardAutoridadPage />
-              </PrivateRoute>
-            }
+            <PrivateRoute requireRole="autoridad">
+              <DashboardAutoridadPage />
+            </PrivateRoute>
+          }
         />
-        
+
         {/* Redirección inteligente del dashboard basada en rol */}
-        <Route 
-          path="/dashboard" 
+        <Route
+          path="/dashboard"
           element={
             estaAutenticado ? (
               esAutoridad ? <Navigate to="/dashboard-autoridad" replace /> :
-              esCiudadano ? <Navigate to="/home" replace /> :
-              <Navigate to="/login" replace />
+                esCiudadano ? <Navigate to="/home" replace /> :
+                  <Navigate to="/login" replace />
             ) : <Navigate to="/login" replace />
-          } 
+          }
         />
-        
+
         {/* Redirección por defecto basada en autenticación y rol */}
-        <Route 
-          path="*" 
+        <Route
+          path="*"
           element={
             estaAutenticado ? (
               esAutoridad ? <Navigate to="/dashboard-autoridad" replace /> :
-              esCiudadano ? <Navigate to="/home" replace /> :
-              <Navigate to="/" replace />
+                esCiudadano ? <Navigate to="/home" replace /> :
+                  <Navigate to="/" replace />
             ) : <Navigate to="/" replace />
-          } 
+          }
         />
       </Routes>
     </BrowserRouter>
@@ -182,3 +183,4 @@ const AppRoutes = () => {
 };
 
 export default AppRoutes;
+

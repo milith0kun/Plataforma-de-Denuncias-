@@ -1,9 +1,9 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  FileText, 
-  Plus, 
-  MapPin, 
+import {
+  LayoutDashboard,
+  FileText,
+  Plus,
+  MapPin,
   User,
   Settings,
   BarChart3
@@ -91,8 +91,18 @@ const BottomNavigation = ({ userType = 'ciudadano' }) => {
   const navItems = userType === 'autoridad' ? autoridadNavItems : ciudadanoNavItems;
 
   const isActive = (path) => {
-    if (path === '/home' && location.pathname === '/home') return true;
-    if (path !== '/home' && location.pathname.startsWith(path)) return true;
+    // Comparación exacta para evitar que múltiples botones se marquen como activos
+    const currentPath = location.pathname;
+
+    // Para rutas exactas
+    if (currentPath === path) return true;
+
+    // Para subrutas específicas
+    if (path === '/denuncias' && currentPath.startsWith('/denuncias/')) return true;
+    if (path === '/gestionar-denuncias' && currentPath.startsWith('/gestionar-denuncias/')) return true;
+    if (path === '/seguimiento' && currentPath.startsWith('/seguimiento/')) return true;
+    if (path === '/estadisticas' && currentPath.startsWith('/estadisticas/')) return true;
+
     return false;
   };
 
@@ -106,7 +116,7 @@ const BottomNavigation = ({ userType = 'ciudadano' }) => {
         {navItems.map((item) => {
           const Icon = item.icon;
           const active = isActive(item.path);
-          
+
           return (
             <button
               key={item.path}
@@ -117,8 +127,8 @@ const BottomNavigation = ({ userType = 'ciudadano' }) => {
               }}
             >
               <div className={styles.navIconWrapper}>
-                <Icon 
-                  size={item.isMain ? 28 : 24} 
+                <Icon
+                  size={item.isMain ? 28 : 24}
                   strokeWidth={active ? 2.5 : 2}
                 />
               </div>

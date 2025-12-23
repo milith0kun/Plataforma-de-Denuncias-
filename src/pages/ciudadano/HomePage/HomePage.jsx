@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
 import { useIsMobile } from '../../../hooks/useIsMobile';
-import { 
-  LayoutDashboard, FileText, MapPin, User, Clock, AlertCircle, 
+import {
+  LayoutDashboard, FileText, MapPin, User, Clock, AlertCircle,
   CheckCircle2, TrendingUp, Plus, Eye, ChevronRight, Menu,
-  Camera, Shield, MessageSquare, Info
+  Camera, Shield, MessageSquare, Info, Map
 } from 'lucide-react';
 import Header from '../../../components/common/Header/Header';
 import BottomNavigation from '../../../components/common/BottomNavigation/BottomNavigation';
@@ -16,14 +16,14 @@ const HomePage = () => {
   const navigate = useNavigate();
   const { usuario } = useAuth();
   const isMobile = useIsMobile();
-  
+
   // Inicializar el sidebar solo para desktop
   const [sidebarOpen, setSidebarOpen] = useState(() => {
     if (typeof window === 'undefined') return true;
     const savedState = localStorage.getItem('sidebarOpen');
     return savedState !== null ? JSON.parse(savedState) : true;
   });
-  
+
   const [estadisticas, setEstadisticas] = useState({
     denunciasRealizadas: 0,
     denunciasPendientes: 0,
@@ -47,7 +47,7 @@ const HomePage = () => {
   const cargarDatos = async () => {
     try {
       setCargando(true);
-      
+
       const stats = await denunciaService.obtenerEstadisticasUsuario();
       setEstadisticas({
         denunciasRealizadas: stats.total,
@@ -118,15 +118,15 @@ const HomePage = () => {
         {!isMobile && (
           <aside className={`${styles.sidebar} ${sidebarOpen ? styles.open : ''}`}>
             <div className={styles.sidebarHeader}>
-              <button 
-                className={styles.toggleButton} 
+              <button
+                className={styles.toggleButton}
                 onClick={toggleSidebar}
                 aria-label={sidebarOpen ? 'Cerrar menú' : 'Abrir menú'}
               >
                 <Menu size={24} />
               </button>
             </div>
-            
+
             <nav className={styles.sidebarNav}>
               <a href="/home" className={`${styles.navItem} ${styles.active}`}>
                 <LayoutDashboard size={20} />
@@ -161,14 +161,14 @@ const HomePage = () => {
                 <h1>Hola, {usuario?.nombres} 👋</h1>
                 <p>Gestiona tus denuncias y contribuye a mejorar tu comunidad</p>
                 <div className={styles.heroActions}>
-                  <button 
+                  <button
                     className={styles.btnPrimary}
                     onClick={() => navigate('/nueva-denuncia')}
                   >
                     <Plus size={20} />
                     Nueva Denuncia
                   </button>
-                  <button 
+                  <button
                     className={styles.btnSecondary}
                     onClick={() => navigate('/denuncias')}
                   >
@@ -276,7 +276,7 @@ const HomePage = () => {
                 <div className={styles.emptyState}>
                   <FileText size={48} />
                   <p>No hay denuncias registradas</p>
-                  <button 
+                  <button
                     className={styles.btnPrimary}
                     onClick={() => navigate('/nueva-denuncia')}
                     style={{ marginTop: '1rem' }}
@@ -308,7 +308,7 @@ const HomePage = () => {
                           </span>
                         </td>
                         <td>
-                          <span 
+                          <span
                             className={styles.statusBadge}
                             style={{ backgroundColor: obtenerColorEstado(denuncia.estado_nombre) }}
                           >
@@ -369,7 +369,7 @@ const HomePage = () => {
           </div>
         </main>
       </div>
-      
+
       {/* Navegación inferior para móviles */}
       {isMobile && <BottomNavigation userType="ciudadano" />}
     </>
