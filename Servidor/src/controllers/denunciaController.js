@@ -433,10 +433,10 @@ class DenunciaController {
 
       // Preparar datos de evidencias para guardar en BD
       const evidencias = req.files.map(file => ({
-        ruta_archivo: `/uploads/${file.path.split('uploads/')[1].replace(/\\/g, '/')}`,
+        url_archivo: `/uploads/${file.path.split('uploads/')[1].replace(/\\/g, '/')}`,
+        nombre_archivo: file.originalname,
         tipo_archivo: file.mimetype,
-        tamano_bytes: file.size,
-        nombre_original: file.originalname
+        tamano_bytes: file.size
       }));
 
       // Guardar evidencias en la base de datos
