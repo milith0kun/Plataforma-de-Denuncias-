@@ -70,6 +70,7 @@ class DenunciaController {
       res.status(201).json({
         success: true,
         message: MENSAJES_EXITO.DENUNCIA_CREADA || 'Denuncia registrada exitosamente',
+        id_denuncia: id_denuncia,
         data: {
           id_denuncia: id_denuncia,
           denuncia: denunciaCreada
