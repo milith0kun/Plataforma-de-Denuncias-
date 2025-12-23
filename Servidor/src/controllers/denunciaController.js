@@ -210,7 +210,8 @@ class DenunciaController {
 
       // Solo el ciudadano que creó la denuncia puede actualizarla
       // y solo si está en estado "Registrada" o "Pendiente"
-      if (id_tipo_usuario === 1 && denuncia.id_ciudadano && denuncia.id_ciudadano.toString() !== id_usuario.toString()) {
+      const idPropietarioActualizar = denuncia.id_ciudadano_original || (denuncia.id_ciudadano?._id || denuncia.id_ciudadano);
+      if (id_tipo_usuario === 1 && idPropietarioActualizar && idPropietarioActualizar.toString() !== id_usuario.toString()) {
         return res.status(403).json({
           success: false,
           message: 'No tienes permiso para actualizar esta denuncia'
@@ -360,8 +361,8 @@ class DenunciaController {
       }
 
       // Solo el ciudadano que creó la denuncia puede eliminarla
-      // y solo si está en estado "Registrada"
-      if (id_tipo_usuario === 1 && denuncia.id_ciudadano && denuncia.id_ciudadano.toString() !== id_usuario.toString()) {
+      const idPropietarioEliminar = denuncia.id_ciudadano_original || (denuncia.id_ciudadano?._id || denuncia.id_ciudadano);
+      if (id_tipo_usuario === 1 && idPropietarioEliminar && idPropietarioEliminar.toString() !== id_usuario.toString()) {
         return res.status(403).json({
           success: false,
           message: 'No tienes permiso para eliminar esta denuncia'
