@@ -45,6 +45,11 @@ const denunciaSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  area_asignada: {
+    type: String,
+    enum: ['Obras Públicas', 'Limpieza', 'Seguridad', 'Salud', 'Medio Ambiente', 'Transporte', 'Servicios Sociales', null],
+    default: null
+  },
   fecha_registro: {
     type: Date,
     default: Date.now

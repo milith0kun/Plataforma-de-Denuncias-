@@ -218,6 +218,25 @@ const denunciaService = {
     } catch (error) {
       throw error.response?.data || error;
     }
+  },
+
+  /**
+   * Asignar área responsable a una denuncia
+   * @param {number} id - ID de la denuncia
+   * @param {string} area_asignada - Área a asignar
+   * @param {string} comentario - Comentario opcional
+   * @returns {Promise} Respuesta de la API
+   */
+  async asignarArea(id, area_asignada, comentario) {
+    try {
+      const response = await api.put(`/denuncias/${id}/asignar`, {
+        area_asignada,
+        comentario
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
   }
 };
 

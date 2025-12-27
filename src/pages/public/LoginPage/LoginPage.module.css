@@ -7,6 +7,8 @@
   justify-content: center;
   background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
   padding: 2rem 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .login-card {
@@ -21,6 +23,16 @@
   animation: fadeIn 0.5s ease;
   min-height: 600px;
   max-height: 85vh;
+}
+
+/* Tablet y móviles - Eliminar restricciones de altura */
+@media (max-width: 1024px) {
+  .login-card {
+    max-height: none !important;
+    min-height: auto !important;
+    height: auto;
+    overflow: visible;
+  }
 }
 
 @keyframes fadeIn {
@@ -172,6 +184,18 @@
   justify-content: center;
   background: white;
   overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* En móviles, no centrar verticalmente para permitir scroll completo */
+@media (max-width: 1024px) {
+  .form-section {
+    justify-content: flex-start !important;
+    overflow-y: visible;
+    overflow-x: hidden;
+    max-height: none;
+    height: auto;
+  }
 }
 
 .form-content {
@@ -313,7 +337,10 @@
   .login-card {
     grid-template-columns: 1fr;
     max-width: 500px;
-    min-height: auto;
+    min-height: auto !important;
+    max-height: none !important;
+    height: auto;
+    overflow: visible;
   }
 
   .info-section {
@@ -322,17 +349,42 @@
 
   .form-section {
     padding: 3rem 2rem;
+    justify-content: flex-start !important;
+    overflow-y: visible;
+    overflow-x: hidden;
+    min-height: auto;
+    max-height: none;
+    height: auto;
   }
 }
 
 @media (max-width: 640px) {
   .login-container {
-    padding: 1rem;
+    padding: 1.5rem 0.5rem;
+    align-items: flex-start;
+    min-height: 100vh;
+    height: auto;
+  }
+
+  .login-card {
+    overflow: visible;
+    max-height: none !important;
+    height: auto;
+    min-height: auto;
   }
 
   .form-section {
-    padding: 2rem 1.5rem 100px;
-    /* Padding bottom aumentado para que los enlaces sean visibles */
+    padding: 2rem 1.5rem 3rem;
+    overflow-y: visible;
+    overflow-x: hidden;
+    height: auto;
+    min-height: auto;
+    justify-content: flex-start;
+  }
+
+  .form-content {
+    padding-bottom: 2rem;
+    height: auto;
   }
 
   .login-title {
@@ -344,19 +396,49 @@
   }
 
   .footer-links {
-    padding-bottom: 20px;
-    /* Espacio extra para asegurar visibilidad */
+    margin-top: 2rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .register-text,
+  .authority-text {
+    margin: 0.75rem 0;
+    line-height: 1.6;
   }
 }
 
 @media (max-width: 480px) {
   .login-container {
-    padding: 0.5rem;
+    padding: 1.5rem 0.5rem;
+    align-items: flex-start;
+    min-height: 100vh;
+    height: auto;
+  }
+
+  .login-card {
+    border-radius: 16px;
+    overflow: visible;
+    max-height: none !important;
+    height: auto;
+    min-height: auto;
   }
 
   .form-section {
-    padding: 1.5rem 1rem 120px;
-    /* Padding bottom aún mayor para pantallas muy pequeñas */
+    padding: 1.5rem 1.25rem 3.5rem;
+    overflow-y: visible;
+    overflow-x: hidden;
+    height: auto;
+    min-height: auto;
+    justify-content: flex-start;
+  }
+
+  .form-content {
+    padding-bottom: 2rem;
+    height: auto;
+  }
+
+  .login-header {
+    margin-bottom: 1.5rem;
   }
 
   .login-title {
@@ -370,12 +452,98 @@
   .google-button {
     padding: 0.75rem 1rem;
     font-size: 0.875rem;
+    gap: 0.5rem;
+  }
+
+  .divider {
+    margin: 1.25rem 0;
   }
 
   .footer-links {
-    margin-top: 1.5rem;
-    padding-bottom: 30px;
-    /* Espacio extra considerable para asegurar visibilidad total */
+    margin-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .register-text,
+  .authority-text {
+    font-size: 0.875rem;
+    margin: 0.75rem 0;
+    line-height: 1.7;
+  }
+}
+
+/* Pantallas extra pequeñas (iPhone SE, etc.) */
+@media (max-width: 375px) {
+  .login-container {
+    padding: 1.5rem 0.5rem;
+    min-height: 100vh;
+    height: auto;
+    align-items: flex-start;
+  }
+
+  .login-card {
+    border-radius: 12px;
+    overflow: visible;
+    max-height: none !important;
+    height: auto;
+    min-height: auto;
+  }
+
+  .form-section {
+    padding: 1.25rem 1rem 4rem;
+    overflow-y: visible;
+    overflow-x: hidden;
+    height: auto;
+    min-height: auto;
+    justify-content: flex-start;
+  }
+
+  .form-content {
+    padding-bottom: 2rem;
+    height: auto;
+  }
+
+  .login-header {
+    margin-bottom: 1.25rem;
+  }
+
+  .login-title {
+    font-size: 1.25rem;
+  }
+
+  .login-subtitle {
+    font-size: 0.8125rem;
+  }
+
+  .google-button {
+    padding: 0.625rem 0.875rem;
+    font-size: 0.8125rem;
+  }
+
+  .login-form {
+    gap: 0.875rem;
+  }
+
+  .divider {
+    margin: 1rem 0;
+    font-size: 0.8125rem;
+  }
+
+  .footer-links {
+    margin-top: 2rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .register-text,
+  .authority-text {
+    font-size: 0.8125rem;
+    margin: 0.75rem 0;
+    line-height: 1.7;
+  }
+
+  .link {
+    display: inline-block;
+    word-break: break-word;
   }
 }
 

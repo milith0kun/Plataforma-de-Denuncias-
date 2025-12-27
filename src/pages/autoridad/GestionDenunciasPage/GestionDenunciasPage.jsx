@@ -6,6 +6,7 @@ import BottomNavigation from '../../../components/common/BottomNavigation/Bottom
 import MetricCard from '../../../components/common/MetricCard/MetricCard';
 import { TableSkeleton } from '../../../components/common/LoadingSkeleton/LoadingSkeleton';
 import { useToast } from '../../../components/common/ToastContainer/ToastContainer';
+import ModalAsignarArea from '../../../components/denuncias/ModalAsignarArea';
 import denunciaService from '../../../services/denunciaService';
 import styles from './GestionDenunciasPage.module.css';
 
@@ -24,6 +25,7 @@ const GestionDenunciasPage = () => {
   const [estadoSeleccionado, setEstadoSeleccionado] = useState('');
   const [comentario, setComentario] = useState('');
   const [procesando, setProcesando] = useState(false);
+  const [modalAsignarArea, setModalAsignarArea] = useState(null);
 
   // Paginación
   const [paginaActual, setPaginaActual] = useState(1);
@@ -156,6 +158,31 @@ const GestionDenunciasPage = () => {
     } catch (err) {
       console.error('Error al cambiar estado:', err);
       toast.error(err.message || 'Error al cambiar el estado');
+    } finally {
+      setProcesando(false);
+    }
+  };
+
+  const abrirModalAsignarArea = (denuncia) => {
+    setModalAsignarArea(denuncia);
+  };
+
+  const cerrarModalAsignarArea = () => {
+    setModalAsignarArea(null);
+  };
+
+  const handleAsignarArea = async (idDenuncia, areaAsignada, comentario) => {
+    try {
+      setProcesando(true);
+
+      await denunciaService.asignarArea(idDenuncia, areaAsignada, comentario);
+
+      toast.success('Área asignada exitosamente');
+      cerrarModalAsignarArea();
+      cargarDatos();
+    } catch (err) {
+      console.error('Error al asignar área:', err);
+      toast.error(err.message || 'Error al asignar el área');
     } finally {
       setProcesando(false);
     }
@@ -359,6 +386,16 @@ const GestionDenunciasPage = () => {
                               </svg>
                               Estado
                             </button>
+                            <button
+                              className={styles.btnArea}
+                              onClick={() => abrirModalAsignarArea(denuncia)}
+                              title="Asignar área"
+                            >
+                              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                              </svg>
+                              Área
+                            </button>
                           </div>
                         </td>
                       </tr>
@@ -429,6 +466,16 @@ const GestionDenunciasPage = () => {
           )}
         </div>
       </div>
+
+      {/* Modal Asignar Área */}
+      {modalAsignarArea && (
+        <ModalAsignarArea
+          denuncia={modalAsignarArea}
+          onClose={cerrarModalAsignarArea}
+          onAsignar={handleAsignarArea}
+          procesando={procesando}
+        />
+      )}
 
       {/* Modal Cambiar Estado */}
       {modalCambiarEstado && (
