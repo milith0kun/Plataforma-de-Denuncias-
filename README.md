@@ -296,7 +296,7 @@ Este proyecto está bajo la Licencia MIT - ver el archivo LICENSE para más deta
 
 ## 📝 Notas de Versión
 
-### Versión 1.0.0 (Sprint 1 - Completado)
+### Versión 2.0.0 (Sprint 1 - Completado)
 
 - Sistema de autenticación JWT completo
 - Registro diferenciado para ciudadanos y autoridades
